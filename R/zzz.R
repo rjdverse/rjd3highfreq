@@ -1,6 +1,5 @@
 #' @include utils.R
 #' @import rjd3sts
-#' @importFrom magrittr %>%
 
 .onLoad <- function(libname, pkgname) {
   if (! requireNamespace("rjd3sts", quietly=T)) stop("Loading rjd3 libraries failed")
