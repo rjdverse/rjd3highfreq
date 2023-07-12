@@ -16,7 +16,8 @@ Imports:
   rjd3toolkit (>= 3.0.1),
   rjd3sts (>= 1.0.1),
   checkmate,
-  methods
+  methods,
+  magrittr
 SystemRequirements: Java JRE 17 or higher
 License: EUPL
 URL: https://github.com/palatej/rjd3highfreq

@@ -51,8 +51,8 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
 #' @export
 print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   
-  nb_outliers <- sum((x$model$variables |> 
-                        substr(1L, 2L) |> 
+  nb_outliers <- sum((x$model$variables %>% 
+                        substr(1L, 2L) %>% 
                         toupper()) %in% c("AO", "WO", "LS"))
   nb_reg_cjo <- length(x$model$variables) - nb_outliers
   
@@ -77,7 +77,7 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
   }
   
   # Estimated MA parameters (coefs, se, student)
-  nb_freq <- (x$estimation$parameters |> length()) - 1L
+  nb_freq <- (x$estimation$parameters %>% length()) - 1L
   est_ma_params <- data.frame(
     MA_parameter = c("Theta(1)", 
                      paste0("Theta(", paste0("period = ", 
