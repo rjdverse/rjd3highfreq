@@ -98,7 +98,7 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, n
 #' @examples
 fractionalAirlineEstimation <- function(
     y, periods, x = NULL, ndiff = 2, ar = F, mean = FALSE, 
-    outliers = NULL, criticalValue = 6, precision = 1e-12, approximateHessian = F, nfcasts=0) 
+    outliers = NULL, criticalValue = 6, precision = 1e-12, approximateHessian = F, nfcasts=0, log=FALSE) 
 {
   checkmate::assertNumeric(y, null.ok = F)
   checkmate::assertNumeric(criticalValue, len = 1, null.ok = F)
@@ -111,7 +111,7 @@ fractionalAirlineEstimation <- function(
                   "Ljdplus/highfreq/base/core/extendedairline/ExtendedAirlineEstimation;", "estimate", 
                   as.numeric(y), rjd3toolkit::.r2jd_matrix(x), mean, .jarray(periods), 
                   as.integer(ndiff), ar, joutliers, criticalValue, precision, 
-                  approximateHessian, as.integer(nfcasts))
+                  approximateHessian, as.integer(nfcasts),log)
   model <- list(
     y = as.numeric(y), 
     periods = periods, 
@@ -125,7 +125,9 @@ fractionalAirlineEstimation <- function(
     component_ls = rjd3toolkit::.proc_vector(jrslt, "component_ls"), 
     component_outliers = rjd3toolkit::.proc_vector(jrslt, "component_outliers"), 
     component_userdef_reg_variables = rjd3toolkit::.proc_vector(jrslt, "component_userdef_reg_variables"), 
-    component_mean = rjd3toolkit::.proc_vector(jrslt, "component_mean"))
+    component_mean = rjd3toolkit::.proc_vector(jrslt, "component_mean"),
+    log=rjd3toolkit::.proc_vector(jrslt,"log"),
+    missingOrNegative=rjd3toolkit::.proc_vector(jrslt, "missing"))
   
   estimation <- list(parameters = rjd3toolkit::.proc_vector(jrslt, "parameters"), 
                      score = rjd3toolkit::.proc_vector(jrslt, "score"), 
