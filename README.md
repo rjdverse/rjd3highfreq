@@ -10,6 +10,6 @@ High-frequency time series
 ``` r
 # Install development version from GitHub
 # install.packages("remotes")
-remotes::install_github("palatej/rjd3toolkit")
-remotes::install_github("palatej/rjd3highfreq")
+remotes::install_github("rjdemetra/rjd3toolkit")
+remotes::install_github("rjdemetra/rjd3highfreq")
 ```

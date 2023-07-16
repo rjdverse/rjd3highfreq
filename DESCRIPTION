@@ -19,13 +19,13 @@ Imports:
   methods
 SystemRequirements: Java JRE 17 or higher
 License: EUPL
-URL: https://github.com/palatej/rjd3highfreq
+URL: https://github.com/rjdemetra/rjd3highfreq
 LazyData: TRUE
 Suggests:
     knitr,
     rmarkdown
 RoxygenNote: 7.2.3
-BugReports: https://github.com/palatej/rjd3highfreq/issues
+BugReports: https://github.com/rjdemetra/rjd3highfreq/issues
 Encoding: UTF-8
 Collate: 
     'utils.R'
