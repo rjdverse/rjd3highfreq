@@ -126,7 +126,7 @@ fractionalAirlineEstimation <- function(
     component_outliers = rjd3toolkit::.proc_vector(jrslt, "component_outliers"), 
     component_userdef_reg_variables = rjd3toolkit::.proc_vector(jrslt, "component_userdef_reg_variables"), 
     component_mean = rjd3toolkit::.proc_vector(jrslt, "component_mean"),
-    log=rjd3toolkit::.proc_vector(jrslt,"log"),
+    log=rjd3toolkit::.proc_bool(jrslt,"log"),
     missingOrNegative=rjd3toolkit::.proc_vector(jrslt, "missing"))
   
   estimation <- list(parameters = rjd3toolkit::.proc_vector(jrslt, "parameters"), 
