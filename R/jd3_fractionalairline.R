@@ -113,7 +113,7 @@ fractionalAirlineEstimation <- function(
                   as.integer(ndiff), ar, joutliers, criticalValue, precision, 
                   approximateHessian, as.integer(nfcasts),log)
   model <- list(
-    y = as.numeric(y), 
+    y = rjd3toolkit::.proc_vector(jrslt, "y"), 
     periods = periods, 
     variables = rjd3toolkit::.proc_vector(jrslt, "variables"), 
     xreg = rjd3toolkit::.proc_matrix(jrslt, "regressors"), 
