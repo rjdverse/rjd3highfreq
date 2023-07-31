@@ -115,11 +115,12 @@ fractionalAirlineEstimation <- function(
   model <- list(
     y = rjd3toolkit::.proc_vector(jrslt, "y"), 
     periods = periods, 
-    variables = rjd3toolkit::.proc_vector(jrslt, "variables"), 
+    variables = .proc_variabele_outlier_names(jrslt$getOutliers(),jrslt$getNx()),            # "variables " names of variables and outliers
     xreg = rjd3toolkit::.proc_matrix(jrslt, "regressors"), 
     b = rjd3toolkit::.proc_vector(jrslt, "b"), 
     bcov = rjd3toolkit::.proc_matrix(jrslt, "bvar"), 
-    linearized = rjd3toolkit::.proc_vector(jrslt, "lin"), 
+    linearized = rjd3toolkit::.proc_vector(jrslt, "lin"),
+    residuals=rjd3toolkit::.proc_vector(jrslt,"residuals"),
     component_wo = rjd3toolkit::.proc_vector(jrslt, "component_wo"), 
     component_ao = rjd3toolkit::.proc_vector(jrslt, "component_ao"), 
     component_ls = rjd3toolkit::.proc_vector(jrslt, "component_ls"), 
@@ -139,6 +140,20 @@ fractionalAirlineEstimation <- function(
                         estimation = estimation, 
                         likelihood = likelihood), 
                    class = "JDFractionalAirlineEstimation"))
+}
+
+.proc_variabele_outlier_names<-function(var_out_names,nX) {
+  o<-.jevalArray(var_out_names)
+  nO<-length(o)
+  
+  regvar_outliers<-rep(NA,nX-nO)
+  for(j in 1:nX-nO) {
+    regvar_outliers[j]=paste("x-", j)}
+  
+  if(nO>0){      
+    for (j in 1:nO) {
+      regvar_outliers[nX-nO+j]<-o[[j]]$toString()}}
+  return(regvar_outliers)
 }
 
 #' Title
