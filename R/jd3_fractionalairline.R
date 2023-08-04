@@ -98,7 +98,7 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, n
 #' @examples
 fractionalAirlineEstimation <- function(
     y, periods, x = NULL, ndiff = 2, ar = F, mean = FALSE, 
-    outliers = NULL, criticalValue = 6, precision = 1e-12, approximateHessian = F, nfcasts=0) 
+    outliers = NULL, criticalValue = 6, precision = 1e-12, approximateHessian = F, nfcasts=0, log=FALSE) 
 {
   checkmate::assertNumeric(y, null.ok = F)
   checkmate::assertNumeric(criticalValue, len = 1, null.ok = F)
@@ -111,21 +111,24 @@ fractionalAirlineEstimation <- function(
                   "Ljdplus/highfreq/base/core/extendedairline/ExtendedAirlineEstimation;", "estimate", 
                   as.numeric(y), rjd3toolkit::.r2jd_matrix(x), mean, .jarray(periods), 
                   as.integer(ndiff), ar, joutliers, criticalValue, precision, 
-                  approximateHessian, as.integer(nfcasts))
+                  approximateHessian, as.integer(nfcasts),log)
   model <- list(
-    y = as.numeric(y), 
+    y = rjd3toolkit::.proc_vector(jrslt, "y"), 
     periods = periods, 
-    variables = rjd3toolkit::.proc_vector(jrslt, "variables"), 
+    variables = .proc_variabele_outlier_names(jrslt$getOutliers(),jrslt$getNx()),            # "variables " names of variables and outliers
     xreg = rjd3toolkit::.proc_matrix(jrslt, "regressors"), 
     b = rjd3toolkit::.proc_vector(jrslt, "b"), 
     bcov = rjd3toolkit::.proc_matrix(jrslt, "bvar"), 
-    linearized = rjd3toolkit::.proc_vector(jrslt, "lin"), 
+    linearized = rjd3toolkit::.proc_vector(jrslt, "lin"),
+    residuals=rjd3toolkit::.proc_vector(jrslt,"residuals"),
     component_wo = rjd3toolkit::.proc_vector(jrslt, "component_wo"), 
     component_ao = rjd3toolkit::.proc_vector(jrslt, "component_ao"), 
     component_ls = rjd3toolkit::.proc_vector(jrslt, "component_ls"), 
     component_outliers = rjd3toolkit::.proc_vector(jrslt, "component_outliers"), 
     component_userdef_reg_variables = rjd3toolkit::.proc_vector(jrslt, "component_userdef_reg_variables"), 
-    component_mean = rjd3toolkit::.proc_vector(jrslt, "component_mean"))
+    component_mean = rjd3toolkit::.proc_vector(jrslt, "component_mean"),
+    log=rjd3toolkit::.proc_bool(jrslt,"log"),
+    missingOrNegative=rjd3toolkit::.proc_vector(jrslt, "missing"))
   
   estimation <- list(parameters = rjd3toolkit::.proc_vector(jrslt, "parameters"), 
                      score = rjd3toolkit::.proc_vector(jrslt, "score"), 
@@ -137,6 +140,20 @@ fractionalAirlineEstimation <- function(
                         estimation = estimation, 
                         likelihood = likelihood), 
                    class = "JDFractionalAirlineEstimation"))
+}
+
+.proc_variabele_outlier_names<-function(var_out_names,nX) {
+  o<-.jevalArray(var_out_names)
+  nO<-length(o)
+  
+  regvar_outliers<-rep(NA,nX-nO)
+  for(j in 1:nX-nO) {
+    regvar_outliers[j]=paste("x-", j)}
+  
+  if(nO>0){      
+    for (j in 1:nO) {
+      regvar_outliers[nX-nO+j]<-o[[j]]$toString()}}
+  return(regvar_outliers)
 }
 
 #' Title
