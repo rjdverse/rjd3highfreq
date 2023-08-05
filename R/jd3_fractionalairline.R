@@ -119,7 +119,9 @@ fractionalAirlineEstimation <- function(
   if (!is.null(colnames(x)) && sum(duplicated(colnames(x))) == 0) {
     external_variables[seq_along(colnames(x))] <- colnames(x)
   }
-  colnames(reg_mat) <- external_variables
+  if (ncol(reg_mat) > 0) {
+    colnames(reg_mat) <- external_variables
+  }
   
   model <- list(
     y = rjd3toolkit::.proc_vector(jrslt, "y"), 
