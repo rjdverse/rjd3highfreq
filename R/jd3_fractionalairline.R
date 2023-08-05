@@ -115,7 +115,7 @@ fractionalAirlineEstimation <- function(
   model <- list(
     y = rjd3toolkit::.proc_vector(jrslt, "y"), 
     periods = periods, 
-    variables = .proc_variabele_outlier_names(jrslt$getOutliers(),jrslt$getNx()),            # "variables " names of variables and outliers
+    variables = .proc_variable_outlier_names(jrslt$getOutliers(),jrslt$getNx()),            # "variables " names of variables and outliers
     xreg = rjd3toolkit::.proc_matrix(jrslt, "regressors"), 
     b = rjd3toolkit::.proc_vector(jrslt, "b"), 
     bcov = rjd3toolkit::.proc_matrix(jrslt, "bvar"), 
@@ -142,7 +142,7 @@ fractionalAirlineEstimation <- function(
                    class = "JDFractionalAirlineEstimation"))
 }
 
-.proc_variabele_outlier_names<-function(var_out_names,nX) {
+.proc_variable_outlier_names<-function(var_out_names,nX) {
   o<-.jevalArray(var_out_names)
   nO<-length(o)
   
