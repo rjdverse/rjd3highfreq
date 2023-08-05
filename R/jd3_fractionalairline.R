@@ -112,11 +112,22 @@ fractionalAirlineEstimation <- function(
                   as.numeric(y), rjd3toolkit::.r2jd_matrix(x), mean, .jarray(periods), 
                   as.integer(ndiff), ar, joutliers, criticalValue, precision, 
                   approximateHessian, as.integer(nfcasts),log)
+  
+  external_variables <- .proc_variable_outlier_names(jrslt$getOutliers(),jrslt$getNx())
+  reg_mat <- rjd3toolkit::.proc_matrix(jrslt, "regressors")
+  
+  if (!is.null(colnames(x)) && sum(duplicated(colnames(x))) == 0) {
+    external_variables[seq_along(colnames(x))] <- colnames(x)
+    colnames(reg_mat)[seq_along(colnames(x))] <- colnames(x)
+  }
+  
   model <- list(
     y = rjd3toolkit::.proc_vector(jrslt, "y"), 
     periods = periods, 
-    variables = .proc_variable_outlier_names(jrslt$getOutliers(),jrslt$getNx()),            # "variables " names of variables and outliers
-    xreg = rjd3toolkit::.proc_matrix(jrslt, "regressors"), 
+    variables = external_variables,            
+    # "variables " names of variables and outliers
+    xreg = reg_mat, 
+    # "xreg" matrix of regressor (external variables and outliers)
     b = rjd3toolkit::.proc_vector(jrslt, "b"), 
     bcov = rjd3toolkit::.proc_matrix(jrslt, "bvar"), 
     linearized = rjd3toolkit::.proc_vector(jrslt, "lin"),
