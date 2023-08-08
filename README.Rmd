@@ -181,6 +181,7 @@ amb.s7 <- exp(amb.dow$decomposition$s)
 amb.s365 <- exp(amb.doy$decomposition$s)
 amb.t <- exp(amb.doy$decomposition$t)
 amb.sa <- exp(amb.doy$decomposition$sa)
+amb.i <- exp(amb.doy$decomposition$i)
 ```
 
 Comparison of the two seasonnal components ($p = 365$ and $p = 7$):
@@ -261,11 +262,11 @@ amb.multi <- rjd3highfreq::multiAirlineDecomposition(
 
 
 ```{r set decompo amb.multi, echo = FALSE, eval = TRUE}
-amb.multi.t <- exp(amb.multi$decomposition[[1]])
-amb.multi.s7 <- exp(amb.multi$decomposition[[2]])
-amb.multi.s365 <- exp(amb.multi$decomposition[[3]])
-
-amb.multi.sa <- exp(y_lin) / (amb.multi.s7 * amb.multi.s365)
+amb.multi.t <- exp(amb.multi$decomposition$t)
+amb.multi.s7 <- exp(amb.multi$decomposition$s_7)
+amb.multi.s365 <- exp(amb.multi$decomposition$s_365.2425)
+amb.multi.sa <- exp(amb.multi$decomposition$sa)
+amb.multi.i <- exp(amb.multi$decomposition$i)
 ```
 
 Plot the comparison between the two AMB methods for the annual periodicity:
