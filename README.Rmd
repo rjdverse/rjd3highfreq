@@ -52,8 +52,7 @@ col_s2 <- "#9169be"
 
 
 ```{r import data, echo = TRUE, eval = TRUE}
-## Import des données ----------------------------------------------------------
-
+## Import of data
 df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/Data/TS_daily_births_franceM_1968_2020.csv")
 
 # Creation of log variables to multiplicative model
@@ -168,11 +167,10 @@ Decomposition with the AMB (Arima Model Based) algorithm:
 ```{r amb, echo = TRUE, eval = TRUE}
 # Decomposition with day of the week
 amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = pre.mult$model$linearized, 
-  period = 7) # weekly decomposition
+  y = pre.mult$model$linearized, # linearized series from preprocessing
+  period = 7) # weekly pattern
 
 # Extract DOY pattern from DOW-adjusted linearised data
-# step 2 en log
 amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
   y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
   period = 365.2425) # day of year pattern
@@ -182,7 +180,7 @@ amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
 amb.s7 <- exp(amb.dow$decomposition$s)
 amb.s365 <- exp(amb.doy$decomposition$s)
 amb.t <- exp(amb.doy$decomposition$t)
-amb.sa <- exp(y_lin) / (amb.s7 * amb.s365)
+amb.sa <- exp(amb.doy$decomposition$sa)
 ```
 
 Comparison of the two seasonnal components ($p = 365$ and $p = 7$):
@@ -270,9 +268,9 @@ amb.multi.s365 <- exp(amb.multi$decomposition[[3]])
 amb.multi.sa <- exp(y_lin) / (amb.multi.s7 * amb.multi.s365)
 ```
 
-Plot the comparison between the two AMB methods:
+Plot the comparison between the two AMB methods for the annual periodicity:
   
-```{r plot seasonnal amb.multi, echo = FALSE, eval = TRUE}
+```{r plot seasonnal 365 amb.multi, echo = FALSE, eval = TRUE}
 # P = 365
 plot.new()
 rect(xleft = par("usr")[1], xright = par("usr")[2], 
@@ -296,9 +294,9 @@ legend("bottomleft", legend = c("Simple estimation", "Multi Airline"),
        inset = c(0, 1), bty = "n")
 ```
 
-Plot the output of the `multiAirlineDecomposition`:
+Plot the comparison between the two AMB methods for the weekly periodicity:
 
-```{r plot decompo amb.multi, echo = FALSE, eval = TRUE}
+```{r plot seasonnal 7 amb.multi, echo = FALSE, eval = TRUE}
 #P = 7
 plot.new()
 rect(xleft = par("usr")[1], xright = par("usr")[2], 
@@ -319,6 +317,33 @@ box(col = col_grid)
 
 legend("bottomleft", legend = c("Simple estimation", "Multi Airline"), 
        pch = 16, col = c(col_s1, col_s2), horiz = TRUE, xpd = TRUE, 
+       inset = c(0, 1), bty = "n")
+
+```
+
+Plot the output of the `multiAirlineDecomposition`:
+
+```{r plot decompo amb.multi, echo = FALSE, eval = TRUE}
+#P = 7
+plot.new()
+rect(xleft = par("usr")[1], xright = par("usr")[2], 
+     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
+par(new = TRUE)
+
+plot(x = df_daily$date, y = df_daily$births, col = col_y, 
+     type = "l", xlab = "Time", ylab = "Nb of french births", 
+     main = "Decomposition")
+lines(x = df_daily$date, y = amb.multi.sa, 
+      type = "l", col = col_sa)
+lines(x = df_daily$date, y = amb.multi.t, 
+      type = "l", col = col_t)
+
+par(new = TRUE)
+grid(nx = NULL, ny = NULL, col = col_grid)
+box(col = col_grid)
+
+legend("bottomleft", legend = c("Raw data", "Seasonnal adjusted", "Trend"), 
+       pch = 16, col = c(col_y, col_sa, col_t), horiz = TRUE, xpd = TRUE, 
        inset = c(0, 1), bty = "n")
 
 ```

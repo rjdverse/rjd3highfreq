@@ -22,8 +22,7 @@ library("rjd3highfreq")
 ```
 
 ``` r
-## Import des données ----------------------------------------------------------
-
+## Import of data
 df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/Data/TS_daily_births_franceM_1968_2020.csv")
 
 # Creation of log variables to multiplicative model
@@ -127,11 +126,10 @@ Decomposition with the AMB (Arima Model Based) algorithm:
 ``` r
 # Decomposition with day of the week
 amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = pre.mult$model$linearized, 
-  period = 7) # weekly decomposition
+  y = pre.mult$model$linearized, # linearized series from preprocessing
+  period = 7) # weekly pattern
 
 # Extract DOY pattern from DOW-adjusted linearised data
-# step 2 en log
 amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
   y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
   period = 365.2425) # day of year pattern
@@ -151,9 +149,15 @@ series):
 Perform an Arima Model Based (AMB) decomposition on several periodcities
 at once:
 
-Plot the comparison between the two AMB methods:
+Plot the comparison between the two AMB methods for the annual
+periodicity:
 
-<img src="man/figures/README-plot seasonnal amb.multi-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot seasonnal 365 amb.multi-1.png" width="100%" style="display: block; margin: auto;" />
+
+Plot the comparison between the two AMB methods for the weekly
+periodicity:
+
+<img src="man/figures/README-plot seasonnal 7 amb.multi-1.png" width="100%" style="display: block; margin: auto;" />
 
 Plot the output of the `multiAirlineDecomposition`:
 
