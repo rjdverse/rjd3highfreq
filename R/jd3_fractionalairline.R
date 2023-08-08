@@ -269,19 +269,28 @@ jd2r_multiAirlineDecomposition <- function (jrslt, stde = F, periods)
     covariance = rjd3toolkit::.proc_matrix(jrslt, "pcov"), 
     periods = periods)
   likelihood <- rjd3toolkit::.proc_likelihood(jrslt, "likelihood.")
+  
   ncmps <- rjd3toolkit::.proc_int(jrslt, "ncmps")
+  yc <- rjd3toolkit::.proc_vector(jrslt, "y")
+  sa <- rjd3toolkit::.proc_vector(jrslt, "sa")
+  tsi_component <- lapply(X = 1:ncmps, FUN = function(j) {
+    return(rjd3toolkit::.proc_vector(jrslt, paste0("cmp(", j, ")")))
+  })
+  names(tsi_component) <- c("t", paste0("s_", periods) , "i")
+  
+  decomposition <- c(
+    list(y = yc, sa = sa), 
+    tsi_component)
+  
   if (stde) {
-    decomposition <- lapply((1:ncmps), function(j) {
-      return(cbind(
-        rjd3toolkit::.proc_vector(jrslt, paste0("cmp(", j, ")")), 
-        rjd3toolkit::.proc_vector(jrslt, paste0("cmp_stde(", j, ")"))))
+    tsi_stde_component <- lapply(X = 1:ncmps, FUN = function(j) {
+      return(rjd3toolkit::.proc_vector(jrslt, paste0("cmp_stde(", j, ")")))
     })
-  }
-  else {
-    decomposition <- lapply((1:ncmps), function(j) {
-      return(rjd3toolkit::.proc_vector(jrslt, paste0("cmp(", j, ")")))
-    })
-  }
+    names(tsi_stde_component) <- c("t.stde", paste0("stde_", periods) , "i.stde")
+    
+    decomposition <- c(decomposition, tsi_stde_component)
+  } 
+  
   return(structure(list(ucarima = ucarima, 
                         decomposition = decomposition, 
                         estimation = estimation, 
