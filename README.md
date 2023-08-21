@@ -3,9 +3,15 @@
 
 # rjd3highfreq
 
+<!-- badges: start -->
+<!-- badges: end -->
+
 High-frequency time series
 
 ## Installation
+
+You can install the development version of **rjd3highfreq** from
+[GitHub](https://github.com/) with:
 
 ``` r
 # Install development version from GitHub
@@ -26,8 +32,8 @@ library("rjd3highfreq")
 df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/Data/TS_daily_births_franceM_1968_2020.csv")
 
 # Creation of log variables to multiplicative model
-df_daily$log_births = log(df_daily$births)
-df_daily$date = as.Date(df_daily$date)
+df_daily$log_births <- log(df_daily$births)
+df_daily$date <- as.Date(df_daily$date)
 ```
 
 Plot of the raw series:
@@ -44,12 +50,12 @@ frenchCalendar <- rjd3toolkit::national_calendar(days = list(
   rjd3toolkit::special_day('NEWYEAR'),
   rjd3toolkit::special_day('MAYDAY'), # 1st may
   rjd3toolkit::special_day('EASTERMONDAY'),
-  rjd3toolkit::special_day('ASCENSION'), 
-  rjd3toolkit::special_day('WHITMONDAY'), 
-  rjd3toolkit::special_day('ASSUMPTION'), 
+  rjd3toolkit::special_day('ASCENSION'),
+  rjd3toolkit::special_day('WHITMONDAY'),
+  rjd3toolkit::special_day('ASSUMPTION'),
   rjd3toolkit::special_day('ALLSAINTSDAY'), # Toussaint
   rjd3toolkit::special_day('ARMISTICE'), # End of 1st WW
-  rjd3toolkit::special_day('CHRISTMAS')) 
+  rjd3toolkit::special_day('CHRISTMAS'))
 )
 ```
 
@@ -59,23 +65,28 @@ Creation of the calendar regressor in a matrix with the package
 ``` r
 # Calendar regressor matrix
 cal_reg <- rjd3toolkit::holidays(
-  calendar = frenchCalendar, 
-  "1968-01-01", length = nrow(df_daily), type = "All", nonworking = 7L)
-colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may", 
-                       "east_mon", "asc", "pen_mon", 
+    calendar = frenchCalendar, 
+    start = "1968-01-01", length = nrow(df_daily), 
+    type = "All", nonworking = 7L)
+
+colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
+                       "east_mon", "asc", "pen_mon",
                        "15th_aug", "1st_nov", "11th_nov", "Xmas")
 ```
 
 Preprocessing with the function `fractionalAirlineEstimation`:
 
 ``` r
-pre.mult <- fractionalAirlineEstimation(
-  y = df_daily$log_births, 
-  x = cal_reg, 
-  periods = 7, # weekly frequency
-  outliers = c("ao", "wo"))
+pre_pro <- fractionalAirlineEstimation(
+    y = df_daily$births, 
+    x = cal_reg, 
+    periods = 7, # weekly frequency
+    outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
 
-print(pre.mult)
+print(pre_pro)
+#> Number of observations: 19359
+#> Start: 1968-01-01 
+#> End: 2020-12-31 
 #> 
 #> Estimate MA parameters:
 #>       MA_parameter      Coef     Coef_SE    Tstat
@@ -99,16 +110,15 @@ print(pre.mult)
 #>       Xmas -0.2310  0.0046 -49.7435
 #> 
 #> Outliers coefficients:
-#>  Variable    Coef Coef_SE   Tstat
-#>  WO.11688 -0.1762  0.0226 -7.7916
-#>  AO.10089 -0.2224  0.0340 -6.5503
-#>  WO.11681 -0.1447  0.0226 -6.3981
-#>  AO.16072  0.2098  0.0340  6.1786
-#>  AO.11153 -0.2101  0.0340 -6.1880
-#>  AO.10788 -0.2092  0.0340 -6.1602
-#>   AO.9983 -0.2042  0.0340 -6.0146
+#>       Variable    Coef Coef_SE   Tstat
+#>  WO.1999-12-31 -0.1762  0.0226 -7.7916
+#>  AO.1995-08-15 -0.2224  0.0340 -6.5503
+#>  WO.1999-12-24 -0.1447  0.0226 -6.3981
+#>  AO.2012-01-01  0.2098  0.0340  6.1786
+#>  AO.1998-07-14 -0.2101  0.0340 -6.1880
+#>  AO.1997-07-14 -0.2092  0.0340 -6.1602
+#>  AO.1995-05-01 -0.2042  0.0340 -6.0146
 #> 
-#> Number of observations: 19359
 #> Sum of square residuals: 25.17 on 19330 degrees of freedom
 #> Log likelihood = 3.682e+04, 
 #>  aic = -7.361e+04, 
@@ -117,51 +127,92 @@ print(pre.mult)
 #> Hannan–Quinn information criterion = -7.355e+04
 ```
 
-Comparison between raw data and linearised series:
+``` r
+plot(pre_pro, main = "French births")
+```
 
-<img src="man/figures/README-plot linearised series-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-preprocessing plots-1.png" width="100%" style="display: block; margin: auto;" />
+
+``` r
+plot(x = pre_pro, 
+     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"), 
+     main = "French births in 2000")
+```
+
+<img src="man/figures/README-preprocessing plots-2.png" width="100%" style="display: block; margin: auto;" />
 
 Decomposition with the AMB (Arima Model Based) algorithm:
 
 ``` r
-# Decomposition with day of the week
+# Decomposition with weekly pattern
 amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = pre.mult$model$linearized, # linearized series from preprocessing
-  period = 7) # weekly pattern
+    y = pre_pro$model$linearized, # linearized series from preprocessing
+    period = 7, 
+    log = TRUE, y_time = df_daily$date)
 
-# Extract DOY pattern from DOW-adjusted linearised data
+# Extract day-of-year pattern from day-of-week-adjusted linearised data
 amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
-  period = 365.2425) # day of year pattern
+    y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
+    period = 365.2425, # day of year pattern
+    log = TRUE, y_time = df_daily$date)
 ```
 
-Comparison of the two seasonnal components ($p = 365$ and $p = 7$):
+Plot:
 
-<img src="man/figures/README-plot seasonnal amb-1.png" width="100%" style="display: block; margin: auto;" />
+``` r
+plot(amb.dow, main = "Weekly pattern")
+```
 
-<img src="man/figures/README-plot zoom seasonnal amb-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 1-2.png" width="100%" style="display: block; margin: auto;" />
 
-Result of the decomposition (Raw data, Trend and seasonaly adjusted
-series):
+``` r
+plot(amb.dow, main = "Weekly pattern - January 2018", 
+     from = as.Date("2018-01-01"), 
+     to = as.Date("2018-01-31"))
+```
 
-<img src="man/figures/README-plot decompo amb-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 2-2.png" width="100%" style="display: block; margin: auto;" />
+
+``` r
+plot(amb.doy, main = "Yearly pattern")
+```
+
+<img src="man/figures/README-amb plot 3-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 3-2.png" width="100%" style="display: block; margin: auto;" />
+
+``` r
+plot(amb.doy, main = "Weekly pattern - 2000 - 2002", 
+     from = as.Date("2000-01-01"), 
+     to = as.Date("2002-12-31"))
+```
+
+<img src="man/figures/README-amb plot 4-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 4-2.png" width="100%" style="display: block; margin: auto;" />
 
 Perform an Arima Model Based (AMB) decomposition on several periodcities
 at once:
 
+``` r
+amb.multi <- rjd3highfreq::multiAirlineDecomposition(
+  y = pre_pro$model$linearized, # input time series
+  periods = c(7, 365.2425), # 2 frequency
+  log = TRUE, y_time = df_daily$date)
+```
+
 Plot the comparison between the two AMB methods for the annual
 periodicity:
 
-<img src="man/figures/README-plot seasonnal 365 amb.multi-1.png" width="100%" style="display: block; margin: auto;" />
+``` r
+plot(amb.multi)
+```
 
-Plot the comparison between the two AMB methods for the weekly
-periodicity:
+<img src="man/figures/README-plot amb.multi 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 1-2.png" width="100%" style="display: block; margin: auto;" />
 
-<img src="man/figures/README-plot seasonnal 7 amb.multi-1.png" width="100%" style="display: block; margin: auto;" />
+``` r
+plot(amb.multi, main = "2012", 
+     from = as.Date("2012-01-01"), 
+     to = as.Date("2012-12-31"))
+```
 
-Plot the output of the `multiAirlineDecomposition`:
-
-<img src="man/figures/README-plot decompo amb.multi-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot amb.multi 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 2-2.png" width="100%" style="display: block; margin: auto;" />
 
 With the package
 [**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), you can

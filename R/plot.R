@@ -70,16 +70,17 @@ plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
   }
   
   list_args <- list(...)
-  if ("main" %in% names(list_args)) {
-    list_args$main <- paste0("Raw data and linearised series", " - ", list_args$main)
-  }
+  list_args$main <- ifelse("main" %in% names(list_args), 
+                           yes = paste0("Raw data and linearised series", " - ", list_args$main), 
+                           no = "Raw data and linearised series")
+  list_args$ylab <- ifelse("ylab" %in% names(list_args), 
+                           yes = list_args$ylab, no = "")
+  list_args$col <- c(col_y, col_t)
   
   do.call(plot_jd, 
           c(list(
             x = vect_x, y = list(y, y_lin), 
-            col = c(col_y, col_t), 
-            legend_txt = c("Raw data", "Linearised series"), 
-            ylab = ""), 
+            legend_txt = c("Raw data", "Linearised series")), 
             list_args)
   )
   
@@ -122,16 +123,17 @@ plot.JDFractionalAirlineDecomposition <- function(
     }
     
     list_args <- list(...)
-    if ("main" %in% names(list_args)) {
-      list_args$main <- paste0("Decomposition AMB", " - ", list_args$main)
-    }
+    list_args$main <- ifelse("main" %in% names(list_args), 
+                             paste0("Decomposition AMB", " - ", list_args$main), 
+                             "Decomposition AMB")
+    list_args$ylab <- ifelse("ylab" %in% names(list_args), 
+                             yes = list_args$ylab, no = "")
+    list_args$col <- c(col_y, col_sa, col_t)
     
     do.call(plot_jd, 
             c(list(
               x = vect_x, y = list(y, sa, tc), 
-              col = c(col_y, col_sa, col_t), 
-              legend_txt = c("Raw data", "Seasonnal adjusted", "Trend"), 
-              ylab = ""), 
+              legend_txt = c("Raw data", "Seasonnal adjusted", "Trend")), 
               list_args)
     )
   }
@@ -166,16 +168,17 @@ plot.JDFractionalAirlineDecomposition <- function(
     }
     
     list_args <- list(...)
-    if ("main" %in% names(list_args)) {
-      list_args$main <- paste0("Irregular and Seasonal components", " - ", list_args$main)
-    }
+    list_args$main <- ifelse("main" %in% names(list_args), 
+                             paste0("Irregular and Seasonal components", " - ", list_args$main), 
+                             "Irregular and Seasonal components")
+    list_args$ylab <- ifelse("ylab" %in% names(list_args), 
+                             yes = list_args$ylab, no = "")
+    list_args$col <- col_s[seq_len(length(s) + 1)]
     
     do.call(plot_jd, 
             c(list(
               x = vect_x, y = c(s, list(ic)), 
-              col = col_s[seq_len(length(s) + 1)], 
-              legend_txt = c(s_variables, "Irregular"), 
-              ylab = ""), 
+              legend_txt = c(s_variables, "Irregular")), 
               list_args)
     )
   }

@@ -8,19 +8,24 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  fig.path = "man/figures/README-", 
   fig.align = "center",
-  fig.dim = c(7,4)*1.4,
+  fig.dim = c(7, 4) * 1.4,
   out.width = "100%"
 )
 ```
 
-
 # rjd3highfreq
+
+<!-- badges: start -->
+<!-- badges: end -->
 
 High-frequency time series
 
+
 ## Installation
+
+You can install the development version of **rjd3highfreq** from [GitHub](https://github.com/) with:
 
 ```{r, eval = FALSE}
 # Install development version from GitHub
@@ -30,24 +35,11 @@ remotes::install_github("rjdemetra/rjd3sts")
 remotes::install_github("rjdemetra/rjd3highfreq")
 ```
 
+
 ## Demonstration with the daily french births
 
 ```{r import packages, echo = TRUE, eval = TRUE}
 library("rjd3highfreq")
-```
-
-
-```{r set color, echo = FALSE, eval = TRUE}
-# Paramètres --------------------------------------------------------------
-
-col_bg <- "#f5f4e7"
-col_grid <-"#dadad3"
-col_y <- "#f1ba1d"
-col_t <- "#1e6c0b"
-col_sa <- "#00488c"
-
-col_s1 <- "#ffab78"
-col_s2 <- "#9169be"
 ```
 
 
@@ -56,46 +48,22 @@ col_s2 <- "#9169be"
 df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/Data/TS_daily_births_franceM_1968_2020.csv")
 
 # Creation of log variables to multiplicative model
-df_daily$log_births = log(df_daily$births)
-df_daily$date = as.Date(df_daily$date)
+df_daily$log_births <- log(df_daily$births)
+df_daily$date <- as.Date(df_daily$date)
 ```
 
-```{r set zoom, echo = FALSE, eval = TRUE}
-zoom_1_month <- which(
-  df_daily$date >= "2019-01-01" 
-  & df_daily$date <= "2019-01-31")
-
-zoom_1_year <- which(
-  df_daily$date >= "2018-01-01" 
-  & df_daily$date <= "2018-12-31")
-
-zoom_3_years <- which(
-  df_daily$date >= "2018-01-01" 
-  & df_daily$date <= "2020-12-31")
-```
 
 Plot of the raw series:
-  
+
 ```{r raw data plot, echo = FALSE, eval = TRUE}
-# Plot de la série initiale ----------------------------------------------------
-
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(y = df_daily$births, 
-     x = df_daily$date, col = col_y, 
-     type = "l", xlab = "Time", ylab = "Nb of french births", 
-     main = "Raw data")
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
+# Plot of the raw data ----------------------------------------------------
+rjd3highfreq:::plot_jd(x = df_daily$date, y = list(df_daily$births), 
+                       col = "#f1ba1d", main = "French daily birth", 
+                       ylab = "Nbr birth")
 ```
 
 Preparation of the calendar with the package **rjd3toolkit**:
-  
+
 ```{r calendar creation, echo = TRUE, eval = TRUE}
 # French calendar
 frenchCalendar <- rjd3toolkit::national_calendar(days = list(
@@ -104,251 +72,109 @@ frenchCalendar <- rjd3toolkit::national_calendar(days = list(
   rjd3toolkit::special_day('NEWYEAR'),
   rjd3toolkit::special_day('MAYDAY'), # 1st may
   rjd3toolkit::special_day('EASTERMONDAY'),
-  rjd3toolkit::special_day('ASCENSION'), 
-  rjd3toolkit::special_day('WHITMONDAY'), 
-  rjd3toolkit::special_day('ASSUMPTION'), 
+  rjd3toolkit::special_day('ASCENSION'),
+  rjd3toolkit::special_day('WHITMONDAY'),
+  rjd3toolkit::special_day('ASSUMPTION'),
   rjd3toolkit::special_day('ALLSAINTSDAY'), # Toussaint
   rjd3toolkit::special_day('ARMISTICE'), # End of 1st WW
-  rjd3toolkit::special_day('CHRISTMAS')) 
+  rjd3toolkit::special_day('CHRISTMAS'))
 )
 ```
 
 Creation of the calendar regressor in a matrix with the package **rjd3toolkit**:
-  
+
 ```{r regressor matrix creation, echo = TRUE, eval = TRUE}
 # Calendar regressor matrix
 cal_reg <- rjd3toolkit::holidays(
-  calendar = frenchCalendar, 
-  "1968-01-01", length = nrow(df_daily), type = "All", nonworking = 7L)
-colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may", 
-                       "east_mon", "asc", "pen_mon", 
+    calendar = frenchCalendar, 
+    start = "1968-01-01", length = nrow(df_daily), 
+    type = "All", nonworking = 7L)
+
+colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
+                       "east_mon", "asc", "pen_mon",
                        "15th_aug", "1st_nov", "11th_nov", "Xmas")
 ```
 
 Preprocessing with the function `fractionalAirlineEstimation`:
 
 ```{r preprocessing, echo = TRUE, eval = TRUE}
-pre.mult <- fractionalAirlineEstimation(
-  y = df_daily$log_births, 
-  x = cal_reg, 
-  periods = 7, # weekly frequency
-  outliers = c("ao", "wo"))
+pre_pro <- fractionalAirlineEstimation(
+    y = df_daily$births, 
+    x = cal_reg, 
+    periods = 7, # weekly frequency
+    outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
 
-print(pre.mult)
+print(pre_pro)
 ```
 
-Comparison between raw data and linearised series:
-  
-```{r plot linearised series, echo = FALSE, eval = TRUE}
-y_lin <- pre.mult$model$linearized
-
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(y = df_daily$births[zoom_1_year], 
-     x = df_daily$date[zoom_1_year], col = col_y, 
-     type = "l", xlab = "Time", ylab = "Nb of french births")
-lines(y = exp(y_lin)[zoom_1_year], 
-      x = df_daily$date[zoom_1_year], col = col_t)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("Raw data", "Linearised series"), 
-       pch = 16, col = c(col_y, col_t), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
+```{r preprocessing plots, echo = TRUE, eval = TRUE}
+plot(pre_pro, main = "French births")
+plot(x = pre_pro, 
+     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"), 
+     main = "French births in 2000")
 ```
+
 
 Decomposition with the AMB (Arima Model Based) algorithm:
-  
+
 ```{r amb, echo = TRUE, eval = TRUE}
-# Decomposition with day of the week
+# Decomposition with weekly pattern
 amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = pre.mult$model$linearized, # linearized series from preprocessing
-  period = 7) # weekly pattern
+    y = pre_pro$model$linearized, # linearized series from preprocessing
+    period = 7, 
+    log = TRUE, y_time = df_daily$date)
 
-# Extract DOY pattern from DOW-adjusted linearised data
+# Extract day-of-year pattern from day-of-week-adjusted linearised data
 amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
-  period = 365.2425) # day of year pattern
+    y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
+    period = 365.2425, # day of year pattern
+    log = TRUE, y_time = df_daily$date)
 ```
 
-```{r set amb decomposition, echo = FALSE, eval = TRUE}
-amb.s7 <- exp(amb.dow$decomposition$s)
-amb.s365 <- exp(amb.doy$decomposition$s)
-amb.t <- exp(amb.doy$decomposition$t)
-amb.sa <- exp(amb.doy$decomposition$sa)
-amb.i <- exp(amb.doy$decomposition$i)
+
+Plot:
+
+```{r amb plot 1, echo = TRUE, eval = TRUE}
+plot(amb.dow, main = "Weekly pattern")
 ```
 
-Comparison of the two seasonnal components ($p = 365$ and $p = 7$):
-
-```{r plot seasonnal amb, echo = FALSE, eval = TRUE}
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(x = df_daily$date, 
-     y = amb.s7, col = col_s1, 
-     type = "l", xlab = "Time", ylab = "Seasonal component")
-lines(x = df_daily$date, y = amb.s365, col = col_s2)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("p = 7", "p = 365"), 
-       pch = 16, col = c(col_s1, col_s2), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
+```{r amb plot 2, echo = TRUE, eval = TRUE}
+plot(amb.dow, main = "Weekly pattern - January 2018", 
+     from = as.Date("2018-01-01"), 
+     to = as.Date("2018-01-31"))
 ```
 
-```{r plot zoom seasonnal amb, echo = FALSE, eval = TRUE}
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(x = df_daily$date[zoom_1_year], 
-     y = amb.s7[zoom_1_year], col = col_s1, 
-     type = "l", xlab = "Time", ylab = "Seasonal component")
-lines(x = df_daily$date[zoom_1_year], 
-      y = amb.s365[zoom_1_year], col = col_s2)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("p = 7", "p = 365"), 
-       pch = 16, col = c(col_s1, col_s2), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
+```{r amb plot 3, echo = TRUE, eval = TRUE}
+plot(amb.doy, main = "Yearly pattern")
 ```
 
-Result of the decomposition (Raw data, Trend and seasonaly adjusted series):
-  
-```{r plot decompo amb, echo = FALSE, eval = TRUE}
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(x = df_daily$date, y = df_daily$births, col = col_y, 
-     type = "l", xlab = "Time", ylab = "Nb of french births", 
-     main = "Decomposition")
-lines(x = df_daily$date, y = amb.sa, 
-      type = "l", col = col_sa)
-lines(x = df_daily$date, y = amb.t, 
-      type = "l", col = col_t)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("Raw data", "Seasonnal adjusted", "Trend"), 
-       pch = 16, col = c(col_y, col_sa, col_t), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
+```{r amb plot 4, echo = TRUE, eval = TRUE}
+plot(amb.doy, main = "Weekly pattern - 2000 - 2002", 
+     from = as.Date("2000-01-01"), 
+     to = as.Date("2002-12-31"))
 ```
 
 Perform an Arima Model Based (AMB) decomposition on several periodcities at once:
-  
-```{r amb.multi, echo = FALSE, eval = TRUE}
+
+```{r amb.multi, echo = TRUE, eval = TRUE}
 amb.multi <- rjd3highfreq::multiAirlineDecomposition(
-  y = pre.mult$model$linearized, # input time series
-  periods = c(7, 365.2425))  # 2 frequency
+  y = pre_pro$model$linearized, # input time series
+  periods = c(7, 365.2425), # 2 frequency
+  log = TRUE, y_time = df_daily$date)
 ```
 
-
-```{r set decompo amb.multi, echo = FALSE, eval = TRUE}
-amb.multi.t <- exp(amb.multi$decomposition$t)
-amb.multi.s7 <- exp(amb.multi$decomposition$s_7)
-amb.multi.s365 <- exp(amb.multi$decomposition$s_365.2425)
-amb.multi.sa <- exp(amb.multi$decomposition$sa)
-amb.multi.i <- exp(amb.multi$decomposition$i)
-```
 
 Plot the comparison between the two AMB methods for the annual periodicity:
-  
-```{r plot seasonnal 365 amb.multi, echo = FALSE, eval = TRUE}
-# P = 365
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
 
-plot(x = df_daily$date[zoom_3_years], 
-     y = amb.multi.s365[zoom_3_years], 
-     type = "l", xlab = "Time", ylab = "Seasonal component p = 365", 
-     col = col_s1, main = "Annual seasonality")
-lines(x = df_daily$date[zoom_3_years], 
-      y = amb.s365[zoom_3_years], 
-      type = "l", col = col_s2)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("Simple estimation", "Multi Airline"), 
-       pch = 16, col = c(col_s1, col_s2), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
+```{r plot amb.multi 1, echo = TRUE, eval = TRUE}
+plot(amb.multi)
 ```
 
-Plot the comparison between the two AMB methods for the weekly periodicity:
-
-```{r plot seasonnal 7 amb.multi, echo = FALSE, eval = TRUE}
-#P = 7
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(x = df_daily$date[zoom_1_month], 
-     y = amb.multi.s7[zoom_1_month], 
-     type = "l", xlab = "Time", ylab = "Seasonal component p = 7", 
-     col = col_s1, main = "Weekly seasonality")
-lines(x = df_daily$date[zoom_1_month], 
-      y = amb.s7[zoom_1_month], 
-      type = "l", col = col_s2)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("Simple estimation", "Multi Airline"), 
-       pch = 16, col = c(col_s1, col_s2), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
-
+```{r plot amb.multi 2, echo = TRUE, eval = TRUE}
+plot(amb.multi, main = "2012", 
+     from = as.Date("2012-01-01"), 
+     to = as.Date("2012-12-31"))
 ```
 
-Plot the output of the `multiAirlineDecomposition`:
-
-```{r plot decompo amb.multi, echo = FALSE, eval = TRUE}
-#P = 7
-plot.new()
-rect(xleft = par("usr")[1], xright = par("usr")[2], 
-     ytop = par("usr")[4], ybottom = par("usr")[3], col = col_bg)
-par(new = TRUE)
-
-plot(x = df_daily$date, y = df_daily$births, col = col_y, 
-     type = "l", xlab = "Time", ylab = "Nb of french births", 
-     main = "Decomposition")
-lines(x = df_daily$date, y = amb.multi.sa, 
-      type = "l", col = col_sa)
-lines(x = df_daily$date, y = amb.multi.t, 
-      type = "l", col = col_t)
-
-par(new = TRUE)
-grid(nx = NULL, ny = NULL, col = col_grid)
-box(col = col_grid)
-
-legend("bottomleft", legend = c("Raw data", "Seasonnal adjusted", "Trend"), 
-       pch = 16, col = c(col_y, col_sa, col_t), horiz = TRUE, xpd = TRUE, 
-       inset = c(0, 1), bty = "n")
-
-```
 
 With the package [**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), you can perform an X-11 like decomposition with any (non integer) periodicity.
-
-
