@@ -11,7 +11,9 @@ multiAirlineDecomposition(
   ar = F,
   stde = F,
   nbcasts = 0,
-  nfcasts = 0
+  nfcasts = 0,
+  log = FALSE,
+  y_time = NULL
 )
 }
 \arguments{
@@ -24,6 +26,8 @@ multiAirlineDecomposition(
 \item{nbcasts}{number of backcasts.}
 
 \item{nfcasts}{number of forecasts.}
+
+\item{y_time}{vector of times at which `y` is indexed}
 
 \item{adjust}{Boolean: TRUE: actual fractional airline model is to be used, FALSE: the period is rounded to the nearest integer.}
 

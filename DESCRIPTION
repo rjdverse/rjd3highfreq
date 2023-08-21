@@ -30,5 +30,6 @@ Encoding: UTF-8
 Collate: 
     'utils.R'
     'jd3_fractionalairline.R'
+    'plot.R'
     'print.R'
     'zzz.R'

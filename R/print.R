@@ -2,6 +2,14 @@
 #' @export
 print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
 {
+  cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
+  cat("\n")
+  
+  if (!is.null(x$decomposition$y_time)) {
+    cat("Start:", format(x$decomposition$y_time[1]),"\n")
+    cat("End:", format(x$decomposition$y_time[length(x$decomposition$y_time)]), "\n")
+  }
+  
   # Estimated MA parameters (coefs, se, student)
   nb_freq <- length(x$estimation$parameters) - 1L
   est_ma_params <- data.frame(
@@ -17,15 +25,20 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
   cat("Estimate MA parameters:")
   cat("\n")
   print(est_ma_params, row.names = FALSE)
+  cat(ifelse(x$estimation$log, "Multiplicative", "Additive"), "model\n")
   
   cat("\n")
   cat("Decomposition:")
   cat("\n")
   decompo_table <- do.call(cbind, x$decomposition)
+  if (x$estimation$log) {
+    decompo_table <- exp(decompo_table)
+  }
+  decompo_table <- subset(decompo_table, select = -y_time)
+  if (!is.null(x$decomposition$y_time)) {
+    rownames(decompo_table) <- format(x$decomposition$y_time)
+  }
   print(tail(decompo_table, n = 10))
-  cat("\n")
-  
-  cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
   cat("\n")
   
   cat("Sum of square residuals:", formatC(x$likelihood$ssq, digits = digits), 
@@ -51,6 +64,14 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
 #' @export
 print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   
+  cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
+  cat("\n")
+  
+  if (!is.null(x$model$y_time)) {
+    cat("Start:", format(x$model$y_time[1]),"\n")
+    cat("End:", format(x$model$y_time[length(x$model$y_time)]), "\n")
+  }
+  
   nb_outliers <- sum(toupper(substr(x$model$variables, 1L, 2L)) %in% 
                        c("AO", "WO", "LS"))
   nb_reg_cjo <- length(x$model$variables) - nb_outliers
@@ -64,15 +85,17 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
   summary_coeff$Coef_SE <- round(summary_coeff$Coef_SE, digits)
   
   if (nb_outliers > 0) {
-    
     outliers_coeff <- summary_coeff[(nb_reg_cjo + 1L):nrow(summary_coeff), ]
-    outliers <- outliers_coeff$Variable
     
+    if (!is.null(x$model$y_time)) {
+      outliers_type <- substr(outliers_coeff$Variable, start = 1, stop = 2)
+      outliers_date <- x$model$y_time[as.integer(substr(outliers_coeff$Variable, start = 4, stop = 50))]
+      outliers_coeff$Variable <- paste0(outliers_type, ".", outliers_date)
+    }
   }
   
-  if(nb_reg_cjo > 0) {
-    reg_cjo_coeff <- summary_coeff[1:nb_reg_cjo, ]
-    reg_cjo <- reg_cjo_coeff$Variable
+  if (nb_reg_cjo > 0) {
+    reg_cjo_coeff <- summary_coeff[seq_len(nb_reg_cjo), ]
   }
   
   # Estimated MA parameters (coefs, se, student)
@@ -112,9 +135,6 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
     # if (nb_outliers > 10) cat("...\n")
     cat("\n")
   }
-  
-  cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
-  cat("\n")
   
   cat("Sum of square residuals:", formatC(x$likelihood$ssq, digits = digits), 
       "on", x$likelihood$df, "degrees of freedom", 

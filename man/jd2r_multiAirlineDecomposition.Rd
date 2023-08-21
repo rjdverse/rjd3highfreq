@@ -4,12 +4,20 @@
 \alias{jd2r_multiAirlineDecomposition}
 \title{Title}
 \usage{
-jd2r_multiAirlineDecomposition(jrslt, stde = F, periods)
+jd2r_multiAirlineDecomposition(
+  jrslt,
+  stde = F,
+  periods,
+  log = FALSE,
+  y_time = NULL
+)
 }
 \arguments{
 \item{jrslt}{}
 
 \item{stde}{}
+
+\item{y_time}{vector of times at which the time series is indexed}
 }
 \description{
 Title
