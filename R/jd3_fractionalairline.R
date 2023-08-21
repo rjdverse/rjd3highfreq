@@ -33,6 +33,7 @@ arima_extract<-function(jrslt, path){
 #' @export
 #'
 #' @examples
+#' 
 fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F, 
                                            nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) 
 {
@@ -63,6 +64,7 @@ fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F,
 #' @export
 #'
 #' @examples
+#' 
 multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, 
                                       nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) 
 {
@@ -105,6 +107,7 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F,
 #' @export
 #'
 #' @examples
+#' 
 fractionalAirlineEstimation <- function(
     y, periods, x = NULL, ndiff = 2, ar = F, mean = FALSE, 
     outliers = NULL, criticalValue = 6, precision = 1e-12, 
@@ -194,6 +197,7 @@ fractionalAirlineEstimation <- function(
 #' @export
 #'
 #' @examples
+#' 
 multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=F, stde=F, nbcasts=0, nfcasts=0){
   checkmate::assertNumeric(y, null.ok = F)
   
@@ -232,6 +236,7 @@ multiAirlineDecomposition_ssf<-function(jdecomp){
 #' @export
 #'
 #' @examples
+#' 
 fractionalAirlineDecomposition_raw<-function(y, period, sn=F, stde=F, nbcasts=0, nfcasts=0){
   checkmate::assertNumeric(y, null.ok = F)
   checkmate::assertNumeric(period, len = 1, null.ok = F)
@@ -268,6 +273,7 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp){
 #' @export
 #'
 #' @examples
+#' 
 jd2r_multiAirlineDecomposition <- function(jrslt, stde = F, periods, 
                                            log = FALSE, y_time = NULL) 
 {
@@ -327,6 +333,7 @@ jd2r_multiAirlineDecomposition <- function(jrslt, stde = F, periods,
 #' @export
 #'
 #' @examples
+#' 
 jd2r_fractionalAirlineDecomposition <- function(jrslt, sn = F, stde = F, 
                                                 period, log = FALSE, y_time = NULL) 
 {
@@ -374,5 +381,3 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt, sn = F, stde = F,
                         likelihood = likelihood), 
                    class = "JDFractionalAirlineDecomposition"))
 }
-
-

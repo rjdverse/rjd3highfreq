@@ -1,4 +1,16 @@
 
+#' Custom Plot Function on JD+ template
+#'
+#' This function creates a customized plot in the same template as JD+ GUI color and forms.
+#' 
+#' @param x Numeric vector, x-axis values.
+#' @param y List of numeric vectors, y-axis values for different series.
+#' @param col Vector of colors for different series.
+#' @param legend_txt Character vector of legend labels for different series.
+#' @param ... Additional graphical parameters.
+#'
+#' @return `NULL` (invisible).
+#'
 plot_jd <- function(x, y, col, legend_txt = NULL, ...){
   
   col_bg <- "#f5f4e7"
@@ -39,6 +51,17 @@ plot_jd <- function(x, y, col, legend_txt = NULL, ...){
   return(invisible(NULL))
 }
 
+#' Plot Function for JDFractionalAirlineEstimation Objects
+#'
+#' This function creates a plot for the result of fractional airline model (class `JDFractionalAirlineEstimation`). It shows the raw data and linearized series.
+#' 
+#' @param x An object of class 'JDFractionalAirlineEstimation'.
+#' @param from `Date` or `POSIXt` object, optional starting point for x-axis.
+#' @param to `Date` or `POSIXt` object, optional ending point for x-axis.
+#' @param ... Additional graphical parameters.
+#'
+#' @return `NULL` (invisible).
+#'
 #' @export
 plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
   
@@ -87,6 +110,19 @@ plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
   return(invisible(NULL))
 }
 
+#' Plot Function for JDFractionalAirlineDecomposition Objects
+#'
+#' This function creates a plot for the result of an Arima Model Based (AMB) decomposition of one or several frequencies (class `JDFractionalAirlineDecomposition`). It shows the decomposition and the component of the model.
+#' 
+#' 
+#' @param x An object of class 'JDFractionalAirlineDecomposition'.
+#' @param from `Date` or `POSIXt` object, optional starting point for x-axis.
+#' @param to `Date` or `POSIXt` object, optional ending point for x-axis.
+#' @param type_chart Character vector specifying the type of chart to plot ("y-sa-trend", "cal-seas-irr").
+#' @param ... Additional graphical parameters.
+#'
+#' @return `NULL` (invisible).
+#'
 #' @export
 plot.JDFractionalAirlineDecomposition <- function(
     x, from, to, type_chart = c("y-sa-trend", "cal-seas-irr"), ...) {

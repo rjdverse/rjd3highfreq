@@ -1,4 +1,12 @@
-
+#' Print method for 'JDFractionalAirlineDecomposition' objects
+#'
+#' This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineDecomposition).
+#' 
+#' @param x An object of class 'JDFractionalAirlineDecomposition'.
+#' @param digits Number of digits to round numerical values (default is 3 or digits - 3 from options).
+#'
+#' @return The original object 'x'.
+#'
 #' @export
 print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
 {
@@ -61,6 +69,15 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
   return(invisible(x))
 }
 
+#' Print method for 'JDFractionalAirlineEstimation' objects
+#'
+#' This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineEstimation).
+#' 
+#' @param x An object of class 'JDFractionalAirlineEstimation'.
+#' @param digits Number of digits to round numerical values (default is 3 or digits - 3 from options).
+#'
+#' @return The original object 'x'.
+#'
 #' @export
 print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   
