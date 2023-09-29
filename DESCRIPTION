@@ -17,6 +17,9 @@ Imports:
   rjd3sts (>= 1.0.1),
   checkmate,
   methods
+Remotes:
+  github::rjdemetra/rjd3toolkit, 
+  github::rjdemetra/rjd3sts
 SystemRequirements: Java JRE 17 or higher
 License: EUPL
 URL: https://github.com/rjdemetra/rjd3highfreq
