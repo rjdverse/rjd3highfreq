@@ -26,12 +26,16 @@ arima_extract<-function(jrslt, path){
 #' @param stde Boolean: TRUE: compute standard deviations of the components. In some cases (memory limits), it is currently not possible to compute them
 #' @param nbcasts number of backcasts.
 #' @param nfcasts number of forecasts.
+#' @param log
+#' @param y_time vector of times at which `y` is indexed
 #'
 #' @return
 #' @export
 #'
 #' @examples
-fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F, nbcasts = 0, nfcasts = 0) 
+#' 
+fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F, 
+                                           nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) 
 {
   checkmate::assertNumeric(y, null.ok = F)
   checkmate::assertNumeric(period, len = 1, null.ok = F)
@@ -40,7 +44,7 @@ fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F, nbcasts 
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;", 
                   "decompose", as.numeric(y), period, sn, stde, as.integer(nbcasts), 
                   as.integer(nfcasts))
-  return(jd2r_fractionalAirlineDecomposition(jrslt, sn, stde, period))
+  return(jd2r_fractionalAirlineDecomposition(jrslt, sn, stde, period, log, y_time))
 }
 
 
@@ -53,17 +57,21 @@ fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F, nbcasts 
 #' @param stde Boolean: TRUE: compute standard deviations of the components. In some cases (memory limits), it is currently not possible to compute them
 #' @param nbcasts number of backcasts.
 #' @param nfcasts number of forecasts.
+#' @param log
+#' @param y_time vector of times at which `y` is indexed
 #'
 #' @return
 #' @export
 #'
 #' @examples
-multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, nbcasts = 0, 
-                                      nfcasts = 0) 
+#' 
+multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, 
+                                      nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) 
 {
   if (length(periods) == 1) {
     return(fractionalAirlineDecomposition(y, periods, stde = stde, 
-                                          nbcasts = nbcasts, nfcasts = nfcasts))
+                                          nbcasts = nbcasts, nfcasts = nfcasts, 
+                                          log = log, y_time = y_time))
   }
   checkmate::assertNumeric(y, null.ok = F)
   jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
@@ -71,11 +79,12 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, n
                   "decompose", as.numeric(y), .jarray(periods), as.integer(ndiff), 
                   ar, stde, as.integer(nbcasts), as.integer(nfcasts))
   if (length(periods) == 1) {
-    return(jd2r_fractionalAirlineDecomposition(jrslt, F, 
-                                               stde, periods))
+    return(jd2r_fractionalAirlineDecomposition(jrslt, sn = F, stde, periods, 
+                                               log = log, y_time = y_time))
   }
   else {
-    return(jd2r_multiAirlineDecomposition(jrslt, stde, periods))
+    return(jd2r_multiAirlineDecomposition(jrslt, stde, periods, 
+                                          log = log, y_time = y_time))
   }
 }
 
@@ -91,14 +100,19 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, n
 #' @param precision Precision of the likelihood 
 #' @param approximateHessian Compute approximate hessian (based on the optimizing procedure)
 #' @param nfcasts Number of forecasts
-#'
+#' @param log
+#' @param y_time vector of times at which `y` is indexed
+#' 
 #' @return
 #' @export
 #'
 #' @examples
+#' 
 fractionalAirlineEstimation <- function(
     y, periods, x = NULL, ndiff = 2, ar = F, mean = FALSE, 
-    outliers = NULL, criticalValue = 6, precision = 1e-12, approximateHessian = F, nfcasts=0, log=FALSE) 
+    outliers = NULL, criticalValue = 6, precision = 1e-12, 
+    approximateHessian = F, nfcasts = 0, log = FALSE, 
+    y_time = NULL) 
 {
   checkmate::assertNumeric(y, null.ok = F)
   checkmate::assertNumeric(criticalValue, len = 1, null.ok = F)
@@ -125,6 +139,7 @@ fractionalAirlineEstimation <- function(
   
   model <- list(
     y = rjd3toolkit::.proc_vector(jrslt, "y"), 
+    y_time = y_time,
     periods = periods, 
     variables = external_variables,            
     # "variables " names of variables and outliers
@@ -182,6 +197,7 @@ fractionalAirlineEstimation <- function(
 #' @export
 #'
 #' @examples
+#' 
 multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=F, stde=F, nbcasts=0, nfcasts=0){
   checkmate::assertNumeric(y, null.ok = F)
   
@@ -220,6 +236,7 @@ multiAirlineDecomposition_ssf<-function(jdecomp){
 #' @export
 #'
 #' @examples
+#' 
 fractionalAirlineDecomposition_raw<-function(y, period, sn=F, stde=F, nbcasts=0, nfcasts=0){
   checkmate::assertNumeric(y, null.ok = F)
   checkmate::assertNumeric(period, len = 1, null.ok = F)
@@ -249,12 +266,16 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp){
 #'
 #' @param jrslt 
 #' @param stde 
+#' @param log
+#' @param y_time vector of times at which the time series is indexed
 #'
 #' @return
 #' @export
 #'
 #' @examples
-jd2r_multiAirlineDecomposition <- function (jrslt, stde = F, periods) 
+#' 
+jd2r_multiAirlineDecomposition <- function(jrslt, stde = F, periods, 
+                                           log = FALSE, y_time = NULL) 
 {
   ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
   model <- rjd3highfreq:::arima_extract(jrslt, "ucarima_model")
@@ -267,7 +288,8 @@ jd2r_multiAirlineDecomposition <- function (jrslt, stde = F, periods)
     parameters = rjd3toolkit::.proc_vector(jrslt, "parameters"), 
     score = rjd3toolkit::.proc_vector(jrslt, "score"), 
     covariance = rjd3toolkit::.proc_matrix(jrslt, "pcov"), 
-    periods = periods)
+    periods = periods, 
+    log = log)
   likelihood <- rjd3toolkit::.proc_likelihood(jrslt, "likelihood.")
   
   ncmps <- rjd3toolkit::.proc_int(jrslt, "ncmps")
@@ -279,7 +301,7 @@ jd2r_multiAirlineDecomposition <- function (jrslt, stde = F, periods)
   names(tsi_component) <- c("t", paste0("s_", periods) , "i")
   
   decomposition <- c(
-    list(y = yc, sa = sa), 
+    list(y = yc, y_time = y_time, sa = sa), 
     tsi_component)
   
   if (stde) {
@@ -304,12 +326,16 @@ jd2r_multiAirlineDecomposition <- function (jrslt, stde = F, periods)
 #' @param jrslt 
 #' @param sn 
 #' @param stde 
+#' @param log
+#' @param y_time vector of times at which the time series is indexed
 #'
 #' @return
 #' @export
 #'
 #' @examples
-jd2r_fractionalAirlineDecomposition <- function (jrslt, sn = F, stde = F, period) 
+#' 
+jd2r_fractionalAirlineDecomposition <- function(jrslt, sn = F, stde = F, 
+                                                period, log = FALSE, y_time = NULL) 
 {
   ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
   model <- rjd3highfreq:::arima_extract(jrslt, "ucarima_model")
@@ -320,41 +346,32 @@ jd2r_fractionalAirlineDecomposition <- function (jrslt, sn = F, stde = F, period
   yc <- rjd3toolkit::.proc_vector(jrslt, "y")
   sa <- rjd3toolkit::.proc_vector(jrslt, "sa")
   s <- rjd3toolkit::.proc_vector(jrslt, "s")
-  if (sn) {
-    if (stde) {
-      decomposition <- list(
-        y = yc, 
-        sa = sa, 
-        s = s, 
-        s.stde = rjd3toolkit::.proc_vector(jrslt, "s_stde"))
-    }
-    else {
-      decomposition <- list(y = yc, sa = sa, s = s)
+  
+  decomposition <- list(y = yc, y_time = y_time, sa = sa, s = s)
+  
+  if (!sn) {
+    tc <- rjd3toolkit::.proc_vector(jrslt, "t")
+    ic <- rjd3toolkit::.proc_vector(jrslt, "i")
+    decomposition <- c(decomposition, list(t = tc, i = ic))
+  }
+  
+  if (stde) {
+    s.stde = rjd3toolkit::.proc_vector(jrslt, "s_stde")
+    decomposition <- c(decomposition, list(s.stde = s.stde))
+    
+    if (!sn) {
+      t.stde = rjd3toolkit::.proc_vector(jrslt, "t_stde")
+      i.stde = rjd3toolkit::.proc_vector(jrslt, "i_stde")
+      decomposition <- c(decomposition, list(t.stde = t.stde, i.stde = i.stde))
     }
   }
-  else {
-    t <- rjd3toolkit::.proc_vector(jrslt, "t")
-    i <- rjd3toolkit::.proc_vector(jrslt, "i")
-    if (stde) {
-      decomposition <- list(
-        y = yc, 
-        t = t, 
-        sa = sa, 
-        s = s, 
-        i = i, 
-        t.stde = rjd3toolkit::.proc_vector(jrslt, "t_stde"), 
-        s.stde = rjd3toolkit::.proc_vector(jrslt, "s_stde"), 
-        i.stde = rjd3toolkit::.proc_vector(jrslt, "i_stde"))
-    }
-    else {
-      decomposition <- list(y = yc, t = t, sa = sa, s = s, i = i)
-    }
-  }
+  
   estimation <- list(
     parameters = rjd3toolkit::.proc_vector(jrslt, "parameters"), 
     score = rjd3toolkit::.proc_vector(jrslt, "score"), 
     covariance = rjd3toolkit::.proc_matrix(jrslt, "pcov"), 
-    periods = period)
+    periods = period, 
+    log = log)
   
   likelihood <- rjd3toolkit::.proc_likelihood(jrslt, "likelihood.")
   
@@ -364,5 +381,3 @@ jd2r_fractionalAirlineDecomposition <- function (jrslt, sn = F, stde = F, period
                         likelihood = likelihood), 
                    class = "JDFractionalAirlineDecomposition"))
 }
-
-

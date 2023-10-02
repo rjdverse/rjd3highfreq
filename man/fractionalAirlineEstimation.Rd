@@ -16,7 +16,8 @@ fractionalAirlineEstimation(
   precision = 1e-12,
   approximateHessian = F,
   nfcasts = 0,
-  log = FALSE
+  log = FALSE,
+  y_time = NULL
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ fractionalAirlineEstimation(
 \item{approximateHessian}{Compute approximate hessian (based on the optimizing procedure)}
 
 \item{nfcasts}{Number of forecasts}
+
+\item{y_time}{vector of times at which `y` is indexed}
 }
 \description{
 Linearize the series with a fractional airline model

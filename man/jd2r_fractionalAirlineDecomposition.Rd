@@ -4,7 +4,14 @@
 \alias{jd2r_fractionalAirlineDecomposition}
 \title{Title}
 \usage{
-jd2r_fractionalAirlineDecomposition(jrslt, sn = F, stde = F, period)
+jd2r_fractionalAirlineDecomposition(
+  jrslt,
+  sn = F,
+  stde = F,
+  period,
+  log = FALSE,
+  y_time = NULL
+)
 }
 \arguments{
 \item{jrslt}{}
@@ -12,6 +19,8 @@ jd2r_fractionalAirlineDecomposition(jrslt, sn = F, stde = F, period)
 \item{sn}{}
 
 \item{stde}{}
+
+\item{y_time}{vector of times at which the time series is indexed}
 }
 \description{
 Title
