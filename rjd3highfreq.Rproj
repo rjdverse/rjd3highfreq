@@ -17,6 +17,6 @@ PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageBuildBinaryArgs: --no-multiarch
 PackageCheckArgs: --no-multiarch
-PackageRoxygenize: rd,collate,namespace
+PackageRoxygenize: rd,collate,namespace,vignette
 
 SpellingDictionary: en_GB
