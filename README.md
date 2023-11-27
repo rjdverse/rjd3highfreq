@@ -16,8 +16,6 @@ You can install the development version of **rjd3highfreq** from
 ``` r
 # Install development version from GitHub
 # install.packages("remotes")
-remotes::install_github("rjdemetra/rjd3toolkit")
-remotes::install_github("rjdemetra/rjd3sts")
 remotes::install_github("rjdemetra/rjd3highfreq")
 ```
 
