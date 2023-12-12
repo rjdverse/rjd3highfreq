@@ -1,7 +1,7 @@
 Package: rjd3highfreq
 Type: Package
 Title: Seasonal Adjustment of High Frequency Data with 'JDemetra+ 3.0'
-Version: 1.0.0
+Version: 2.0.0
 Authors@R: c(
   person("Jean", "Palate", role = c("aut", "cre"),
                 email = "jean.palate@nbb.be"))
@@ -13,13 +13,16 @@ Depends:
 Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
-  rjd3toolkit (>= 3.0.1),
-  rjd3sts (>= 1.0.1),
+  rjd3toolkit (>= 3.2.1),
+  rjd3sts (>= 2.0.0),
   checkmate,
   methods
+Remotes:
+  github::rjdemetra/rjd3toolkit, 
+  github::rjdemetra/rjd3sts
 SystemRequirements: Java JRE 17 or higher
 License: EUPL
-URL: https://github.com/rjdemetra/rjd3highfreq
+URL: https://github.com/rjdemetra/rjd3highfreq, https://rjdemetra.github.io/rjd3highfreq/
 LazyData: TRUE
 Suggests:
     knitr,
@@ -30,5 +33,6 @@ Encoding: UTF-8
 Collate: 
     'utils.R'
     'jd3_fractionalairline.R'
+    'plot.R'
     'print.R'
     'zzz.R'
