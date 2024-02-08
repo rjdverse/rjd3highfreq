@@ -42,8 +42,9 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
   if (x$estimation$log) {
     decompo_table <- exp(decompo_table)
   }
-  decompo_table <- subset(decompo_table, select = -y_time)
+  
   if (!is.null(x$decomposition$y_time)) {
+    decompo_table <- subset(decompo_table, select = -y_time)
     rownames(decompo_table) <- format(x$decomposition$y_time)
   }
   print(tail(decompo_table, n = 10))
@@ -88,6 +89,8 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
     cat("Start:", format(x$model$y_time[1]),"\n")
     cat("End:", format(x$model$y_time[length(x$model$y_time)]), "\n")
   }
+  
+  
   
   nb_outliers <- sum(toupper(substr(x$model$variables, 1L, 2L)) %in% 
                        c("AO", "WO", "LS"))

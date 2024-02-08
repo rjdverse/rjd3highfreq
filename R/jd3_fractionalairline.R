@@ -34,12 +34,12 @@ arima_extract<-function(jrslt, path){
 #'
 #' @examples
 #' 
-fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F, 
+fractionalAirlineDecomposition <- function(y, period, sn = FALSE, stde = FALSE, 
                                            nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) 
 {
-  checkmate::assertNumeric(y, null.ok = F)
-  checkmate::assertNumeric(period, len = 1, null.ok = F)
-  checkmate::assertLogical(sn, len = 1, null.ok = F)
+  checkmate::assertNumeric(y, null.ok = FALSE)
+  checkmate::assertNumeric(period, len = 1, null.ok = FALSE)
+  checkmate::assertLogical(sn, len = 1, null.ok = FALSE)
   jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;", 
                   "decompose", as.numeric(y), period, sn, stde, as.integer(nbcasts), 
@@ -65,7 +65,7 @@ fractionalAirlineDecomposition <- function(y, period, sn = F, stde = F,
 #'
 #' @examples
 #' 
-multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F, 
+multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = FALSE, 
                                       nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) 
 {
   if (length(periods) == 1) {
@@ -73,13 +73,13 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F,
                                           nbcasts = nbcasts, nfcasts = nfcasts, 
                                           log = log, y_time = y_time))
   }
-  checkmate::assertNumeric(y, null.ok = F)
+  checkmate::assertNumeric(y, null.ok = FALSE)
   jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;", 
                   "decompose", as.numeric(y), .jarray(periods), as.integer(ndiff), 
                   ar, stde, as.integer(nbcasts), as.integer(nfcasts))
   if (length(periods) == 1) {
-    return(jd2r_fractionalAirlineDecomposition(jrslt, sn = F, stde, periods, 
+    return(jd2r_fractionalAirlineDecomposition(jrslt, sn = FALSE, stde, periods, 
                                                log = log, y_time = y_time))
   }
   else {
@@ -109,18 +109,18 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = F, stde = F,
 #' @examples
 #' 
 fractionalAirlineEstimation <- function(
-    y, periods, x = NULL, ndiff = 2, ar = F, mean = FALSE, 
+    y, periods, x = NULL, ndiff = 2, ar = FALSE, mean = FALSE, 
     outliers = NULL, criticalValue = 6, precision = 1e-12, 
-    approximateHessian = F, nfcasts = 0, log = FALSE, 
+    approximateHessian = FALSE, nfcasts = 0, log = FALSE, 
     y_time = NULL) 
 {
-  checkmate::assertNumeric(y, null.ok = F)
-  checkmate::assertNumeric(criticalValue, len = 1, null.ok = F)
-  checkmate::assertNumeric(precision, len = 1, null.ok = F)
-  checkmate::assertLogical(mean, len = 1, null.ok = F)
+  checkmate::assertNumeric(y, null.ok = FALSE)
+  checkmate::assertNumeric(criticalValue, len = 1, null.ok = FALSE)
+  checkmate::assertNumeric(precision, len = 1, null.ok = FALSE)
+  checkmate::assertLogical(mean, len = 1, null.ok = FALSE)
   if (is.null(outliers)) 
     joutliers <- .jnull("[Ljava/lang/String;")
-  else joutliers = .jarray(outliers, "java.lang.String")
+  else joutliers <- .jarray(outliers, "java.lang.String")
   jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
                   "Ljdplus/highfreq/base/core/extendedairline/ExtendedAirlineEstimation;", "estimate", 
                   as.numeric(y), rjd3toolkit::.r2jd_matrix(x), mean, .jarray(periods), 
@@ -148,7 +148,7 @@ fractionalAirlineEstimation <- function(
     b = rjd3toolkit::.proc_vector(jrslt, "b"), 
     bcov = rjd3toolkit::.proc_matrix(jrslt, "bvar"), 
     linearized = rjd3toolkit::.proc_vector(jrslt, "lin"),
-    residuals=rjd3toolkit::.proc_vector(jrslt,"residuals"),
+    residuals = rjd3toolkit::.proc_vector(jrslt,"residuals"),
     component_wo = rjd3toolkit::.proc_vector(jrslt, "component_wo"), 
     component_ao = rjd3toolkit::.proc_vector(jrslt, "component_ao"), 
     component_ls = rjd3toolkit::.proc_vector(jrslt, "component_ls"), 
@@ -156,7 +156,7 @@ fractionalAirlineEstimation <- function(
     component_userdef_reg_variables = rjd3toolkit::.proc_vector(jrslt, "component_userdef_reg_variables"), 
     component_mean = rjd3toolkit::.proc_vector(jrslt, "component_mean"),
     log=rjd3toolkit::.proc_bool(jrslt,"log"),
-    missingOrNegative=rjd3toolkit::.proc_vector(jrslt, "missing"))
+    missingOrNegative = rjd3toolkit::.proc_vector(jrslt, "missing"))
   
   estimation <- list(parameters = rjd3toolkit::.proc_vector(jrslt, "parameters"), 
                      score = rjd3toolkit::.proc_vector(jrslt, "score"), 
@@ -176,7 +176,7 @@ fractionalAirlineEstimation <- function(
   
   regvar_outliers<-rep(NA,nX-nO)
   for(j in 1:nX-nO) {
-    regvar_outliers[j]=paste("x-", j)}
+    regvar_outliers[j] <- paste("x-", j)}
   
   if(nO>0){      
     for (j in 1:nO) {
@@ -198,8 +198,8 @@ fractionalAirlineEstimation <- function(
 #'
 #' @examples
 #' 
-multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=F, stde=F, nbcasts=0, nfcasts=0){
-  checkmate::assertNumeric(y, null.ok = F)
+multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALSE, nbcasts=0, nfcasts=0){
+  checkmate::assertNumeric(y, null.ok = FALSE)
   
   jrslt<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
                 "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;", 
@@ -220,7 +220,7 @@ multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=F, stde=F, nbcas
 multiAirlineDecomposition_ssf<-function(jdecomp){
   jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
                "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
-  return (rjd3toolkit::.jd3_object(jssf, result=T))
+  return (rjd3toolkit::.jd3_object(jssf, result=TRUE))
 }
 
 #' Title
@@ -237,10 +237,10 @@ multiAirlineDecomposition_ssf<-function(jdecomp){
 #'
 #' @examples
 #' 
-fractionalAirlineDecomposition_raw<-function(y, period, sn=F, stde=F, nbcasts=0, nfcasts=0){
-  checkmate::assertNumeric(y, null.ok = F)
-  checkmate::assertNumeric(period, len = 1, null.ok = F)
-  checkmate::assertLogical(sn, len = 1, null.ok = F)
+fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nbcasts=0, nfcasts=0){
+  checkmate::assertNumeric(y, null.ok = FALSE)
+  checkmate::assertNumeric(period, len = 1, null.ok = FALSE)
+  checkmate::assertLogical(sn, len = 1, null.ok = FALSE)
   jrslt<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", 
                 "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;", 
                 "decompose", as.numeric(y), 
@@ -258,7 +258,7 @@ fractionalAirlineDecomposition_raw<-function(y, period, sn=F, stde=F, nbcasts=0,
 #' @examples
 fractionalAirlineDecomposition_ssf<-function(jdecomp){
   jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
-  return (rjd3toolkit::.jd3_object(jssf, result=T))
+  return (rjd3toolkit::.jd3_object(jssf, result=TRUE))
 }
 
 
@@ -274,7 +274,7 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp){
 #'
 #' @examples
 #' 
-jd2r_multiAirlineDecomposition <- function(jrslt, stde = F, periods, 
+jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods, 
                                            log = FALSE, y_time = NULL) 
 {
   ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
@@ -334,7 +334,7 @@ jd2r_multiAirlineDecomposition <- function(jrslt, stde = F, periods,
 #'
 #' @examples
 #' 
-jd2r_fractionalAirlineDecomposition <- function(jrslt, sn = F, stde = F, 
+jd2r_fractionalAirlineDecomposition <- function(jrslt, sn = FALSE, stde = FALSE, 
                                                 period, log = FALSE, y_time = NULL) 
 {
   ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
@@ -356,12 +356,12 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt, sn = F, stde = F,
   }
   
   if (stde) {
-    s.stde = rjd3toolkit::.proc_vector(jrslt, "s_stde")
+    s.stde <- rjd3toolkit::.proc_vector(jrslt, "s_stde")
     decomposition <- c(decomposition, list(s.stde = s.stde))
     
     if (!sn) {
-      t.stde = rjd3toolkit::.proc_vector(jrslt, "t_stde")
-      i.stde = rjd3toolkit::.proc_vector(jrslt, "i_stde")
+      t.stde <- rjd3toolkit::.proc_vector(jrslt, "t_stde")
+      i.stde <- rjd3toolkit::.proc_vector(jrslt, "i_stde")
       decomposition <- c(decomposition, list(t.stde = t.stde, i.stde = i.stde))
     }
   }
