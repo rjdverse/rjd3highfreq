@@ -11,7 +11,7 @@
 #'
 #' @return `NULL` (invisible).
 #'
-plot_jd <- function(x, y, col, legend_txt = NULL, ...){
+plot_jd <- function(x, y, col, legend_txt = NULL, ...) {
 
   col_bg <- "#f5f4e7"
   col_grid <-"#dadad3"

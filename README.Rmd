@@ -8,7 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-", 
+  fig.path = "man/figures/README-",
   fig.align = "center",
   fig.dim = c(7, 4) * 1.4,
   out.width = "100%"
@@ -55,8 +55,8 @@ Plot of the raw series:
 
 ```{r raw data plot, echo = FALSE, eval = TRUE}
 # Plot of the raw data ----------------------------------------------------
-rjd3highfreq:::plot_jd(x = df_daily$date, y = list(df_daily$births), 
-                       col = "#f1ba1d", main = "French daily birth", 
+rjd3highfreq:::plot_jd(x = df_daily$date, y = list(df_daily$births),
+                       col = "#f1ba1d", main = "French daily birth",
                        ylab = "Nbr birth")
 ```
 
@@ -84,8 +84,8 @@ Creation of the calendar regressor in a matrix with the package **rjd3toolkit**:
 ```{r regressor matrix creation, echo = TRUE, eval = TRUE}
 # Calendar regressor matrix
 cal_reg <- rjd3toolkit::holidays(
-    calendar = frenchCalendar, 
-    start = "1968-01-01", length = nrow(df_daily), 
+    calendar = frenchCalendar,
+    start = "1968-01-01", length = nrow(df_daily),
     type = "All", nonworking = 7L)
 
 colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
@@ -97,8 +97,8 @@ Preprocessing with the function `fractionalAirlineEstimation`:
 
 ```{r preprocessing, echo = TRUE, eval = TRUE}
 pre_pro <- fractionalAirlineEstimation(
-    y = df_daily$births, 
-    x = cal_reg, 
+    y = df_daily$births,
+    x = cal_reg,
     periods = 7, # weekly frequency
     outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
 
@@ -107,8 +107,8 @@ print(pre_pro)
 
 ```{r preprocessing plots, echo = TRUE, eval = TRUE}
 plot(pre_pro, main = "French births")
-plot(x = pre_pro, 
-     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"), 
+plot(x = pre_pro,
+     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"),
      main = "French births in 2000")
 ```
 
@@ -137,8 +137,8 @@ plot(amb.dow, main = "Weekly pattern")
 ```
 
 ```{r amb plot 2, echo = TRUE, eval = TRUE}
-plot(amb.dow, main = "Weekly pattern - January 2018", 
-     from = as.Date("2018-01-01"), 
+plot(amb.dow, main = "Weekly pattern - January 2018",
+     from = as.Date("2018-01-01"),
      to = as.Date("2018-01-31"))
 ```
 
@@ -147,8 +147,8 @@ plot(amb.doy, main = "Yearly pattern")
 ```
 
 ```{r amb plot 4, echo = TRUE, eval = TRUE}
-plot(amb.doy, main = "Weekly pattern - 2000 - 2002", 
-     from = as.Date("2000-01-01"), 
+plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
+     from = as.Date("2000-01-01"),
      to = as.Date("2002-12-31"))
 ```
 
@@ -169,8 +169,8 @@ plot(amb.multi)
 ```
 
 ```{r plot amb.multi 2, echo = TRUE, eval = TRUE}
-plot(amb.multi, main = "2012", 
-     from = as.Date("2012-01-01"), 
+plot(amb.multi, main = "2012",
+     from = as.Date("2012-01-01"),
      to = as.Date("2012-12-31"))
 ```
 

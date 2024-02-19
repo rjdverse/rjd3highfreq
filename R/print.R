@@ -8,8 +8,7 @@
 #' @return The original object 'x'.
 #'
 #' @export
-print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
-{
+print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
   cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
   cat("\n")
 

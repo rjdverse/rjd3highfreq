@@ -63,8 +63,8 @@ Creation of the calendar regressor in a matrix with the package
 ``` r
 # Calendar regressor matrix
 cal_reg <- rjd3toolkit::holidays(
-    calendar = frenchCalendar, 
-    start = "1968-01-01", length = nrow(df_daily), 
+    calendar = frenchCalendar,
+    start = "1968-01-01", length = nrow(df_daily),
     type = "All", nonworking = 7L)
 
 colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
@@ -76,8 +76,8 @@ Preprocessing with the function `fractionalAirlineEstimation`:
 
 ``` r
 pre_pro <- fractionalAirlineEstimation(
-    y = df_daily$births, 
-    x = cal_reg, 
+    y = df_daily$births,
+    x = cal_reg,
     periods = 7, # weekly frequency
     outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
 
@@ -132,8 +132,8 @@ plot(pre_pro, main = "French births")
 <img src="man/figures/README-preprocessing plots-1.png" width="100%" style="display: block; margin: auto;" />
 
 ``` r
-plot(x = pre_pro, 
-     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"), 
+plot(x = pre_pro,
+     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"),
      main = "French births in 2000")
 ```
 
@@ -164,8 +164,8 @@ plot(amb.dow, main = "Weekly pattern")
 <img src="man/figures/README-amb plot 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 1-2.png" width="100%" style="display: block; margin: auto;" />
 
 ``` r
-plot(amb.dow, main = "Weekly pattern - January 2018", 
-     from = as.Date("2018-01-01"), 
+plot(amb.dow, main = "Weekly pattern - January 2018",
+     from = as.Date("2018-01-01"),
      to = as.Date("2018-01-31"))
 ```
 
@@ -178,8 +178,8 @@ plot(amb.doy, main = "Yearly pattern")
 <img src="man/figures/README-amb plot 3-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 3-2.png" width="100%" style="display: block; margin: auto;" />
 
 ``` r
-plot(amb.doy, main = "Weekly pattern - 2000 - 2002", 
-     from = as.Date("2000-01-01"), 
+plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
+     from = as.Date("2000-01-01"),
      to = as.Date("2002-12-31"))
 ```
 
@@ -205,8 +205,8 @@ plot(amb.multi)
 <img src="man/figures/README-plot amb.multi 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 1-2.png" width="100%" style="display: block; margin: auto;" />
 
 ``` r
-plot(amb.multi, main = "2012", 
-     from = as.Date("2012-01-01"), 
+plot(amb.multi, main = "2012",
+     from = as.Date("2012-01-01"),
      to = as.Date("2012-12-31"))
 ```
 
