@@ -145,7 +145,7 @@ Decomposition with the AMB (Arima Model Based) algorithm:
 # Decomposition with weekly pattern
 amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
     y = pre_pro$model$linearized, # linearized series from preprocessing
-    period = 7, 
+    period = 7,
     log = TRUE, y_time = df_daily$date)
 
 # Extract day-of-year pattern from day-of-week-adjusted linearised data
