@@ -42,8 +42,9 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
   if (x$estimation$log) {
     decompo_table <- exp(decompo_table)
   }
-  decompo_table <- subset(decompo_table, select = -y_time)
+
   if (!is.null(x$decomposition$y_time)) {
+    decompo_table <- subset(decompo_table, select = -y_time)
     rownames(decompo_table) <- format(x$decomposition$y_time)
   }
   print(tail(decompo_table, n = 10))
