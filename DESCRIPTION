@@ -20,7 +20,7 @@ Imports:
 Remotes:
   github::rjdemetra/rjd3toolkit, 
   github::rjdemetra/rjd3sts
-SystemRequirements: Java JRE 17 or higher
+SystemRequirements: Java (>= 17)
 License: EUPL
 URL: https://github.com/rjdemetra/rjd3highfreq, https://rjdemetra.github.io/rjd3highfreq/
 LazyData: TRUE
