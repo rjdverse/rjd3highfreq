@@ -180,7 +180,7 @@ With the package [**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), yo
 
 ## Contributing
 
-Any contribution is welcome and should be done through pull requests and/or issues.
+Any contribution is welcome and should be done through pull requests and/or issues. 
 
 ## Licensing
 

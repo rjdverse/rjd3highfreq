@@ -7,10 +7,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
 - New plots for `JDFractionalAirlineDecomposition` and `JDFractionalAirlineEstimation`
-- Update prints
 - Add documentation for plots and prints
+
+### Changed
+
 - Update readme
+- Update prints
+
 
 [Unreleased]: https://github.com/rjdemetra/rjd3highfreq/compare/v2.0.0...HEAD
 
