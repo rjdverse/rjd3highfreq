@@ -215,3 +215,12 @@ plot(amb.multi, main = "2012",
 With the package
 [**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), you can
 perform an X-11 like decomposition with any (non integer) periodicity.
+
+
+## Contributing
+
+Any contribution is welcome and should be done through pull requests and/or issues.
+
+## Licensing
+
+The code of this project is licensed under the [European Union Public Licence (EUPL)](https://joinup.ec.europa.eu/page/eupl-text-11-12).
