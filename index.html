@@ -113,8 +113,8 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calendar regressor matrix</span></span>
 <span><span class="va">cal_reg</span> <span class="op">&lt;-</span> <span class="fu">rjd3toolkit</span><span class="fu">::</span><span class="fu"><a href="https://rjdemetra.github.io/rjd3toolkit/reference/holidays.html" class="external-link">holidays</a></span><span class="op">(</span></span>
-<span>    calendar <span class="op">=</span> <span class="va">frenchCalendar</span>, </span>
-<span>    start <span class="op">=</span> <span class="st">"1968-01-01"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df_daily</span><span class="op">)</span>, </span>
+<span>    calendar <span class="op">=</span> <span class="va">frenchCalendar</span>,</span>
+<span>    start <span class="op">=</span> <span class="st">"1968-01-01"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df_daily</span><span class="op">)</span>,</span>
 <span>    type <span class="op">=</span> <span class="st">"All"</span>, nonworking <span class="op">=</span> <span class="fl">7L</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">cal_reg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"14th_july"</span>, <span class="st">"8th_may"</span>, <span class="st">"1st_jan"</span>, <span class="st">"1st_may"</span>,</span>
@@ -123,8 +123,8 @@
 <p>Preprocessing with the function <code>fractionalAirlineEstimation</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pre_pro</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fractionalAirlineEstimation.html">fractionalAirlineEstimation</a></span><span class="op">(</span></span>
-<span>    y <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">births</span>, </span>
-<span>    x <span class="op">=</span> <span class="va">cal_reg</span>, </span>
+<span>    y <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">births</span>,</span>
+<span>    x <span class="op">=</span> <span class="va">cal_reg</span>,</span>
 <span>    periods <span class="op">=</span> <span class="fl">7</span>, <span class="co"># weekly frequency</span></span>
 <span>    outliers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ao"</span>, <span class="st">"wo"</span><span class="op">)</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, y_time <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span>
 <span></span>
@@ -174,8 +174,8 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pre_pro</span>, main <span class="op">=</span> <span class="st">"French births"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-preprocessing%20plots-1.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">pre_pro</span>, </span>
-<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-01-01"</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-12-31"</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">pre_pro</span>,</span>
+<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-01-01"</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-12-31"</span><span class="op">)</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"French births in 2000"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-preprocessing%20plots-2.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Decomposition with the AMB (Arima Model Based) algorithm:</p>
@@ -183,7 +183,7 @@
 <code class="sourceCode R"><span><span class="co"># Decomposition with weekly pattern</span></span>
 <span><span class="va">amb.dow</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu"><a href="reference/fractionalAirlineDecomposition.html">fractionalAirlineDecomposition</a></span><span class="op">(</span></span>
 <span>    y <span class="op">=</span> <span class="va">pre_pro</span><span class="op">$</span><span class="va">model</span><span class="op">$</span><span class="va">linearized</span>, <span class="co"># linearized series from preprocessing</span></span>
-<span>    period <span class="op">=</span> <span class="fl">7</span>, </span>
+<span>    period <span class="op">=</span> <span class="fl">7</span>,</span>
 <span>    log <span class="op">=</span> <span class="cn">TRUE</span>, y_time <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Extract day-of-year pattern from day-of-week-adjusted linearised data</span></span>
@@ -196,16 +196,16 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.dow</span>, main <span class="op">=</span> <span class="st">"Weekly pattern"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-amb%20plot%201-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-amb%20plot%201-2.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.dow</span>, main <span class="op">=</span> <span class="st">"Weekly pattern - January 2018"</span>, </span>
-<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2018-01-01"</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.dow</span>, main <span class="op">=</span> <span class="st">"Weekly pattern - January 2018"</span>,</span>
+<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2018-01-01"</span><span class="op">)</span>,</span>
 <span>     to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2018-01-31"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-amb%20plot%202-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-amb%20plot%202-2.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.doy</span>, main <span class="op">=</span> <span class="st">"Yearly pattern"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-amb%20plot%203-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-amb%20plot%203-2.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.doy</span>, main <span class="op">=</span> <span class="st">"Weekly pattern - 2000 - 2002"</span>, </span>
-<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-01-01"</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.doy</span>, main <span class="op">=</span> <span class="st">"Weekly pattern - 2000 - 2002"</span>,</span>
+<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-01-01"</span><span class="op">)</span>,</span>
 <span>     to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2002-12-31"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-amb%20plot%204-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-amb%20plot%204-2.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Perform an Arima Model Based (AMB) decomposition on several periodcities at once:</p>
@@ -219,11 +219,21 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.multi</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot%20amb.multi%201-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-plot%20amb.multi%201-2.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.multi</span>, main <span class="op">=</span> <span class="st">"2012"</span>, </span>
-<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2012-01-01"</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">amb.multi</span>, main <span class="op">=</span> <span class="st">"2012"</span>,</span>
+<span>     from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2012-01-01"</span><span class="op">)</span>,</span>
 <span>     to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot%20amb.multi%202-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-plot%20amb.multi%202-2.png" width="100%" style="display: block; margin: auto;"></p>
 <p>With the package <a href="https://github.com/rjdemetra/rjd3x11plus" class="external-link"><strong>rjd3x11plus</strong></a>, you can perform an X-11 like decomposition with any (non integer) periodicity.</p>
+</div>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
+<p>Any contribution is welcome and should be done through pull requests and/or issues.</p>
+</div>
+<div class="section level2">
+<h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
+</h2>
+<p>The code of this project is licensed under the <a href="https://joinup.ec.europa.eu/page/eupl-text-11-12" class="external-link">European Union Public Licence (EUPL)</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
