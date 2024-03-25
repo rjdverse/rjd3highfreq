@@ -1,12 +1,25 @@
-# rjd3highfreq dev version
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres
+to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+
+- New plots for `JDFractionalAirlineDecomposition` and `JDFractionalAirlineEstimation`
+- Add documentation for plots and prints
+
+### Changed
+
+- Update readme
+- Update prints
 
 
-* New plots for `JDFractionalAirlineDecomposition` and `JDFractionalAirlineEstimation`
-* Update prints
-* Add documentation for plots and prints
-* Update readme
+[Unreleased]: https://github.com/rjdemetra/rjd3highfreq/compare/v2.0.0...HEAD
 
+## [2.0.0] - 2023-12-12
 
-# rjd3highfreq 1.0.1
-
-First commit
+[2.0.0]: https://github.com/rjdemetra/rjd3highfreq/releases/tag/v2.0.0

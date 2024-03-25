@@ -7,3 +7,5 @@ TO_DO
 ^docs$
 ^pkgdown$
 ^\.github$
+
+^LICENSE$
