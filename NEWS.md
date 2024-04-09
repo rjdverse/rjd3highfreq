@@ -18,8 +18,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Update prints
 
 
-[Unreleased]: https://github.com/rjdemetra/rjd3highfreq/compare/v2.0.0...HEAD
-
 ## [2.0.0] - 2023-12-12
 
+
+[Unreleased]: https://github.com/rjdemetra/rjd3highfreq/compare/v2.0.0...HEAD
 [2.0.0]: https://github.com/rjdemetra/rjd3highfreq/releases/tag/v2.0.0
