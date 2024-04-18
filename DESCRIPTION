@@ -1,7 +1,7 @@
 Package: rjd3highfreq
 Type: Package
 Title: Seasonal Adjustment of High Frequency Data with 'JDemetra+ 3.0'
-Version: 2.0.1
+Version: 2.1.0
 Authors@R: c(
   person("Jean", "Palate", role = c("aut", "cre"),
                 email = "jean.palate@nbb.be"))
@@ -14,7 +14,7 @@ Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
   rjd3toolkit (>= 3.2.2),
-  rjd3sts (>= 2.0.1),
+  rjd3sts (>= 2.1.0),
   checkmate,
   methods
 Remotes:

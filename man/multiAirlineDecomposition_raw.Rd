@@ -15,6 +15,8 @@ multiAirlineDecomposition_raw(
 )
 }
 \arguments{
+\item{stde}{}
+
 \item{nfcasts}{}
 }
 \description{

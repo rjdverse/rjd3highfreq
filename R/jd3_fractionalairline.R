@@ -222,29 +222,25 @@ fractionalAirlineEstimation <- function(y,
                      class = "JDFractionalAirlineEstimation"))
 }
 
-.proc_variable_outlier_names <- function(var_out_names, nX) {
-
-    if (nX == 0) return(NULL)
-
-    o <- .jevalArray(var_out_names)
-    nO <- length(o)
-
-    regvar_outliers <- rep(NA_character_, nX)
-
-    # External regressors
-    for(j in seq_len(nX - nO)) {
-        regvar_outliers[j] <- paste0("x-", j)
-    }
-
-    # Outliers
-    for (j in seq_len(nO)) {
-        regvar_outliers[nX - nO + j] <- o[[j]]$toString()
-    }
+.proc_variable_outlier_names<-function(var_out_names,nX) {
+  o<-.jevalArray(var_out_names)
+  nO<-length(o)
+  
+  if(nO>0){      
+    regvar_outliers<-rep(NA,nX-nO)
+    for(j in 1:nX-nO) {
+      regvar_outliers[j]=paste("x-", j)}
+    for (j in 1:nO) {
+      regvar_outliers[nX-nO+j]<-o[[j]]$toString()}
     return(regvar_outliers)
+  }else{
+    return (list())
+  }
 }
 
 #' Title
 #'
+#' @param stde 
 #' @param y
 #' @param periods
 #' @param ndiff

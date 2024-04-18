@@ -39,6 +39,8 @@ fractionalAirlineEstimation(
 
 \item{nfcasts}{Number of forecasts}
 
+\item{log}{a logical}
+
 \item{y_time}{vector of times at which `y` is indexed}
 }
 \description{
