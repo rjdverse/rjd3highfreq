@@ -8,22 +8,14 @@ multiAirlineDecomposition_raw(
   y,
   periods,
   ndiff = 2,
-  ar = F,
-  stde = F,
+  ar = FALSE,
+  stde = FALSE,
   nbcasts = 0,
   nfcasts = 0
 )
 }
 \arguments{
-\item{y}{}
-
-\item{periods}{}
-
-\item{ndiff}{}
-
 \item{stde}{}
-
-\item{nbcasts}{}
 
 \item{nfcasts}{}
 }

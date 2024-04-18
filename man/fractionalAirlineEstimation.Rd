@@ -9,12 +9,12 @@ fractionalAirlineEstimation(
   periods,
   x = NULL,
   ndiff = 2,
-  ar = F,
+  ar = FALSE,
   mean = FALSE,
   outliers = NULL,
   criticalValue = 6,
   precision = 1e-12,
-  approximateHessian = F,
+  approximateHessian = FALSE,
   nfcasts = 0,
   log = FALSE,
   y_time = NULL
@@ -38,6 +38,8 @@ fractionalAirlineEstimation(
 \item{approximateHessian}{Compute approximate hessian (based on the optimizing procedure)}
 
 \item{nfcasts}{Number of forecasts}
+
+\item{log}{a logical}
 
 \item{y_time}{vector of times at which `y` is indexed}
 }
