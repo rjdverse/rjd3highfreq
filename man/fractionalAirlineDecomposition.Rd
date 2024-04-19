@@ -7,8 +7,8 @@
 fractionalAirlineDecomposition(
   y,
   period,
-  sn = F,
-  stde = F,
+  sn = FALSE,
+  stde = FALSE,
   nbcasts = 0,
   nfcasts = 0,
   log = FALSE,

@@ -6,20 +6,14 @@
 \usage{
 jd2r_fractionalAirlineDecomposition(
   jrslt,
-  sn = F,
-  stde = F,
+  sn = FALSE,
+  stde = FALSE,
   period,
   log = FALSE,
   y_time = NULL
 )
 }
 \arguments{
-\item{jrslt}{}
-
-\item{sn}{}
-
-\item{stde}{}
-
 \item{y_time}{vector of times at which the time series is indexed}
 }
 \description{
