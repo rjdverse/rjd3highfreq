@@ -97,7 +97,6 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = 
 #' @param y input time series.
 #' @param periods vector of periods values of the seasonal component, any positive real numbers.
 #' @param x matrix of user-defined regression variables (see rjd3toolkit for building calendar regressors).
-#' @param mean add constant mean to y after differencing.
 #' @param outliers type of outliers sub vector of c("AO","LS","WO")
 #' @param criticalValue Critical value for automatic outlier detection
 #' @param precision Precision of the likelihood
@@ -116,7 +115,6 @@ fractionalAirlineEstimation <- function(y,
                                         x = NULL,
                                         ndiff = 2,
                                         ar = FALSE,
-                                        mean = FALSE,
                                         outliers = NULL,
                                         criticalValue = 6,
                                         precision = 1e-12,
@@ -126,11 +124,13 @@ fractionalAirlineEstimation <- function(y,
                                         y_time = NULL) {
 
     # Input checks
+    mean = FALSE
     checkmate::assertNumeric(y, null.ok = FALSE)
     checkmate::assertNumeric(criticalValue, len = 1, null.ok = FALSE)
     checkmate::assertNumeric(precision, len = 1, null.ok = FALSE)
     checkmate::assertLogical(mean, len = 1, null.ok = FALSE)
 
+    
     if (is.null(outliers)) {
         joutliers <- .jnull("[Ljava/lang/String;")
     } else {
