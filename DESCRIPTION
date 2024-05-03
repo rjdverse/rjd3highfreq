@@ -32,6 +32,7 @@ BugReports: https://github.com/rjdemetra/rjd3highfreq/issues
 Encoding: UTF-8
 Collate: 
     'utils.R'
+    'jd3_extendedairline.R'
     'jd3_fractionalairline.R'
     'plot.R'
     'print.R'
