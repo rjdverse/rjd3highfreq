@@ -57,7 +57,7 @@ Plot of the raw series:
 
 ```{r raw data plot, echo = FALSE, eval = TRUE}
 # Plot of the raw data ----------------------------------------------------
-rjd3highfreq:::plot_jd(x = df_daily$date, y = list(df_daily$births),
+rjd3highfreq::.plot_jd(x = df_daily$date, y = list(df_daily$births),
                        col = "#f1ba1d", main = "French daily birth",
                        ylab = "Nbr birth")
 ```

@@ -11,7 +11,8 @@
 #'
 #' @return `NULL` (invisible).
 #'
-plot_jd <- function(x, y, col, legend_txt = NULL, ...) {
+#' @export
+.plot_jd <- function(x, y, col, legend_txt = NULL, ...) {
 
     col_bg <- "#f5f4e7"
     col_grid <-"#dadad3"
@@ -100,7 +101,7 @@ plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
                              yes = list_args$ylab, no = "")
     list_args$col <- c(col_y, col_t)
 
-    do.call(plot_jd,
+    do.call(.plot_jd,
             c(list(
                 x = vect_x, y = list(y, y_lin),
                 legend_txt = c("Raw data", "Linearised series")),
@@ -166,7 +167,7 @@ plot.JDFractionalAirlineDecomposition <- function(
                                  yes = list_args$ylab, no = "")
         list_args$col <- c(col_y, col_sa, col_t)
 
-        do.call(plot_jd,
+        do.call(.plot_jd,
                 c(list(
                     x = vect_x, y = list(y, sa, tc),
                     legend_txt = c("Raw data", "Seasonnal adjusted", "Trend")),
@@ -211,7 +212,7 @@ plot.JDFractionalAirlineDecomposition <- function(
                                  yes = list_args$ylab, no = "")
         list_args$col <- col_s[seq_len(length(s) + 1)]
 
-        do.call(plot_jd,
+        do.call(.plot_jd,
                 c(list(
                     x = vect_x, y = c(s, list(ic)),
                     legend_txt = c(s_variables, "Irregular")),
