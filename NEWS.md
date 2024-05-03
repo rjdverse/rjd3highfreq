@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - New plots for `JDFractionalAirlineDecomposition` and `JDFractionalAirlineEstimation`
 - Add documentation for plots and prints
+- low-level functions for extended airline models (log/level, outliers, estimation)
 
 ### Changed
 
