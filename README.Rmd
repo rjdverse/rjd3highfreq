@@ -20,10 +20,12 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-High-frequency time series
+rjd3highfreq provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.
 
 
 ## Installation
+
+Running rjd3 packages requires **Java 17 or higher**. How to set up such a configuration in R is explained [here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
 
 You can install the development version of **rjd3highfreq** from [GitHub](https://github.com/) with:
 
@@ -48,7 +50,7 @@ df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_
 # Creation of log variables to multiplicative model
 df_daily$log_births <- log(df_daily$births)
 df_daily$date <- as.Date(df_daily$date)
-```
+``` 
 
 
 Plot of the raw series:
