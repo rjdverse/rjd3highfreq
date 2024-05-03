@@ -16,6 +16,30 @@
     <loc>https://rjdemetra.github.io/rjd3highfreq/news/index.html</loc>
   </url>
   <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-arima_extract.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-extended_airline_loglevel.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-extended_airline_outliers.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-extendedairline_estimation.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-extendedairline_regarima.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-extendedairline_spec.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-plot_jd.html</loc>
+  </url>
+  <url>
+    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/dot-ucm_extract.html</loc>
+  </url>
+  <url>
     <loc>https://rjdemetra.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition.html</loc>
   </url>
   <url>
@@ -50,9 +74,6 @@
   </url>
   <url>
     <loc>https://rjdemetra.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineEstimation.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdemetra.github.io/rjd3highfreq/reference/plot_jd.html</loc>
   </url>
   <url>
     <loc>https://rjdemetra.github.io/rjd3highfreq/reference/print.JDFractionalAirlineDecomposition.html</loc>
