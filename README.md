@@ -6,13 +6,16 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-High-frequency time series
+rjd3highfreq provides functions for seasonal adjustment of
+high-frequency data displaying multiple, non integer periodicities.
+Pre-adjustment with extended airline model and Arima Model Based
+decomposition.
 
 ## Installation
 
-Running rjd3 packages requires Java 17 or higher. How to set up such a
-configuration in R is explained
-[here](https://jdemetra-new-documentation.netlify.app/#installing-the-software).
+Running rjd3 packages requires **Java 17 or higher**. How to set up such
+a configuration in R is explained
+[here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
 
 You can install the development version of **rjd3highfreq** from
 [GitHub](https://github.com/) with:

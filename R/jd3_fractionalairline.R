@@ -1,12 +1,30 @@
 #' @include utils.R
 NULL
 
-ucm_extract<-function(jrslt, cmp) {
+#' Title
+#'
+#' @param jrslt
+#' @param cmp
+#'
+#' @return
+#' @export
+#'
+#' @examples
+.ucm_extract<-function(jrslt, cmp) {
     path<-paste0("ucarima.component(", cmp,")")
-    return (arima_extract(jrslt, path))
+    return (.arima_extract(jrslt, path))
 }
 
-arima_extract<-function(jrslt, path) {
+#' Title
+#'
+#' @param jrslt
+#' @param path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+.arima_extract<-function(jrslt, path) {
     str<-rjd3toolkit::.proc_str(jrslt, paste0(path, ".name"))
     ar<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".ar"))
     delta<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".delta"))
@@ -130,7 +148,7 @@ fractionalAirlineEstimation <- function(y,
     checkmate::assertNumeric(precision, len = 1, null.ok = FALSE)
     checkmate::assertLogical(mean, len = 1, null.ok = FALSE)
 
-    
+
     if (is.null(outliers)) {
         joutliers <- .jnull("[Ljava/lang/String;")
     } else {
@@ -225,8 +243,7 @@ fractionalAirlineEstimation <- function(y,
 .proc_variable_outlier_names<-function(var_out_names,nX) {
   o<-.jevalArray(var_out_names)
   nO<-length(o)
-  
-  if (nO>0){      
+  if (nO > 0) {
     regvar_outliers<-rep(NA,nX-nO)
     for(j in 1:nX-nO) {
       regvar_outliers[j]=paste("x-", j)}
@@ -240,7 +257,7 @@ fractionalAirlineEstimation <- function(y,
 
 #' Title
 #'
-#' @param stde 
+#' @param stde
 #' @param y
 #' @param periods
 #' @param ndiff
@@ -332,9 +349,9 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp) {
 jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
                                            log = FALSE, y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- rjd3highfreq:::arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima_model")
     cmps <- lapply(1:ncmps, function(cmp) {
-        return(rjd3highfreq:::ucm_extract(jrslt, cmp))
+        return(.ucm_extract(jrslt, cmp))
     })
     ucarima <- rjd3toolkit::ucarima_model(model, cmps)
     yc <- rjd3toolkit::.proc_vector(jrslt, "y")
@@ -395,10 +412,10 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
                                                 log = FALSE,
                                                 y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- rjd3highfreq:::arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima_model")
     cmps <- lapply(
         X = 1:ncmps,
-        FUN = function(cmp) rjd3highfreq:::ucm_extract(jrslt, cmp)
+        FUN = function(cmp) .ucm_extract(jrslt, cmp)
     )
     ucarima <- rjd3toolkit::ucarima_model(model, cmps)
     yc <- rjd3toolkit::.proc_vector(jrslt, "y")

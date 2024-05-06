@@ -1,15 +1,13 @@
 Package: rjd3highfreq
 Type: Package
-Title: Seasonal Adjustment of High Frequency Data with 'JDemetra+ 3.0'
+Title: Seasonal Adjustment of High Frequency Data with 'JDemetra+ 3.x'
 Version: 2.1.1
 Authors@R: c(
   person("Jean", "Palate", role = c("aut", "cre"),
-                email = "jean.palate@nbb.be"))
-Description: Interface around 'JDemetra+ 3.x' (<https://github.com/jdemetra/jdemetra-core>) seasonal adjustment software, STACE project.
- It offers access to several functions around the seasonal adjustment of high frequency data time series: 
- STL, Loess, fractional airline and extension of X-11.
+                email = "palatejean@gmail.com"))
+Description: R Interface to 'JDemetra+ 3.x' (<https://github.com/jdemetra>) time series analysis software. It provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.
 Depends:
-  R (>= 3.6.0)
+  R (>= 4.1.0)
 Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
@@ -32,6 +30,7 @@ BugReports: https://github.com/rjdemetra/rjd3highfreq/issues
 Encoding: UTF-8
 Collate: 
     'utils.R'
+    'jd3_extendedairline.R'
     'jd3_fractionalairline.R'
     'plot.R'
     'print.R'
