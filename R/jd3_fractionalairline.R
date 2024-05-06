@@ -226,7 +226,7 @@ fractionalAirlineEstimation <- function(y,
   o<-.jevalArray(var_out_names)
   nO<-length(o)
   
-  if(nO>0){      
+  if (nO>0){      
     regvar_outliers<-rep(NA,nX-nO)
     for(j in 1:nX-nO) {
       regvar_outliers[j]=paste("x-", j)}
