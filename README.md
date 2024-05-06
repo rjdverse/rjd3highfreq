@@ -10,6 +10,10 @@ High-frequency time series
 
 ## Installation
 
+Running rjd3 packages requires Java 17 or higher. How to set up such a
+configuration in R is explained
+[here](https://jdemetra-new-documentation.netlify.app/#installing-the-software).
+
 You can install the development version of **rjd3highfreq** from
 [GitHub](https://github.com/) with:
 
@@ -226,4 +230,5 @@ should be added or updated.
 ## Licensing
 
 The code of this project is licensed under the [European Union Public
-Licence (EUPL)](https://joinup.ec.europa.eu/page/eupl-text-11-12).
+Licence
+(EUPL)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
