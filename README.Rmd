@@ -32,7 +32,7 @@ You can install the development version of **rjd3highfreq** from [GitHub](https:
 ```{r, eval = FALSE}
 # Install development version from GitHub
 # install.packages("remotes")
-remotes::install_github("rjdemetra/rjd3highfreq")
+remotes::install_github("rjdverse/rjd3highfreq")
 ```
 
 
@@ -177,7 +177,7 @@ plot(amb.multi, main = "2012",
 ```
 
 
-With the package [**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), you can perform an X-11 like decomposition with any (non integer) periodicity.
+With the package [**rjd3x11plus**](https://github.com/rjdverse/rjd3x11plus), you can perform an X-11 like decomposition with any (non integer) periodicity.
 
 
 ## Package Maintenance and contributing

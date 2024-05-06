@@ -23,7 +23,7 @@ You can install the development version of **rjd3highfreq** from
 ``` r
 # Install development version from GitHub
 # install.packages("remotes")
-remotes::install_github("rjdemetra/rjd3highfreq")
+remotes::install_github("rjdverse/rjd3highfreq")
 ```
 
 ## Demonstration with the daily french births
@@ -220,7 +220,7 @@ plot(amb.multi, main = "2012",
 <img src="man/figures/README-plot amb.multi 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 2-2.png" width="100%" style="display: block; margin: auto;" />
 
 With the package
-[**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), you can
+[**rjd3x11plus**](https://github.com/rjdverse/rjd3x11plus), you can
 perform an X-11 like decomposition with any (non integer) periodicity.
 
 ## Package Maintenance and contributing
