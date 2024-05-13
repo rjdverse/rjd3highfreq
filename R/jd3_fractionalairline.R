@@ -148,7 +148,7 @@ fractionalAirlineEstimation <- function(y,
     checkmate::assertNumeric(precision, len = 1, null.ok = FALSE)
     checkmate::assertLogical(mean, len = 1, null.ok = FALSE)
 
-    
+
     if (is.null(outliers)) {
         joutliers <- .jnull("[Ljava/lang/String;")
     } else {
@@ -243,8 +243,7 @@ fractionalAirlineEstimation <- function(y,
 .proc_variable_outlier_names<-function(var_out_names,nX) {
   o<-.jevalArray(var_out_names)
   nO<-length(o)
-
-  if(nO>0){
+  if (nO > 0) {
     regvar_outliers<-rep(NA,nX-nO)
     for(j in 1:nX-nO) {
       regvar_outliers[j]=paste("x-", j)}
