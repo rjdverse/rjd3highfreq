@@ -2,8 +2,8 @@ pandoc: 3.1.11
 pkgdown: 2.0.9
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-05-13T07:40Z
+last_built: 2024-05-13T07:44Z
 urls:
-  reference: https://rjdemetra.github.io/rjd3highfreq/reference
-  article: https://rjdemetra.github.io/rjd3highfreq/articles
+  reference: https://rjdverse.github.io/rjd3highfreq/reference
+  article: https://rjdverse.github.io/rjd3highfreq/articles
 
