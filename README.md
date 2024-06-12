@@ -1,9 +1,18 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rjd3highfreq
+# `rjd3highfreq` <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
 
 <!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rjd3highfreq)](https://CRAN.R-project.org/package=rjd3highfreq)
+
+[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml)
+[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml)
+
+[![GH Pages
+built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
 rjd3highfreq provides functions for seasonal adjustment of

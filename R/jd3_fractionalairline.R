@@ -12,7 +12,7 @@ NULL
 #' @examples
 .ucm_extract<-function(jrslt, cmp) {
     path<-paste0("ucarima.component(", cmp,")")
-    return (.arima_extract(jrslt, path))
+    return(.arima_extract(jrslt, path))
 }
 
 #' Title
@@ -30,7 +30,7 @@ NULL
     delta<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".delta"))
     ma<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".ma"))
     var<-rjd3toolkit::.proc_numeric(jrslt, paste0(path, ".var"))
-    return (rjd3toolkit::arima_model(str, ar,delta,ma,var))
+    return(rjd3toolkit::arima_model(str, ar,delta,ma,var))
 }
 
 
@@ -251,7 +251,7 @@ fractionalAirlineEstimation <- function(y,
       regvar_outliers[nX-nO+j]<-o[[j]]$toString()}
     return(regvar_outliers)
   }else{
-    return (list())
+    return(list())
   }
 }
 
@@ -278,7 +278,7 @@ multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALS
                   "decompose", as.numeric(y),
                   .jarray(periods), as.integer(ndiff), ar, stde, as.integer(nbcasts), as.integer(nfcasts))
 
-    return (jrslt)
+    return(jrslt)
 }
 
 #' Title
@@ -292,7 +292,7 @@ multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALS
 multiAirlineDecomposition_ssf<-function(jdecomp) {
     jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                  "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
-    return (rjd3toolkit::.jd3_object(jssf, result=TRUE))
+    return(rjd3toolkit::.jd3_object(jssf, result=TRUE))
 }
 
 #' Title
@@ -317,7 +317,7 @@ fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nb
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
                   "decompose", as.numeric(y),
                   period, sn, stde, as.integer(nbcasts), as.integer(nfcasts))
-    return (jrslt)
+    return(jrslt)
 }
 
 #' Title
@@ -330,7 +330,7 @@ fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nb
 #' @examples
 fractionalAirlineDecomposition_ssf<-function(jdecomp) {
     jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
-    return (rjd3toolkit::.jd3_object(jssf, result=TRUE))
+    return(rjd3toolkit::.jd3_object(jssf, result=TRUE))
 }
 
 

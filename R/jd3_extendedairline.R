@@ -22,7 +22,7 @@ NULL
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/api/ExtendedAirlineSpec;", "spec",
                  .jarray(as.numeric(periodicities)), as.integer(differencing), as.logical(ar), as.logical(toint))
-    return (jrslt)
+    return(jrslt)
 }
 
 #' Creates a java RegArima models based on an extended airline spec
@@ -42,7 +42,7 @@ NULL
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/core/regarima/RegArimaModel;", "regarima",
                     as.numeric(y), as.logical(mean), rjd3toolkit::.r2jd_matrix(X), jspec)
-    return (jrslt)
+    return(jrslt)
 }
 
 #' Title
@@ -60,7 +60,7 @@ NULL
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/core/extendedairline/LightExtendedAirlineEstimation;", "estimate",
                     jregarima, jspec, as.numeric(eps), as.logical(exactHessian))
-    return (rjd3toolkit::.jd3_object(jrslt, result=TRUE))
+    return(rjd3toolkit::.jd3_object(jrslt, result=TRUE))
 }
 
 #' Title
@@ -76,7 +76,7 @@ NULL
 .extended_airline_loglevel<-function(jregarima, jspec, precision=1e-5){
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "[D", "logLevelTest",
                     jregarima, jspec, as.numeric(precision))
-    return (rslt)
+    return(rslt)
 
 }
 
@@ -101,7 +101,7 @@ NULL
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "outliers",
                    jregarima, jspec, .jarray(types), as.integer(start), as.integer(end),
                    as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round) )
-    return (rjd3toolkit::.jd2r_matrix(rslt)+1)
+    return(rjd3toolkit::.jd2r_matrix(rslt)+1)
 }
 
 
