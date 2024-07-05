@@ -142,7 +142,7 @@ fractionalAirlineEstimation <- function(y,
                                         y_time = NULL) {
 
     # Input checks
-    mean = FALSE
+    mean <- FALSE
     checkmate::assertNumeric(y, null.ok = FALSE)
     checkmate::assertNumeric(criticalValue, len = 1, null.ok = FALSE)
     checkmate::assertNumeric(precision, len = 1, null.ok = FALSE)
@@ -246,9 +246,9 @@ fractionalAirlineEstimation <- function(y,
   if (nO > 0) {
     regvar_outliers<-rep(NA,nX-nO)
     for(j in 1:nX-nO) {
-      regvar_outliers[j]=paste("x-", j)}
+      regvar_outliers[j] <- paste("x-", j)}
     for (j in 1:nO) {
-      regvar_outliers[nX-nO+j]<-o[[j]]$toString()}
+      regvar_outliers[nX-nO+j] <- o[[j]]$toString()}
     return(regvar_outliers)
   } else {
     return(list())
