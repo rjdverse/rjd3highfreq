@@ -103,5 +103,3 @@ NULL
                    as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round) )
     return(rjd3toolkit::.jd2r_matrix(rslt)+1)
 }
-
-

@@ -250,7 +250,7 @@ fractionalAirlineEstimation <- function(y,
     for (j in 1:nO) {
       regvar_outliers[nX-nO+j]<-o[[j]]$toString()}
     return(regvar_outliers)
-  }else{
+  } else {
     return(list())
   }
 }
