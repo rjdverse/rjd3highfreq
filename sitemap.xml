@@ -1,84 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/404.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-arima_extract.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_loglevel.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_outliers.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extendedairline_estimation.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extendedairline_regarima.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extendedairline_spec.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-plot_jd.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-ucm_extract.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition_raw.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition_ssf.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineEstimation.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/jd2r_fractionalAirlineDecomposition.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/jd2r_multiAirlineDecomposition.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition_raw.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition_ssf.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineDecomposition.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineEstimation.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/print.JDFractionalAirlineDecomposition.html</loc>
-  </url>
-  <url>
-    <loc>https://rjdverse.github.io/rjd3highfreq/reference/print.JDFractionalAirlineEstimation.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/404.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/LICENSE-text.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/authors.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/index.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/news/index.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-arima_extract.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_loglevel.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_outliers.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extendedairline_estimation.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extendedairline_regarima.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-extendedairline_spec.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-plot_jd.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/dot-ucm_extract.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition_raw.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition_ssf.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineEstimation.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/index.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/jd2r_fractionalAirlineDecomposition.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/jd2r_multiAirlineDecomposition.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition_raw.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition_ssf.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineDecomposition.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineEstimation.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/print.JDFractionalAirlineDecomposition.html</loc></url>
+<url><loc>https://rjdverse.github.io/rjd3highfreq/reference/print.JDFractionalAirlineEstimation.html</loc></url>
 </urlset>
+
