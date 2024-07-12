@@ -1,22 +1,58 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rjd3highfreq
+# `rjd3highfreq` <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
 
 <!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rjd3highfreq)](https://CRAN.R-project.org/package=rjd3highfreq)
+
+[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml)
+[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml)
+
+[![GH Pages
+built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
-High-frequency time series
+rjd3highfreq provides functions for seasonal adjustment of
+high-frequency data displaying multiple, non integer periodicities.
+Pre-adjustment with extended airline model and Arima Model Based
+decomposition.
 
 ## Installation
+
+Running rjd3 packages requires **Java 17 or higher**. How to set up such
+a configuration in R is explained
+[here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
+
+### Latest release
+
+To get the current stable version (from the latest release):
+
+- From GitHub:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("rjdverse/rjd3toolkit@*release")
+remotes::install_github("rjdverse/rjd3sts@*release")
+remotes::install_github("rjdverse/rjd3highfreq@*release")
+```
+
+- From [r-universe](https://rjdverse.r-universe.dev/rjd3highfreq):
+
+``` r
+install.packages("rjd3highfreq", repos = c("https://rjdverse.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+### Development version
 
 You can install the development version of **rjd3highfreq** from
 [GitHub](https://github.com/) with:
 
 ``` r
-# Install development version from GitHub
 # install.packages("remotes")
-remotes::install_github("rjdemetra/rjd3highfreq")
+remotes::install_github("rjdverse/rjd3highfreq")
 ```
 
 ## Demonstration with the daily french births
@@ -213,7 +249,7 @@ plot(amb.multi, main = "2012",
 <img src="man/figures/README-plot amb.multi 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 2-2.png" width="100%" style="display: block; margin: auto;" />
 
 With the package
-[**rjd3x11plus**](https://github.com/rjdemetra/rjd3x11plus), you can
+[**rjd3x11plus**](https://github.com/rjdverse/rjd3x11plus), you can
 perform an X-11 like decomposition with any (non integer) periodicity.
 
 ## Package Maintenance and contributing
@@ -226,4 +262,5 @@ should be added or updated.
 ## Licensing
 
 The code of this project is licensed under the [European Union Public
-Licence (EUPL)](https://joinup.ec.europa.eu/page/eupl-text-11-12).
+Licence
+(EUPL)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).

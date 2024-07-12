@@ -129,7 +129,7 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
     cat("Number of calendar regressors:", nb_reg_cjo, ", Number of outliers :", nb_outliers)
     cat("\n\n")
 
-    if(nb_reg_cjo > 0) {
+    if (nb_reg_cjo > 0) {
         cat("TD regressors coefficients:")
         cat("\n")
         print(reg_cjo_coeff, row.names = FALSE)
@@ -138,7 +138,7 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
         cat("\n")
     }
 
-    if(nb_outliers > 0) {
+    if (nb_outliers > 0) {
         cat("Outliers coefficients:")
         cat("\n")
         print(outliers_coeff, row.names = FALSE)

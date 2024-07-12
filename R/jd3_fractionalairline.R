@@ -1,18 +1,36 @@
 #' @include utils.R
 NULL
 
-ucm_extract<-function(jrslt, cmp) {
+#' Title
+#'
+#' @param jrslt
+#' @param cmp
+#'
+#' @return
+#' @export
+#'
+#' @examples
+.ucm_extract<-function(jrslt, cmp) {
     path<-paste0("ucarima.component(", cmp,")")
-    return (arima_extract(jrslt, path))
+    return(.arima_extract(jrslt, path))
 }
 
-arima_extract<-function(jrslt, path) {
+#' Title
+#'
+#' @param jrslt
+#' @param path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+.arima_extract<-function(jrslt, path) {
     str<-rjd3toolkit::.proc_str(jrslt, paste0(path, ".name"))
     ar<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".ar"))
     delta<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".delta"))
     ma<-rjd3toolkit::.proc_vector(jrslt, paste0(path, ".ma"))
     var<-rjd3toolkit::.proc_numeric(jrslt, paste0(path, ".var"))
-    return (rjd3toolkit::arima_model(str, ar,delta,ma,var))
+    return(rjd3toolkit::arima_model(str, ar,delta,ma,var))
 }
 
 
@@ -97,7 +115,6 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = 
 #' @param y input time series.
 #' @param periods vector of periods values of the seasonal component, any positive real numbers.
 #' @param x matrix of user-defined regression variables (see rjd3toolkit for building calendar regressors).
-#' @param mean add constant mean to y after differencing.
 #' @param outliers type of outliers sub vector of c("AO","LS","WO")
 #' @param criticalValue Critical value for automatic outlier detection
 #' @param precision Precision of the likelihood
@@ -116,7 +133,6 @@ fractionalAirlineEstimation <- function(y,
                                         x = NULL,
                                         ndiff = 2,
                                         ar = FALSE,
-                                        mean = FALSE,
                                         outliers = NULL,
                                         criticalValue = 6,
                                         precision = 1e-12,
@@ -126,10 +142,12 @@ fractionalAirlineEstimation <- function(y,
                                         y_time = NULL) {
 
     # Input checks
+    mean <- FALSE
     checkmate::assertNumeric(y, null.ok = FALSE)
     checkmate::assertNumeric(criticalValue, len = 1, null.ok = FALSE)
     checkmate::assertNumeric(precision, len = 1, null.ok = FALSE)
     checkmate::assertLogical(mean, len = 1, null.ok = FALSE)
+
 
     if (is.null(outliers)) {
         joutliers <- .jnull("[Ljava/lang/String;")
@@ -225,22 +243,21 @@ fractionalAirlineEstimation <- function(y,
 .proc_variable_outlier_names<-function(var_out_names,nX) {
   o<-.jevalArray(var_out_names)
   nO<-length(o)
-  
-  if(nO>0){      
+  if (nO > 0) {
     regvar_outliers<-rep(NA,nX-nO)
     for(j in 1:nX-nO) {
-      regvar_outliers[j]=paste("x-", j)}
+      regvar_outliers[j] <- paste("x-", j)}
     for (j in 1:nO) {
-      regvar_outliers[nX-nO+j]<-o[[j]]$toString()}
+      regvar_outliers[nX-nO+j] <- o[[j]]$toString()}
     return(regvar_outliers)
-  }else{
-    return (list())
+  } else {
+    return(list())
   }
 }
 
 #' Title
 #'
-#' @param stde 
+#' @param stde
 #' @param y
 #' @param periods
 #' @param ndiff
@@ -261,7 +278,7 @@ multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALS
                   "decompose", as.numeric(y),
                   .jarray(periods), as.integer(ndiff), ar, stde, as.integer(nbcasts), as.integer(nfcasts))
 
-    return (jrslt)
+    return(jrslt)
 }
 
 #' Title
@@ -275,7 +292,7 @@ multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALS
 multiAirlineDecomposition_ssf<-function(jdecomp) {
     jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                  "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
-    return (rjd3toolkit::.jd3_object(jssf, result=TRUE))
+    return(rjd3toolkit::.jd3_object(jssf, result=TRUE))
 }
 
 #' Title
@@ -300,7 +317,7 @@ fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nb
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
                   "decompose", as.numeric(y),
                   period, sn, stde, as.integer(nbcasts), as.integer(nfcasts))
-    return (jrslt)
+    return(jrslt)
 }
 
 #' Title
@@ -313,7 +330,7 @@ fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nb
 #' @examples
 fractionalAirlineDecomposition_ssf<-function(jdecomp) {
     jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
-    return (rjd3toolkit::.jd3_object(jssf, result=TRUE))
+    return(rjd3toolkit::.jd3_object(jssf, result=TRUE))
 }
 
 
@@ -332,9 +349,9 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp) {
 jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
                                            log = FALSE, y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- rjd3highfreq:::arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima_model")
     cmps <- lapply(1:ncmps, function(cmp) {
-        return(rjd3highfreq:::ucm_extract(jrslt, cmp))
+        return(.ucm_extract(jrslt, cmp))
     })
     ucarima <- rjd3toolkit::ucarima_model(model, cmps)
     yc <- rjd3toolkit::.proc_vector(jrslt, "y")
@@ -395,10 +412,10 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
                                                 log = FALSE,
                                                 y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- rjd3highfreq:::arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima_model")
     cmps <- lapply(
         X = 1:ncmps,
-        FUN = function(cmp) rjd3highfreq:::ucm_extract(jrslt, cmp)
+        FUN = function(cmp) .ucm_extract(jrslt, cmp)
     )
     ucarima <- rjd3toolkit::ucarima_model(model, cmps)
     yc <- rjd3toolkit::.proc_vector(jrslt, "y")
