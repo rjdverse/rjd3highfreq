@@ -10,7 +10,6 @@ fractionalAirlineEstimation(
   x = NULL,
   ndiff = 2,
   ar = FALSE,
-  mean = FALSE,
   outliers = NULL,
   criticalValue = 6,
   precision = 1e-12,
@@ -26,8 +25,6 @@ fractionalAirlineEstimation(
 \item{periods}{vector of periods values of the seasonal component, any positive real numbers.}
 
 \item{x}{matrix of user-defined regression variables (see rjd3toolkit for building calendar regressors).}
-
-\item{mean}{add constant mean to y after differencing.}
 
 \item{outliers}{type of outliers sub vector of c("AO","LS","WO")}
 

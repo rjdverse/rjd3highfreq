@@ -15,8 +15,8 @@ NULL
 .extendedairline_spec<-function(periodicities, differencing=-1, ar=FALSE, toint=FALSE){
 
     if (differencing == -1){
-        differencing = length(periodicities)
-        if (! ar) differencing=differencing + 1
+        differencing <- length(periodicities)
+        if (! ar) differencing<-differencing + 1
 
     }
 
@@ -96,12 +96,10 @@ NULL
 #'
 #' @examples
 .extended_airline_outliers<-function(jregarima, jspec, types=c("ao"), start=0, end=0, critical_value=0, max_outliers=30, max_round=30){
-    if (start != 0) start=start-1
-    if (end != 0) end=end-1
+    if (start != 0) start<-start-1
+    if (end != 0) end<-end-1
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "outliers",
                    jregarima, jspec, .jarray(types), as.integer(start), as.integer(end),
                    as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round) )
     return(rjd3toolkit::.jd2r_matrix(rslt)+1)
 }
-
-
