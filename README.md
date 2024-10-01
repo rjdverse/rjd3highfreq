@@ -34,8 +34,6 @@ To get the current stable version (from the latest release):
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("rjdverse/rjd3toolkit@*release")
-remotes::install_github("rjdverse/rjd3sts@*release")
 remotes::install_github("rjdverse/rjd3highfreq@*release")
 ```
 
