@@ -100,6 +100,6 @@ NULL
     if (end != 0) end<-end-1
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "outliers",
                    jregarima, jspec, .jarray(types), as.integer(start), as.integer(end),
-                   as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round) )
+                   as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round))
     return(rjd3toolkit::.jd2r_matrix(rslt)+1)
 }
