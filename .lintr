@@ -48,6 +48,12 @@ linters: lintr::all_linters(
         condition_message_linter = NULL,
         undesirable_operator_linter = NULL,
         nested_ifelse_linter = NULL,
-        unnecessary_nested_if_linter = NULL
+        unnecessary_nested_if_linter = NULL,
+        return_linter = NULL,
+        object_overwrite_linter = NULL,
+        condition_call_linter = NULL,
+        rep_len_linter = NULL,
+        if_switch_linter = NULL,
+        unnecessary_nesting_linter = NULL
     )
 encoding: "UTF-8"
