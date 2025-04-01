@@ -369,8 +369,11 @@ jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
     tsi_component <- lapply(X = 1:ncmps, FUN = function(j) {
         return(rjd3toolkit::.proc_vector(jrslt, paste0("cmp(", j, ")")))
     })
-    names(tsi_component) <- c("t", paste0("s_", periods) , "i")
-
+    if (ncmps == length(periods)+2){
+        names(tsi_component) <- c("t", paste0("s_", periods) , "i")
+    }else{
+        names(tsi_component) <- c("t", paste0("s_", periods) )
+    }
     decomposition <- c(
         list(y = yc, y_time = y_time, sa = sa),
         tsi_component)
