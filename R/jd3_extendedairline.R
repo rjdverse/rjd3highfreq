@@ -11,8 +11,8 @@ NULL
 #' @return A Java ExtendedAirlineSpec object
 #' @export
 #'
-#' @examples .extendedairline_spec(c(7, 365.25))
-.extendedairline_spec<-function(periodicities, differencing=-1, ar=FALSE, toint=FALSE){
+#' @examples .extended_airline_spec(c(7, 365.25))
+.extended_airline_spec<-function(periodicities, differencing=-1, ar=FALSE, toint=FALSE){
 
     if (differencing == -1){
         differencing <- length(periodicities)
@@ -36,9 +36,9 @@ NULL
 #' @export
 #'
 #' @examples
-#' jspec<-.extendedairline_spec(c(12))
-#' .extendedairline_regarima(rjd3toolkit::ABS$X0.2.09.10.M, jspec)
-.extendedairline_regarima<-function(y, jspec, mean=FALSE, X=NULL){
+#' jspec<-.extended_airline_spec(c(12))
+#' .extended_airline_regarima(rjd3toolkit::ABS$X0.2.09.10.M, jspec)
+.extended_airline_regarima<-function(y, jspec, mean=FALSE, X=NULL){
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/core/regarima/RegArimaModel;", "regarima",
                     as.numeric(y), as.logical(mean), rjd3toolkit::.r2jd_matrix(X), jspec)
@@ -56,7 +56,7 @@ NULL
 #' @export
 #'
 #' @examples
-.extendedairline_estimation<-function(jregarima, jspec, eps=1e-9, exactHessian=FALSE){
+.extended_airline_estimation<-function(jregarima, jspec, eps=1e-9, exactHessian=FALSE){
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/core/extendedairline/LightExtendedAirlineEstimation;", "estimate",
                     jregarima, jspec, as.numeric(eps), as.logical(exactHessian))
@@ -100,6 +100,6 @@ NULL
     if (end != 0) end<-end-1
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "outliers",
                    jregarima, jspec, .jarray(types), as.integer(start), as.integer(end),
-                   as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round) )
+                   as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round))
     return(rjd3toolkit::.jd2r_matrix(rslt)+1)
 }

@@ -34,8 +34,6 @@ To get the current stable version (from the latest release):
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("rjdverse/rjd3toolkit@*release")
-remotes::install_github("rjdverse/rjd3sts@*release")
 remotes::install_github("rjdverse/rjd3highfreq@*release")
 ```
 
@@ -263,4 +261,4 @@ should be added or updated.
 
 The code of this project is licensed under the [European Union Public
 Licence
-(EUPL)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+(EUPL)](https://interoperable-europe.ec.europa.eu:443/collection/eupl/eupl-text-eupl-12).
