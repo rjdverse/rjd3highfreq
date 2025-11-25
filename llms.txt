@@ -1,0 +1,304 @@
+# `rjd3highfreq`
+
+[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml)
+[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml)
+
+[![GH Pages
+built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml)
+
+rjd3highfreq provides functions for seasonal adjustment of
+high-frequency data displaying multiple, non integer periodicities.
+Pre-adjustment with extended airline model and Arima Model Based
+decomposition.
+
+## Installation
+
+Running rjd3 packages requires **Java 17 or higher**. How to set up such
+a configuration in R is explained
+[here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
+
+### Latest release
+
+To get the current stable version (from the latest release):
+
+- From GitHub:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("rjdverse/rjd3highfreq@*release")
+```
+
+- From [r-universe](https://rjdverse.r-universe.dev/rjd3highfreq):
+
+``` r
+install.packages("rjd3highfreq", repos = c("https://rjdverse.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+### Development version
+
+You can install the development version of **rjd3highfreq** from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("rjdverse/rjd3highfreq")
+```
+
+## Demonstration with the daily french births
+
+``` r
+library("rjd3highfreq")
+```
+
+``` r
+## Import of data
+df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/Data/TS_daily_births_franceM_1968_2020.csv")
+
+# Creation of log variables to multiplicative model
+df_daily$log_births <- log(df_daily$births)
+df_daily$date <- as.Date(df_daily$date)
+```
+
+Plot of the raw series:
+
+![](reference/figures/README-raw%20data%20plot-1.png)
+
+Preparation of the calendar with the package **rjd3toolkit**:
+
+``` r
+# French calendar
+frenchCalendar <- rjd3toolkit::national_calendar(days = list(
+  rjd3toolkit::fixed_day(7, 14), # Bastille Day
+  rjd3toolkit::fixed_day(5, 8, validity = list(start = "1982-05-08")), # End of 2nd WW
+  rjd3toolkit::special_day('NEWYEAR'),
+  rjd3toolkit::special_day('MAYDAY'), # 1st may
+  rjd3toolkit::special_day('EASTERMONDAY'),
+  rjd3toolkit::special_day('ASCENSION'),
+  rjd3toolkit::special_day('WHITMONDAY'),
+  rjd3toolkit::special_day('ASSUMPTION'),
+  rjd3toolkit::special_day('ALLSAINTSDAY'), # Toussaint
+  rjd3toolkit::special_day('ARMISTICE'), # End of 1st WW
+  rjd3toolkit::special_day('CHRISTMAS'))
+)
+```
+
+Creation of the calendar regressor in a matrix with the package
+**rjd3toolkit**:
+
+``` r
+# Calendar regressor matrix
+cal_reg <- rjd3toolkit::holidays(
+    calendar = frenchCalendar,
+    start = "1968-01-01", length = nrow(df_daily),
+    type = "All", nonworking = 7L)
+
+colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
+                       "east_mon", "asc", "pen_mon",
+                       "15th_aug", "1st_nov", "11th_nov", "Xmas")
+```
+
+Preprocessing with the function `fractionalAirlineEstimation`:
+
+``` r
+pre_pro <- fractionalAirlineEstimation(
+    y = df_daily$births,
+    x = cal_reg,
+    periods = 7, # weekly frequency
+    outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
+
+print(pre_pro)
+#> Number of observations: 19359
+#> Start: 1968-01-01 
+#> End: 2020-12-31 
+#> 
+#> Estimate MA parameters:
+#>       MA_parameter      Coef     Coef_SE    Tstat
+#>           Theta(1) 0.7620698 0.005571472 136.7807
+#>  Theta(period = 7) 0.9731793 0.001413477 688.5002
+#> 
+#> Number of calendar regressors: 11 , Number of outliers : 7
+#> 
+#> TD regressors coefficients:
+#>   Variable    Coef Coef_SE    Tstat
+#>  14th_july -0.1226  0.0047 -26.0615
+#>    8th_may -0.1419  0.0054 -26.3419
+#>    1st_jan -0.2223  0.0047 -47.3511
+#>    1st_may -0.1225  0.0047 -26.2643
+#>   east_mon -0.1891  0.0046 -40.7635
+#>        asc -0.1726  0.0046 -37.1949
+#>    pen_mon -0.1900  0.0046 -40.9429
+#>   15th_aug -0.1181  0.0047 -25.3461
+#>    1st_nov -0.1503  0.0046 -32.5662
+#>   11th_nov -0.1238  0.0046 -26.8142
+#>       Xmas -0.2310  0.0046 -49.7435
+#> 
+#> Outliers coefficients:
+#>       Variable    Coef Coef_SE   Tstat
+#>  WO.1999-12-31 -0.1762  0.0226 -7.7916
+#>  AO.1995-08-15 -0.2224  0.0340 -6.5503
+#>  WO.1999-12-24 -0.1447  0.0226 -6.3981
+#>  AO.2012-01-01  0.2098  0.0340  6.1786
+#>  AO.1998-07-14 -0.2101  0.0340 -6.1880
+#>  AO.1997-07-14 -0.2092  0.0340 -6.1602
+#>  AO.1995-05-01 -0.2042  0.0340 -6.0146
+#> 
+#> Sum of square residuals: 25.17 on 19330 degrees of freedom
+#> Log likelihood = 3.682e+04, 
+#>  aic = -7.361e+04, 
+#>  aicc = -7.361e+04, 
+#>  bic(corrected for length) = -6.635
+#> Hannan–Quinn information criterion = -7.355e+04
+```
+
+``` r
+plot(pre_pro, main = "French births")
+```
+
+![](reference/figures/README-preprocessing%20plots-1.png)
+
+``` r
+plot(x = pre_pro,
+     from = as.Date("2000-01-01"), to = as.Date("2000-12-31"),
+     main = "French births in 2000")
+```
+
+![](reference/figures/README-preprocessing%20plots-2.png)
+
+Decomposition with the AMB (Arima Model Based) algorithm:
+
+``` r
+# Decomposition with weekly pattern
+amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
+    y = pre_pro$model$linearized, # linearized series from preprocessing
+    period = 7,
+    log = TRUE, y_time = df_daily$date)
+
+# Extract day-of-year pattern from day-of-week-adjusted linearised data
+amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
+    y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
+    period = 365.2425, # day of year pattern
+    log = TRUE, y_time = df_daily$date)
+```
+
+Plot:
+
+``` r
+plot(amb.dow, main = "Weekly pattern")
+```
+
+![](reference/figures/README-amb%20plot%201-1.png)![](reference/figures/README-amb%20plot%201-2.png)
+
+``` r
+plot(amb.dow, main = "Weekly pattern - January 2018",
+     from = as.Date("2018-01-01"),
+     to = as.Date("2018-01-31"))
+```
+
+![](reference/figures/README-amb%20plot%202-1.png)![](reference/figures/README-amb%20plot%202-2.png)
+
+``` r
+plot(amb.doy, main = "Yearly pattern")
+```
+
+![](reference/figures/README-amb%20plot%203-1.png)![](reference/figures/README-amb%20plot%203-2.png)
+
+``` r
+plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
+     from = as.Date("2000-01-01"),
+     to = as.Date("2002-12-31"))
+```
+
+![](reference/figures/README-amb%20plot%204-1.png)![](reference/figures/README-amb%20plot%204-2.png)
+
+Perform an Arima Model Based (AMB) decomposition on several periodcities
+at once:
+
+``` r
+amb.multi <- rjd3highfreq::multiAirlineDecomposition(
+  y = pre_pro$model$linearized, # input time series
+  periods = c(7, 365.2425), # 2 frequency
+  log = TRUE, y_time = df_daily$date)
+```
+
+Plot the comparison between the two AMB methods for the annual
+periodicity:
+
+``` r
+plot(amb.multi)
+```
+
+![](reference/figures/README-plot%20amb.multi%201-1.png)![](reference/figures/README-plot%20amb.multi%201-2.png)
+
+``` r
+plot(amb.multi, main = "2012",
+     from = as.Date("2012-01-01"),
+     to = as.Date("2012-12-31"))
+```
+
+![](reference/figures/README-plot%20amb.multi%202-1.png)![](reference/figures/README-plot%20amb.multi%202-2.png)
+
+With the package
+[**rjd3x11plus**](https://github.com/rjdverse/rjd3x11plus), you can
+perform an X-11 like decomposition with any (non integer) periodicity.
+
+## Package Maintenance and contributing
+
+Any contribution is welcome and should be done through pull requests
+and/or issues. pull requests should include **updated tests** and
+**updated documentation**. If functionality is changed, docstrings
+should be added or updated.
+
+## Licensing
+
+The code of this project is licensed under the [European Union Public
+Licence
+(EUPL)](https://interoperable-europe.ec.europa.eu:443/collection/eupl/eupl-text-eupl-12).
+
+# Package index
+
+## All functions
+
+- [`.arima_extract()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-arima_extract.md)
+  : Title
+- [`.extended_airline_estimation()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_estimation.md)
+  : Title
+- [`.extended_airline_loglevel()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_loglevel.md)
+  : Title
+- [`.extended_airline_outliers()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_outliers.md)
+  : Title
+- [`.extended_airline_regarima()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_regarima.md)
+  : Creates a java RegArima models based on an extended airline spec
+- [`.extended_airline_spec()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_spec.md)
+  : Internal routine to create an ExtendedAirlineSpec
+- [`.plot_jd()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-plot_jd.md)
+  : Custom Plot Function on JD+ template
+- [`.ucm_extract()`](https://rjdverse.github.io/rjd3highfreq/reference/dot-ucm_extract.md)
+  : Title
+- [`fractionalAirlineDecomposition()`](https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition.md)
+  : Perform an Arima Model Based (AMB) decomposition
+- [`fractionalAirlineDecomposition_raw()`](https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition_raw.md)
+  : Title
+- [`fractionalAirlineDecomposition_ssf()`](https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineDecomposition_ssf.md)
+  : Title
+- [`fractionalAirlineEstimation()`](https://rjdverse.github.io/rjd3highfreq/reference/fractionalAirlineEstimation.md)
+  : Linearize the series with a fractional airline model
+- [`jd2r_fractionalAirlineDecomposition()`](https://rjdverse.github.io/rjd3highfreq/reference/jd2r_fractionalAirlineDecomposition.md)
+  : Title
+- [`jd2r_multiAirlineDecomposition()`](https://rjdverse.github.io/rjd3highfreq/reference/jd2r_multiAirlineDecomposition.md)
+  : Title
+- [`multiAirlineDecomposition()`](https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition.md)
+  : Perform an Arima Model Based (AMB) decomposition on several
+  periodcities at once
+- [`multiAirlineDecomposition_raw()`](https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition_raw.md)
+  : Title
+- [`multiAirlineDecomposition_ssf()`](https://rjdverse.github.io/rjd3highfreq/reference/multiAirlineDecomposition_ssf.md)
+  : Title
+- [`plot(`*`<JDFractionalAirlineDecomposition>`*`)`](https://rjdverse.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineDecomposition.md)
+  : Plot Function for JDFractionalAirlineDecomposition Objects
+- [`plot(`*`<JDFractionalAirlineEstimation>`*`)`](https://rjdverse.github.io/rjd3highfreq/reference/plot.JDFractionalAirlineEstimation.md)
+  : Plot Function for JDFractionalAirlineEstimation Objects
+- [`print(`*`<JDFractionalAirlineDecomposition>`*`)`](https://rjdverse.github.io/rjd3highfreq/reference/print.JDFractionalAirlineDecomposition.md)
+  : Print method for 'JDFractionalAirlineDecomposition' objects
+- [`print(`*`<JDFractionalAirlineEstimation>`*`)`](https://rjdverse.github.io/rjd3highfreq/reference/print.JDFractionalAirlineEstimation.md)
+  : Print method for 'JDFractionalAirlineEstimation' objects
+
