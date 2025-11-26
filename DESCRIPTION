@@ -1,7 +1,7 @@
 Package: rjd3highfreq
 Type: Package
 Title: Seasonal Adjustment of High Frequency Data with 'JDemetra+ 3.x'
-Version: 2.3.0
+Version: 2.4.0
 Authors@R: c(
   person("Jean", "Palate", role = c("aut", "cre"),
                 email = "palatejean@gmail.com"),
@@ -27,7 +27,7 @@ LazyData: TRUE
 Suggests:
     knitr,
     rmarkdown
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 BugReports: https://github.com/rjdverse/rjd3highfreq/issues
 Encoding: UTF-8
 Collate: 
