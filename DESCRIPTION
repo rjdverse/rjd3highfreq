@@ -13,7 +13,7 @@ Depends:
 Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
-  rjd3toolkit (>= 3.5.0),
+  rjd3toolkit (>= 3.6.0),
   rjd3sts (>= 2.3.0),
   checkmate,
   methods
