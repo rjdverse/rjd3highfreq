@@ -9,7 +9,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/rjdverse/rjd3highfreq/blob/v.2.4.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/rjdverse/rjd3highfreq/blob/develop/DESCRIPTION)
 
 Palate J (2025). *rjd3highfreq: Seasonal Adjustment of High Frequency
 Data with 'JDemetra+ 3.x'*. R package version 2.4.0,
