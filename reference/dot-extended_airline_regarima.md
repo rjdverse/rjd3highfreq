@@ -35,5 +35,5 @@ A Java RegArima model
 ``` r
 jspec<-.extended_airline_spec(c(12))
 .extended_airline_regarima(rjd3toolkit::ABS$X0.2.09.10.M, jspec)
-#> [1] "Java-Object{jdplus.toolkit.base.core.regarima.RegArimaModel@5a1c0542}"
+#> [1] "Java-Object{jdplus.toolkit.base.core.regarima.RegArimaModel@2b2948e2}"
 ```
