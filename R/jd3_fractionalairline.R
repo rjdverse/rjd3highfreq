@@ -63,7 +63,7 @@ fractionalAirlineDecomposition <- function(y,
     checkmate::assertNumeric(y, null.ok = FALSE)
     checkmate::assertNumeric(period, len = 1, null.ok = FALSE)
     checkmate::assertLogical(sn, len = 1, null.ok = FALSE)
-    jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
+    jrslt <- rJava::.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                     "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
                     "decompose", as.numeric(y), period, sn, stde, as.integer(nbcasts),
                     as.integer(nfcasts))
@@ -415,7 +415,7 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
                                                 log = FALSE,
                                                 y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- .arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima.model") #To be consistent
     cmps <- lapply(
         X = 1:ncmps,
         FUN = function(cmp) .ucm_extract(jrslt, cmp)

@@ -61,7 +61,7 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
         formatC(x$likelihood$bicc, digits = digits), sep = "")
     cat("\n")
 
-    cat("Hannan–Quinn information criterion = ",
+    cat("Hannan-Quinn information criterion = ",
         formatC(x$likelihood$hannanquinn, digits = digits), sep = "")
 
     cat("\n\n")
@@ -159,7 +159,7 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
         formatC(x$likelihood$bicc, digits = digits), sep = "")
     cat("\n")
 
-    cat("Hannan–Quinn information criterion = ",
+    cat("Hannan-Quinn information criterion = ",
         formatC(x$likelihood$hannanquinn, digits = digits), sep = "")
 
     cat("\n\n")
