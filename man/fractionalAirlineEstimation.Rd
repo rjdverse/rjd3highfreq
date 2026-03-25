@@ -13,6 +13,7 @@ fractionalAirlineEstimation(
   outliers = NULL,
   criticalValue = 6,
   precision = 1e-12,
+  deps = 1e-04,
   approximateHessian = FALSE,
   nfcasts = 0,
   log = FALSE,

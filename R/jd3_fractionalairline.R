@@ -44,6 +44,8 @@ NULL
 #' @param stde Boolean: TRUE: compute standard deviations of the components. In some cases (memory limits), it is currently not possible to compute them
 #' @param nbcasts number of backcasts.
 #' @param nfcasts number of forecasts.
+#' @param eps precision of the optimisation routine
+#' @param deps step in the computation of the numerical derivatives, used in the optimisation routine
 #' @param log
 #' @param y_time vector of times at which `y` is indexed
 #'
@@ -58,6 +60,8 @@ fractionalAirlineDecomposition <- function(y,
                                            stde = FALSE,
                                            nbcasts = 0,
                                            nfcasts = 0,
+                                           eps = 1e-9,
+                                           deps=1e-4,
                                            log = FALSE,
                                            y_time = NULL) {
     checkmate::assertNumeric(y, null.ok = FALSE)
@@ -65,8 +69,8 @@ fractionalAirlineDecomposition <- function(y,
     checkmate::assertLogical(sn, len = 1, null.ok = FALSE)
     jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                     "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
-                    "decompose", as.numeric(y), period, sn, stde, as.integer(nbcasts),
-                    as.integer(nfcasts))
+                    "decompose", as.numeric(y), as.numeric(period), sn, stde, as.integer(nbcasts),
+                    as.integer(nfcasts), as.numeric(eps), as.numeric(deps))
     return(jd2r_fractionalAirlineDecomposition(jrslt, sn, stde, period, log, y_time))
 }
 
@@ -80,6 +84,8 @@ fractionalAirlineDecomposition <- function(y,
 #' @param stde Boolean: TRUE: compute standard deviations of the components. In some cases (memory limits), it is currently not possible to compute them
 #' @param nbcasts number of backcasts.
 #' @param nfcasts number of forecasts.
+#' @param eps precision of the optimisation routine
+#' @param deps step in the computation of the numerical derivatives, used in the optimisation routine
 #' @param log
 #' @param y_time vector of times at which `y` is indexed
 #'
@@ -89,17 +95,18 @@ fractionalAirlineDecomposition <- function(y,
 #' @examples
 #'
 multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = FALSE,
-                                      nbcasts = 0, nfcasts = 0, log = FALSE, y_time = NULL) {
+                                      nbcasts = 0, nfcasts = 0, eps = 1e-9, deps=1e-4,
+                                      log = FALSE, y_time = NULL) {
     if (length(periods) == 1) {
         return(fractionalAirlineDecomposition(y, periods, stde = stde,
-                                              nbcasts = nbcasts, nfcasts = nfcasts,
+                                              nbcasts = nbcasts, nfcasts = nfcasts, eps = eps, deps = deps,
                                               log = log, y_time = y_time))
     }
     checkmate::assertNumeric(y, null.ok = FALSE)
     jrslt <- .jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                     "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
                     "decompose", as.numeric(y), .jarray(periods), as.integer(ndiff),
-                    ar, stde, as.integer(nbcasts), as.integer(nfcasts))
+                    ar, stde, as.integer(nbcasts), as.integer(nfcasts),as.numeric(eps), as.numeric(deps))
     if (length(periods) == 1) {
         return(jd2r_fractionalAirlineDecomposition(jrslt, sn = FALSE, stde, periods,
                                                    log = log, y_time = y_time))
@@ -136,6 +143,7 @@ fractionalAirlineEstimation <- function(y,
                                         outliers = NULL,
                                         criticalValue = 6,
                                         precision = 1e-12,
+                                        deps=1e-4,
                                         approximateHessian = FALSE,
                                         nfcasts = 0,
                                         log = FALSE,
@@ -159,17 +167,18 @@ fractionalAirlineEstimation <- function(y,
         returnSig = "Ljdplus/highfreq/base/core/extendedairline/ExtendedAirlineEstimation;",
         method = "estimate",
         as.numeric(y),
-        rjd3toolkit::.r2jd_matrix(x),
+          log,
+      rjd3toolkit::.r2jd_matrix(x),
         mean,
         .jarray(periods),
         as.integer(ndiff),
         ar,
         joutliers,
         criticalValue,
-        precision,
-        approximateHessian,
         as.integer(nfcasts),
-        log
+        precision,
+        deps,
+        approximateHessian
     )
 
     external_variables <- .proc_variable_outlier_names(
@@ -270,13 +279,13 @@ fractionalAirlineEstimation <- function(y,
 #'
 #' @examples
 #'
-multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALSE, nbcasts=0, nfcasts=0) {
+multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALSE, nbcasts=0, nfcasts=0, precision=1e-12, deps=1e-4) {
     checkmate::assertNumeric(y, null.ok = FALSE)
 
     jrslt<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
                   "decompose", as.numeric(y),
-                  .jarray(periods), as.integer(ndiff), ar, stde, as.integer(nbcasts), as.integer(nfcasts))
+                  .jarray(periods), as.integer(ndiff), ar, stde, as.integer(nbcasts), as.integer(nfcasts), as.numeric(precision), as.numeric((deps)))
 
     return(jrslt)
 }
@@ -309,14 +318,14 @@ multiAirlineDecomposition_ssf<-function(jdecomp) {
 #'
 #' @examples
 #'
-fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nbcasts=0, nfcasts=0) {
+fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nbcasts=0, nfcasts=0, precision=1e-12, deps=1e-4) {
     checkmate::assertNumeric(y, null.ok = FALSE)
     checkmate::assertNumeric(period, len = 1, null.ok = FALSE)
     checkmate::assertLogical(sn, len = 1, null.ok = FALSE)
     jrslt<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                   "Ljdplus/highfreq/base/core/extendedairline/decomposition/LightExtendedAirlineDecomposition;",
                   "decompose", as.numeric(y),
-                  period, sn, stde, as.integer(nbcasts), as.integer(nfcasts))
+                  period, sn, stde, as.integer(nbcasts), as.integer(nfcasts), as.numeric(precision), as.numeric(deps))
     return(jrslt)
 }
 

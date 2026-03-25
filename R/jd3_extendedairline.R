@@ -31,6 +31,7 @@ NULL
 #' @param jspec Java spec
 #' @param mean Mean correction (to be avoided)
 #' @param X Regression variables
+#' @param deps step identifying small changes in the parameters (used in the computation of numerical derivatives). Will be removed.
 #'
 #' @return A Java RegArima model
 #' @export
@@ -56,10 +57,10 @@ NULL
 #' @export
 #'
 #' @examples
-.extended_airline_estimation<-function(jregarima, jspec, eps=1e-9, exactHessian=FALSE){
+.extended_airline_estimation<-function(jregarima, jspec, eps=1e-9, deps=1e-9, exactHessian=FALSE){
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/core/extendedairline/LightExtendedAirlineEstimation;", "estimate",
-                    jregarima, jspec, as.numeric(eps), as.logical(exactHessian))
+                    jregarima, jspec, as.numeric(eps), as.numeric(deps), as.logical(exactHessian))
     return(rjd3toolkit::.jd3_object(jrslt, result=TRUE))
 }
 
@@ -68,15 +69,15 @@ NULL
 #' @param jregarima
 #' @param jspec
 #' @param precision
+#' @param deps
 #'
 #' @return
 #' @export
 #'
 #' @examples
-.extended_airline_loglevel<-function(jregarima, jspec, precision=1e-5){
+.extended_airline_loglevel<-function(jregarima, jspec, precision=1e-5, deps = 1e-4){
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "[D", "logLevelTest",
-                    jregarima, jspec, as.numeric(precision))
-    return(rslt)
+                    jregarima, jspec, as.numeric(precision), as.numeric(deps))
 
 }
 
@@ -90,16 +91,18 @@ NULL
 #' @param critical_value
 #' @param max_outliers
 #' @param max_round
+#' @param precision
+#' @param deps
 #'
 #' @return
 #' @export
 #'
 #' @examples
-.extended_airline_outliers<-function(jregarima, jspec, types=c("ao"), start=0, end=0, critical_value=0, max_outliers=30, max_round=30){
+.extended_airline_outliers<-function(jregarima, jspec, types=c("ao"), start=0, end=0, critical_value=0, max_outliers=30, max_round=30, precision=1e-5, deps=1e-4){
     if (start != 0) start<-start-1
     if (end != 0) end<-end-1
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "outliers",
                    jregarima, jspec, .jarray(types), as.integer(start), as.integer(end),
-                   as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round))
+                   as.numeric(critical_value), as.integer(max_outliers), as.integer(max_round), as.numeric((precision), as.numeric(deps)))
     return(rjd3toolkit::.jd2r_matrix(rslt)+1)
 }

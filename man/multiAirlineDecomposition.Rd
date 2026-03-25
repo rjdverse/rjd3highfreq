@@ -12,6 +12,8 @@ multiAirlineDecomposition(
   stde = FALSE,
   nbcasts = 0,
   nfcasts = 0,
+  eps = 1e-09,
+  deps = 1e-04,
   log = FALSE,
   y_time = NULL
 )
@@ -26,6 +28,10 @@ multiAirlineDecomposition(
 \item{nbcasts}{number of backcasts.}
 
 \item{nfcasts}{number of forecasts.}
+
+\item{eps}{precision of the optimisation routine}
+
+\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine}
 
 \item{y_time}{vector of times at which `y` is indexed}
 
