@@ -22,23 +22,15 @@
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
-					<artifactId>jdplus-toolkit-base-api</artifactId>
+					<artifactId>jdplus-highfreq-base-api</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>*</groupId>
-					<artifactId>jdplus-toolkit-base-core</artifactId>
+					<artifactId>jdplus-highfreq-base-core</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>*</groupId>
 					<artifactId>jdplus-toolkit-base-r</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>jdplus-advancedsa-base-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>jdplus-advancedsa-base-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -116,7 +108,17 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>jdemetra-snapshots</id>
+			<id>central-snapshots</id>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>old-snapshots</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
