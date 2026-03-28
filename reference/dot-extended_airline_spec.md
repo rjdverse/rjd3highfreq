@@ -39,5 +39,5 @@ A Java ExtendedAirlineSpec object
 
 ``` r
 .extended_airline_spec(c(7, 365.25))
-#> [1] "Java-Object{ExtendedAirlineSpec(mean=false, periodicities=[7.0, 365.25], differencingOrder=3, phi=null, theta=..., stheta=[..., ...], adjustToInt=false)}"
+#> Error in .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/api/ExtendedAirlineSpec;",     "spec", .jarray(as.numeric(periodicities)), as.integer(differencing),     as.logical(ar), as.logical(toint)): RcallMethod: cannot determine object class
 ```

@@ -14,6 +14,8 @@ multiAirlineDecomposition(
   stde = FALSE,
   nbcasts = 0,
   nfcasts = 0,
+  eps = 1e-09,
+  deps = 1e-04,
   log = FALSE,
   y_time = NULL
 )
@@ -42,6 +44,15 @@ multiAirlineDecomposition(
 - nfcasts:
 
   number of forecasts.
+
+- eps:
+
+  precision of the optimisation routine
+
+- deps:
+
+  step in the computation of the numerical derivatives, used in the
+  optimisation routine
 
 - y_time:
 

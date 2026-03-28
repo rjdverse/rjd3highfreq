@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rjd3highfreq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0.9500</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,8 @@
 <span>  stde <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nbcasts <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  nfcasts <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  eps <span class="op">=</span> <span class="fl">1e-09</span>,</span>
+<span>  deps <span class="op">=</span> <span class="fl">1e-04</span>,</span>
 <span>  log <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  y_time <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -73,6 +75,14 @@
 
 <dt id="arg-nfcasts">nfcasts<a class="anchor" aria-label="anchor" href="#arg-nfcasts"></a></dt>
 <dd><p>number of forecasts.</p></dd>
+
+
+<dt id="arg-eps">eps<a class="anchor" aria-label="anchor" href="#arg-eps"></a></dt>
+<dd><p>precision of the optimisation routine</p></dd>
+
+
+<dt id="arg-deps">deps<a class="anchor" aria-label="anchor" href="#arg-deps"></a></dt>
+<dd><p>step in the computation of the numerical derivatives, used in the optimisation routine</p></dd>
 
 
 <dt id="arg-y-time">y_time<a class="anchor" aria-label="anchor" href="#arg-y-time"></a></dt>

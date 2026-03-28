@@ -13,10 +13,12 @@ Title
   end = 0,
   critical_value = 0,
   max_outliers = 30,
-  max_round = 30
+  max_round = 30,
+  precision = 1e-05,
+  deps = 1e-04
 )
 ```
 
 ## Arguments
 
-- max_round:
+- deps:

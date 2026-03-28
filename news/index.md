@@ -1,6 +1,6 @@
 # Changelog
 
-## rjd3highfreq 2.4.0
+## rjd3highfreq 2.4.0.9500
 
 All notable changes to this project will be documented in this file.
 
