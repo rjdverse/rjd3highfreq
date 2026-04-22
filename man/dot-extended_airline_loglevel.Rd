@@ -4,10 +4,10 @@
 \alias{.extended_airline_loglevel}
 \title{Title}
 \usage{
-.extended_airline_loglevel(jregarima, jspec, precision = 1e-05)
+.extended_airline_loglevel(jregarima, jspec, precision = 1e-05, deps = 1e-04)
 }
 \arguments{
-\item{precision}{}
+\item{deps}{}
 }
 \description{
 Title

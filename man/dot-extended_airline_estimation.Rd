@@ -8,6 +8,7 @@
   jregarima,
   jspec,
   eps = 1e-09,
+  deps = 1e-09,
   exactHessian = FALSE
 )
 }

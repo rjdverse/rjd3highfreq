@@ -14,6 +14,8 @@
 \item{mean}{Mean correction (to be avoided)}
 
 \item{X}{Regression variables}
+
+\item{deps}{step identifying small changes in the parameters (used in the computation of numerical derivatives). Will be removed.}
 }
 \value{
 A Java RegArima model
