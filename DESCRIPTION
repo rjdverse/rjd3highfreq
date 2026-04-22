@@ -18,9 +18,6 @@ Imports:
   checkmate,
   forecast,
   methods
-Remotes:
-github::rjdverse/rjd3toolkit,    
-github::rjdverse/rjd3xjars
 SystemRequirements: Java (>= 17)
 License: file LICENSE
 URL: https://github.com/rjdverse/rjd3highfreq, https://rjdverse.github.io/rjd3highfreq/
