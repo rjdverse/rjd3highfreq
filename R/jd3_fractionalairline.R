@@ -358,7 +358,7 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp) {
 jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
                                            log = FALSE, y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- .arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima.model")
     cmps <- lapply(1:ncmps, function(cmp) {
         return(.ucm_extract(jrslt, cmp))
     })
@@ -424,7 +424,7 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
                                                 log = FALSE,
                                                 y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
-    model <- .arima_extract(jrslt, "ucarima_model")
+    model <- .arima_extract(jrslt, "ucarima.model")
     cmps <- lapply(
         X = 1:ncmps,
         FUN = function(cmp) .ucm_extract(jrslt, cmp)
