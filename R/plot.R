@@ -1,16 +1,23 @@
 
-#' Custom Plot Function on JD+ template
+#' Create a custom plot replicating the JD+ GUI visual style
 #'
-#' This function creates a customized plot in the same template as JD+ GUI color and forms.
-#'
-#' @param x Numeric vector, x-axis values.
-#' @param y List of numeric vectors, y-axis values for different series.
-#' @param col Vector of colors for different series.
-#' @param legend_txt Character vector of legend labels for different series.
-#' @param ... Additional graphical parameters.
+#' This internal function generates a time series plot that replicates the visual
+#' template of the JD+ graphical user interface. The function 
+#' supports plotting one or more time series simultaneously.
+#' 
+#' @param x Numeric vector representing the x-axis values, typically a R time 
+#'   series object.
+#' @param y A list of numeric vectors, where each element represents a
+#'   different time series to be plotted on the y-axis.
+#' @param col A character or color vector specifying the color assigned to each
+#'   series.
+#' @param legend_txt An optional character vector of labels for the legend.
+#' @param ... Additional graphical parameters. Can be used to customize line
+#'   types (\code{lty}), line widths (\code{lwd}), or other aesthetic properties
+#'   that apply uniformly to all series.
 #'
 #' @return `NULL` (invisible).
-#'
+#' 
 #' @export
 .plot_jd <- function(x, y, col, legend_txt = NULL, ...) {
 
@@ -52,16 +59,39 @@
     return(invisible(NULL))
 }
 
-#' Plot Function for JDFractionalAirlineEstimation Objects
+#' Plot method for JDFractionalAirlineEstimation objects
 #'
-#' This function creates a plot for the result of fractional airline model (class `JDFractionalAirlineEstimation`). It shows the raw data and linearized series.
-#'
-#' @param x An object of class 'JDFractionalAirlineEstimation'.
-#' @param from `Date` or `POSIXt` object, optional starting point for x-axis.
-#' @param to `Date` or `POSIXt` object, optional ending point for x-axis.
-#' @param ... Additional graphical parameters.
+#' This function implements the \code{\link[graphics]{plot}} S3 method for objects
+#' of class \code{JDFractionalAirlineEstimation}.
+#' 
+#' @param x An object of class \code{JDFractionalAirlineEstimation}, as
+#'   returned by the fractional airline estimation functions.
+#' @param from An optional \code{Date} or \code{POSIXt} object specifying
+#'   the start of the time window to display.
+#' @param to An optional \code{Date} or \code{POSIXt} object specifying
+#'   the end of the time window to display.
+#' @param ... Additional graphical parameters passed to \code{\link{.plot_jd}}.
 #'
 #' @return `NULL` (invisible).
+#'
+#' @examples
+#' \dontrun{
+#' # Assuming 'estimation' is a JDFractionalAirlineEstimation object
+#' # Basic plot: raw data vs. linearised series
+#' plot(estimation)
+#'
+#' # Plot restricted to a specific time window
+#' plot(estimation,
+#'      from = as.Date("2015-01-01"),
+#'      to   = as.Date("2020-12-31"))
+#'
+#' # Combining time window, custom title and line width
+#' plot(estimation,
+#'      from = as.Date("2018-06-01"),
+#'      to   = as.Date("2023-01-01"),
+#'      main = "Filtered window",
+#'      lwd  = 2)
+#' }
 #'
 #' @export
 plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
@@ -111,19 +141,55 @@ plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
     return(invisible(NULL))
 }
 
-#' Plot Function for JDFractionalAirlineDecomposition Objects
+#' Plot method for JDFractionalAirlineDecomposition objects
 #'
-#' This function creates a plot for the result of an Arima Model Based (AMB) decomposition of one or several frequencies (class `JDFractionalAirlineDecomposition`). It shows the decomposition and the component of the model.
+#' This function implements the \code{\link[graphics]{plot}} S3 method for objects
+#' of class \code{JDFractionalAirlineDecomposition}. It produces one or two
+#' JD+-styled plots (via \code{\link{.plot_jd}}).
 #'
-#'
-#' @param x An object of class 'JDFractionalAirlineDecomposition'.
-#' @param from `Date` or `POSIXt` object, optional starting point for x-axis.
-#' @param to `Date` or `POSIXt` object, optional ending point for x-axis.
-#' @param type_chart Character vector specifying the type of chart to plot ("y-sa-trend", "cal-seas-irr").
-#' @param ... Additional graphical parameters.
-#'
+#' @param x An object of class \code{JDFractionalAirlineDecomposition}, as
+#'   returned by the fractional airline decomposition functions.
+#' @param from An optional \code{Date} or \code{POSIXt} object specifying
+#'   the start of the time window to display.
+#' @param to An optional \code{Date} or \code{POSIXt} object specifying
+#'   the end of the time window to display.
+#' @param type_chart Character vector specifying which chart(s) to render.
+#'   Accepts one or both of the following values:
+#'   \itemize{
+#'     \item \code{"y-sa-trend"} — plots the raw data, seasonally adjusted
+#'         series, and trend-cycle component (default)
+#'     \item \code{"cal-seas-irr"} — plots all seasonal components and the
+#'         irregular component
+#'   }
+#' @param ... Additional graphical parameters passed through to 
+#' \code{\link{.plot_jd}}.
+#'    
 #' @return `NULL` (invisible).
+#' @examples
+#' \dontrun{
+#' # Assuming 'decomp' is a JDFractionalAirlineDecomposition object
 #'
+#' # --- Default: render both charts sequentially ---------------------------
+#' plot(decomp)
+#'
+#' # --- Render only the raw / SA / trend chart -----------------------------
+#' plot(decomp, type_chart = "y-sa-trend")
+#'
+#' # --- Restrict both charts to a specific time window ----------------------
+#' plot(decomp,
+#'      from = as.Date("2016-01-01"),
+#'      to   = as.Date("2022-12-31"))
+#'
+#' # --- Both charts stacked vertically with a custom line width --------------
+#' par(mfrow = c(2, 1))
+#' plot(decomp,
+#'      from = as.Date("2018-01-01"),
+#'      to   = as.Date("2023-06-30"),
+#'      main = "Stacked view",
+#'      lwd  = 2)
+#' par(mfrow = c(1, 1))   # reset layout
+#' }
+#' 
 #' @export
 plot.JDFractionalAirlineDecomposition <- function(
         x, from, to, type_chart = c("y-sa-trend", "cal-seas-irr"), ...) {

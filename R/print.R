@@ -1,11 +1,24 @@
-#' Print method for 'JDFractionalAirlineDecomposition' objects
+
+#' Print method for JDFractionalAirlineDecomposition objects
 #'
-#' This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineDecomposition).
+#' This function implements the \code{\link[base]{print}} S3 method for objects
+#' of class \code{JDFractionalAirlineDecomposition}.
+#' 
+#' @param x An object of class \code{JDFractionalAirlineDecomposition}, as
+#'   returned by the fractional airline decomposition functions
+#' @param digits Integer. Number of significant digits used to format all
+#'   numeric values in the output.
+#' @param ... Additional arguments.
+#' 
+#' @return The function returns the input object \code{x}.
 #'
-#' @param x An object of class 'JDFractionalAirlineDecomposition'.
-#' @param digits Number of digits to round numerical values (default is 3 or digits - 3 from options).
+#' @examples
+#' \dontrun{
+#' # Assuming 'decomp' is a JDFractionalAirlineDecomposition object
 #'
-#' @return The original object 'x'.
+#' # --- Basic print (dispatched automatically) ------------------------------
+#' print(decomp)
+#' }
 #'
 #' @export
 print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
@@ -69,14 +82,26 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
     return(invisible(x))
 }
 
-#' Print method for 'JDFractionalAirlineEstimation' objects
+#' Print method for JDFractionalAirlineEstimation objects
 #'
-#' This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineEstimation).
+#' This function implements the \code{\link[base]{print}} S3 method for objects
+#' of class \code{JDFractionalAirlineEstimation}.
 #'
-#' @param x An object of class 'JDFractionalAirlineEstimation'.
-#' @param digits Number of digits to round numerical values (default is 3 or digits - 3 from options).
+#' @param x An object of class \code{JDFractionalAirlineEstimation}, as
+#'   returned by the fractional airline estimation functions.
+#' @param digits Integer. Number of significant digits used to format all
+#'   numeric values in the printed output.
+#' @param ... Additional arguments.
 #'
-#' @return The original object 'x'.
+#' @return The function returns the input object \code{x}.
+#'
+#' @examples
+#' \dontrun{
+#' # Assuming 'estimation' is a JDFractionalAirlineEstimation object
+#'
+#' # --- Basic print (dispatched automatically) ------------------------------
+#' print(estimation)
+#' }
 #'
 #' @export
 print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
