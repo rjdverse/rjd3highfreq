@@ -2,22 +2,46 @@
 % Please edit documentation in R/plot.R
 \name{plot.JDFractionalAirlineEstimation}
 \alias{plot.JDFractionalAirlineEstimation}
-\title{Plot Function for JDFractionalAirlineEstimation Objects}
+\title{Plot method for JDFractionalAirlineEstimation objects}
 \usage{
 \method{plot}{JDFractionalAirlineEstimation}(x, from, to, ...)
 }
 \arguments{
-\item{x}{An object of class 'JDFractionalAirlineEstimation'.}
+\item{x}{An object of class \code{JDFractionalAirlineEstimation}, as
+returned by the fractional airline estimation functions.}
 
-\item{from}{`Date` or `POSIXt` object, optional starting point for x-axis.}
+\item{from}{An optional \code{Date} or \code{POSIXt} object specifying
+the start of the time window to display.}
 
-\item{to}{`Date` or `POSIXt` object, optional ending point for x-axis.}
+\item{to}{An optional \code{Date} or \code{POSIXt} object specifying
+the end of the time window to display.}
 
-\item{...}{Additional graphical parameters.}
+\item{...}{Additional graphical parameters passed to \code{\link{.plot_jd}}.}
 }
 \value{
 `NULL` (invisible).
 }
 \description{
-This function creates a plot for the result of fractional airline model (class `JDFractionalAirlineEstimation`). It shows the raw data and linearized series.
+This function implements the \code{\link[graphics]{plot}} S3 method for objects
+of class \code{JDFractionalAirlineEstimation}.
+}
+\examples{
+\dontrun{
+# Assuming 'estimation' is a JDFractionalAirlineEstimation object
+# Basic plot: raw data vs. linearised series
+plot(estimation)
+
+# Plot restricted to a specific time window
+plot(estimation,
+     from = as.Date("2015-01-01"),
+     to   = as.Date("2020-12-31"))
+
+# Combining time window, custom title and line width
+plot(estimation,
+     from = as.Date("2018-06-01"),
+     to   = as.Date("2023-01-01"),
+     main = "Filtered window",
+     lwd  = 2)
+}
+
 }

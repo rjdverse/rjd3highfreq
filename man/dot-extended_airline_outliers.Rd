@@ -2,7 +2,7 @@
 % Please edit documentation in R/jd3_extendedairline.R
 \name{.extended_airline_outliers}
 \alias{.extended_airline_outliers}
-\title{Title}
+\title{Outlier Detection for Extended Airline Models}
 \usage{
 .extended_airline_outliers(
   jregarima,
@@ -18,8 +18,56 @@
 )
 }
 \arguments{
-\item{deps}{}
+\item{jregarima}{Java object containing the estimated RegARIMA model.}
+
+\item{jspec}{Java object containing the Extended Airline model specifications.}
+
+\item{types}{Character vector specifying the types of outliers to detect.
+Default: c("ao") (additive outliers only). Common options include:
+\itemize{
+  \item "ao" - Additive Outlier
+  \item "ls" - Level Shift
+  \item "wo" - Switch Outlier
+}}
+
+\item{start}{Integer specifying the starting position (1-based R indexing) for 
+outlier detection. Default: 0 (detection from the beginning of the series).}
+
+\item{end}{Integer specifying the ending position (1-based R indexing) for 
+outlier detection. Default: 0 (detection until the end of the series).}
+
+\item{critical_value}{Numeric value for the critical value threshold.
+Uses the maximum value among the specified value and a global max-t 
+threshold based on extreme-value theory, roughly of order sqrt(2 * log(n))).
+Default: 0 (global max-t threshold is used).}
+
+\item{max_outliers}{Integer specifying the maximum number of outliers to detect.
+Default: 30.}
+
+\item{max_round}{Integer specifying the maximum number of detection iterations.
+Default: 30.}
+
+\item{precision}{Numeric value specifying the tolerance for convergence
+of optimization algorithms. Default: 1e-5.}
+
+\item{deps}{Numeric scalar. Step in the computation of the numerical derivatives,
+used in the optimisation routine. Default:1e-4.}
+}
+\value{
+A numeric matrix with dimensions [number of outliers detected × 2]:
 }
 \description{
-Title
+This internal function performs automatic outlier detection in high-frequency 
+time series using Extended Airline models.
+}
+\examples{
+\dontrun{
+outliers_window <- .extended_airline_outliers(
+  jreg, jspec,
+  types = c("ao", "ls"),
+  start = 100,
+  end = 500,
+  critical_value = 6.0
+)
+}
 }

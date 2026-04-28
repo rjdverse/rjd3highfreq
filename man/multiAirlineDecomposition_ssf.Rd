@@ -2,13 +2,42 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{multiAirlineDecomposition_ssf}
 \alias{multiAirlineDecomposition_ssf}
-\title{Title}
+\title{Extract the state space form (SSF) representation from a multi-airline
+sdecomposition}
 \usage{
 multiAirlineDecomposition_ssf(jdecomp)
 }
 \arguments{
-\item{jdecomp}{}
+\item{jdecomp}{Java object returned by
+\code{multiAirlineDecomposition_raw()} or an equivalent fractional airline
+decomposition.}
+}
+\value{
+An R object representing the state space form of the decomposition, derived
+from a Java \code{SsfUcarimaEstimation} object.
 }
 \description{
-Title
+This function extracts the state space form (SSF) representation associated
+with a fractional airline AMB decomposition. The SSF object is obtained from
+the Java backend and converted to an R-friendly representation using
+\code{rjd3toolkit}.
+}
+\details{
+It is mainly intended for diagnostic purposes or for advanced users who need
+access to the underlying state space model corresponding to the estimated
+Ucarima representation.
+}
+\examples{
+\dontrun{
+# Raw multi-period decomposition
+jdec <- multiAirlineDecomposition_raw(
+  y = linearized_data$y,
+  periods = c(7, 365.2425)
+)
+
+# Extract the state space form
+ssf <- multiAirlineDecomposition_ssf(jdec)
+
+ssf
+}
 }

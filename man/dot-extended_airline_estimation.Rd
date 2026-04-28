@@ -2,7 +2,7 @@
 % Please edit documentation in R/jd3_extendedairline.R
 \name{.extended_airline_estimation}
 \alias{.extended_airline_estimation}
-\title{Title}
+\title{Estimate parameters of an Extended Airline RegARIMA model}
 \usage{
 .extended_airline_estimation(
   jregarima,
@@ -13,8 +13,31 @@
 )
 }
 \arguments{
-\item{exactHessian}{}
+\item{jregarima}{A Java RegArimaModel object, for instance created using
+\code{\link{.extended_airline_regarima}}.}
+
+\item{jspec}{A Java ExtendedAirlineSpec object, for instance created using
+\code{\link{.extended_airline_spec}}.}
+
+\item{eps}{Numeric scalar specifying the convergence tolerance for the
+optimization algorithm.}
+
+\item{deps}{Numeric scalar. Step in the computation of the numerical derivatives,
+used in the optimisation routine. Default:1e-4.}
+
+\item{exactHessian}{Logical. If \code{TRUE}, computes the exact Hessian matrix
+at the optimum for calculating standard errors. If \code{FALSE} (default),
+uses a numerical approximation.}
+}
+\value{
+A list object containing detailed estimation results.
 }
 \description{
-Title
+This internal function performs maximum likelihood estimation of an Extended 
+Airline model that has been previously specified and initialized.
+}
+\examples{
+\dontrun{
+.extended_airline_estimation(jregarima, jspec, eps=1e-9, exactHessian=FALSE)
+}
 }

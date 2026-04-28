@@ -2,24 +2,63 @@
 % Please edit documentation in R/plot.R
 \name{plot.JDFractionalAirlineDecomposition}
 \alias{plot.JDFractionalAirlineDecomposition}
-\title{Plot Function for JDFractionalAirlineDecomposition Objects}
+\title{Plot method for JDFractionalAirlineDecomposition objects}
 \usage{
 \method{plot}{JDFractionalAirlineDecomposition}(x, from, to, type_chart = c("y-sa-trend", "cal-seas-irr"), ...)
 }
 \arguments{
-\item{x}{An object of class 'JDFractionalAirlineDecomposition'.}
+\item{x}{An object of class \code{JDFractionalAirlineDecomposition}, as
+returned by the fractional airline decomposition functions.}
 
-\item{from}{`Date` or `POSIXt` object, optional starting point for x-axis.}
+\item{from}{An optional \code{Date} or \code{POSIXt} object specifying
+the start of the time window to display.}
 
-\item{to}{`Date` or `POSIXt` object, optional ending point for x-axis.}
+\item{to}{An optional \code{Date} or \code{POSIXt} object specifying
+the end of the time window to display.}
 
-\item{type_chart}{Character vector specifying the type of chart to plot ("y-sa-trend", "cal-seas-irr").}
+\item{type_chart}{Character vector specifying which chart(s) to render.
+Accepts one or both of the following values:
+\itemize{
+  \item \code{"y-sa-trend"} — plots the raw data, seasonally adjusted
+      series, and trend-cycle component (default)
+  \item \code{"cal-seas-irr"} — plots all seasonal components and the
+      irregular component
+}}
 
-\item{...}{Additional graphical parameters.}
+\item{...}{Additional graphical parameters passed through to 
+\code{\link{.plot_jd}}.}
 }
 \value{
 `NULL` (invisible).
 }
 \description{
-This function creates a plot for the result of an Arima Model Based (AMB) decomposition of one or several frequencies (class `JDFractionalAirlineDecomposition`). It shows the decomposition and the component of the model.
+This function implements the \code{\link[graphics]{plot}} S3 method for objects
+of class \code{JDFractionalAirlineDecomposition}. It produces one or two
+JD+-styled plots (via \code{\link{.plot_jd}}).
+}
+\examples{
+\dontrun{
+# Assuming 'decomp' is a JDFractionalAirlineDecomposition object
+
+# --- Default: render both charts sequentially ---------------------------
+plot(decomp)
+
+# --- Render only the raw / SA / trend chart -----------------------------
+plot(decomp, type_chart = "y-sa-trend")
+
+# --- Restrict both charts to a specific time window ----------------------
+plot(decomp,
+     from = as.Date("2016-01-01"),
+     to   = as.Date("2022-12-31"))
+
+# --- Both charts stacked vertically with a custom line width --------------
+par(mfrow = c(2, 1))
+plot(decomp,
+     from = as.Date("2018-01-01"),
+     to   = as.Date("2023-06-30"),
+     main = "Stacked view",
+     lwd  = 2)
+par(mfrow = c(1, 1))   # reset layout
+}
+
 }

@@ -22,22 +22,55 @@ fractionalAirlineDecomposition(
 
 \item{period}{period of the seasonal component, any positive real number.}
 
-\item{sn}{decomposition into signal and noise (2 components only). The signal is the seasonally adjusted series and the noise the seasonal component.}
+\item{sn}{decomposition into signal and noise (2 components only). The signal
+is the seasonally adjusted series and the noise the seasonal component.
+Default: FALSE.}
 
-\item{stde}{Boolean: TRUE: compute standard deviations of the components. In some cases (memory limits), it is currently not possible to compute them}
+\item{stde}{Boolean: TRUE: compute standard deviations of the components.
+In some cases (e.g. memory limits), it is currently not possible to compute
+them. Default: FALSE.}
 
-\item{nbcasts}{number of backcasts.}
+\item{nbcasts}{number of backcasts. Default: 0.}
 
-\item{nfcasts}{number of forecasts.}
+\item{nfcasts}{number of forecasts. Default: 0.}
 
-\item{eps}{precision of the optimisation routine}
+\item{eps}{precision of the optimisation routine. Default:1e-9.}
 
-\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine}
+\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine. Default:1e-4}
 
-\item{y_time}{vector of times at which `y` is indexed}
+\item{log}{logical indicating whether the series is on the log scale.
+Default: FALSE.}
 
-\item{adjust}{Boolean: TRUE: actual fractional airline model is to be used, FALSE: the period is rounded to the nearest integer.}
+\item{y_time}{vector of times at which `y` is indexed. Optional.}
+
+\item{adjust}{Boolean: TRUE: actual fractional airline model is to be used,
+FALSE: the period is rounded to the nearest integer.}
+}
+\value{
+An object containing the AMB decomposition results, including the
+  estimated components and, if requested, their standard deviations.
 }
 \description{
-Perform an Arima Model Based (AMB) decomposition
+Performs an Arima Model Based (AMB) decomposition using a (fractional)
+airline model, suitable for high-frequency time series. The method
+decomposes the input series into trend, seasonal and irregular components,
+with optional signal–noise decomposition.
+}
+\details{
+If `sn = TRUE`, the decomposition is restricted to two components only
+(signal and noise). When `stde = TRUE`, the computation of standard deviations
+may fail for long series or high-frequency data due to memory constraints.
+}
+\examples{
+\dontrun{
+amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
+  y = linearized_data$y, # linearized series from preprocessing
+  period = 7,
+  log = TRUE, y_time = linearized_data$date)
+
+amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
+  y = linearized_data$y, # linearized series from preprocessing
+  period = 365.2425,
+  log = log, y_time = linearized_data$date)
+}
 }

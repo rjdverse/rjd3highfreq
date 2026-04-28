@@ -2,7 +2,7 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{multiAirlineDecomposition}
 \alias{multiAirlineDecomposition}
-\title{Perform an Arima Model Based (AMB) decomposition on several periodcities at once}
+\title{Perform an Arima Model Based (AMB) decomposition with multiple periodicities}
 \usage{
 multiAirlineDecomposition(
   y,
@@ -21,24 +21,57 @@ multiAirlineDecomposition(
 \arguments{
 \item{y}{input time series.}
 
-\item{periods}{vector of periods values of the seasonal component, any positive real numbers.}
+\item{periods}{numeric vector of seasonal periods. Each value must be a
+positive real number (e.g. 7 for weekly, 365.2425 for annual seasonality).}
 
-\item{stde}{Boolean: TRUE: compute standard deviations of the components. In some cases (memory limits), it is currently not possible to compute them}
+\item{ndiff}{integer specifying the number of regular differences.
+Default is 2.}
 
-\item{nbcasts}{number of backcasts.}
+\item{ar}{logical. If TRUE, an autoregressive component is included in the
+model. Default is FALSE.}
 
-\item{nfcasts}{number of forecasts.}
+\item{stde}{logical. If TRUE, compute standard deviations of the components.
+In some cases (e.g. memory limits), it may not be possible to compute them.
+Default is FALSE.}
 
-\item{eps}{precision of the optimisation routine}
+\item{nbcasts}{number of backcasts. Default is 0.}
 
-\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine}
+\item{nfcasts}{number of forecasts. Default is 0.}
 
-\item{y_time}{vector of times at which `y` is indexed}
+\item{eps}{precision of the optimisation routine. Default:1e-9.}
 
-\item{adjust}{Boolean: TRUE: actual fractional airline model is to be used, FALSE: the period is rounded to the nearest integer.}
+\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine. Default:1e-4}
 
-\item{sn}{decomposition into signal and noise (2 components only). The signal is the seasonally adjusted series and the noise the seasonal component.}
+\item{log}{logical. If TRUE, the decomposition is returned on the log-scale.
+Default is FALSE.}
+
+\item{y_time}{optional vector of time indices associated with \code{y}.}
+}
+\value{
+A decomposition object containing the estimated components for each
+periodicity. If multiple periods are provided, a multi-period decomposition
+is returned.
 }
 \description{
-Perform an Arima Model Based (AMB) decomposition on several periodcities at once
+This function performs an AMB decomposition based on (fractional) airline
+models allowing for multiple seasonal periodicities at once. It is intended
+for high-frequency time series where more than one seasonal cycle may be
+present (e.g. weekly and annual effects).
+}
+\details{
+If a single period is supplied, the function falls back to
+\code{fractionalAirlineDecomposition()}.
+}
+\examples{
+\dontrun{
+# Assume `linearized_data` contains the linearized series
+
+# Weekly and annual periodicities
+amb.multi <- multiAirlineDecomposition(
+  y = linearized_data$y,
+  periods = c(7, 365.2425),
+  log = log,
+  y_time = linearized_data$date
+)
+}
 }

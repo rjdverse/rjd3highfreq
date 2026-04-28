@@ -2,18 +2,32 @@
 % Please edit documentation in R/print.R
 \name{print.JDFractionalAirlineDecomposition}
 \alias{print.JDFractionalAirlineDecomposition}
-\title{Print method for 'JDFractionalAirlineDecomposition' objects}
+\title{Print method for JDFractionalAirlineDecomposition objects}
 \usage{
 \method{print}{JDFractionalAirlineDecomposition}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
-\item{x}{An object of class 'JDFractionalAirlineDecomposition'.}
+\item{x}{An object of class \code{JDFractionalAirlineDecomposition}, as
+returned by the fractional airline decomposition functions}
 
-\item{digits}{Number of digits to round numerical values (default is 3 or digits - 3 from options).}
+\item{digits}{Integer. Number of significant digits used to format all
+numeric values in the output.}
+
+\item{...}{Additional arguments.}
 }
 \value{
-The original object 'x'.
+The function returns the input object \code{x}.
 }
 \description{
-This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineDecomposition).
+This function implements the \code{\link[base]{print}} S3 method for objects
+of class \code{JDFractionalAirlineDecomposition}.
+}
+\examples{
+\dontrun{
+# Assuming 'decomp' is a JDFractionalAirlineDecomposition object
+
+# --- Basic print (dispatched automatically) ------------------------------
+print(decomp)
+}
+
 }

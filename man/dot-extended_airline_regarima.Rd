@@ -2,26 +2,28 @@
 % Please edit documentation in R/jd3_extendedairline.R
 \name{.extended_airline_regarima}
 \alias{.extended_airline_regarima}
-\title{Creates a java RegArima models based on an extended airline spec}
+\title{Create a RegARIMA model based on an Extended Airline specification}
 \usage{
 .extended_airline_regarima(y, jspec, mean = FALSE, X = NULL)
 }
 \arguments{
-\item{y}{y}
+\item{y}{Numeric vector containing the time series to be modeled.}
 
-\item{jspec}{Java spec}
+\item{jspec}{A Java ExtendedAirlineSpec object, for instance created using 
+\code{\link{.extended_airline_spec}}.}
 
-\item{mean}{Mean correction (to be avoided)}
+\item{mean}{Logical. If \code{TRUE}, includes a mean correction term in the model.
+Default: \code{FALSE}.}
 
-\item{X}{Regression variables}
-
-\item{deps}{step identifying small changes in the parameters (used in the computation of numerical derivatives). Will be removed.}
+\item{X}{Optional matrix of regression variables.
+Default: \code{NULL} (no regressors).}
 }
 \value{
-A Java RegArima model
+A Java object of class \code{RegArimaModel} from the JDemetra+ toolkit.
 }
 \description{
-Creates a java RegArima models based on an extended airline spec
+This internal function constructs a Java RegArimaModel object by fitting an
+Extended Airline model.
 }
 \examples{
 jspec<-.extended_airline_spec(c(12))
