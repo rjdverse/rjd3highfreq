@@ -2,24 +2,31 @@
 % Please edit documentation in R/plot.R
 \name{.plot_jd}
 \alias{.plot_jd}
-\title{Custom Plot Function on JD+ template}
+\title{Create a custom plot replicating the JD+ GUI visual style}
 \usage{
 .plot_jd(x, y, col, legend_txt = NULL, ...)
 }
 \arguments{
-\item{x}{Numeric vector, x-axis values.}
+\item{x}{Numeric vector representing the x-axis values, typically a R time 
+series object.}
 
-\item{y}{List of numeric vectors, y-axis values for different series.}
+\item{y}{A list of numeric vectors, where each element represents a
+different time series to be plotted on the y-axis.}
 
-\item{col}{Vector of colors for different series.}
+\item{col}{A character or color vector specifying the color assigned to each
+series.}
 
-\item{legend_txt}{Character vector of legend labels for different series.}
+\item{legend_txt}{An optional character vector of labels for the legend.}
 
-\item{...}{Additional graphical parameters.}
+\item{...}{Additional graphical parameters. Can be used to customize line
+types (\code{lty}), line widths (\code{lwd}), or other aesthetic properties
+that apply uniformly to all series.}
 }
 \value{
 `NULL` (invisible).
 }
 \description{
-This function creates a customized plot in the same template as JD+ GUI color and forms.
+This internal function generates a time series plot that replicates the visual
+template of the JD+ graphical user interface. The function 
+supports plotting one or more time series simultaneously.
 }

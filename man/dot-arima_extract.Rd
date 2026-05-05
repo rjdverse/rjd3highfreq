@@ -2,13 +2,23 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{.arima_extract}
 \alias{.arima_extract}
-\title{Title}
+\title{Extract an ARIMA model from a Java object}
 \usage{
 .arima_extract(jrslt, path)
 }
 \arguments{
-\item{path}{}
+\item{jrslt}{Java object containing the estimated RegARIMA.}
+
+\item{path}{Character string specifying the extraction path within the Java
+object}
+}
+\value{
+An `arima_model` object as constructed by
+  `rjd3toolkit::arima_model()`.
 }
 \description{
-Title
+This internal function retrieves the ARIMA specification associated with a
+given path in a Java object. It extracts the model
+structure (description string, AR/MA polynomials, differencing order) and
+the innovation variance, and returns them as an R `arima_model` object.
 }

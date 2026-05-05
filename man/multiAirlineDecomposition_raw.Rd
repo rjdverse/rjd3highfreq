@@ -2,7 +2,7 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{multiAirlineDecomposition_raw}
 \alias{multiAirlineDecomposition_raw}
-\title{Title}
+\title{Perform a raw multi-period AMB decomposition using fractional airline models}
 \usage{
 multiAirlineDecomposition_raw(
   y,
@@ -17,8 +17,53 @@ multiAirlineDecomposition_raw(
 )
 }
 \arguments{
-\item{nfcasts}{}
+\item{y}{input time series.}
+
+\item{periods}{numeric vector of seasonal periods. Each value must be a
+positive real number (e.g. 7 for weekly, 365.2425 for annual seasonality).}
+
+\item{ndiff}{integer specifying the number of regular differences.
+Default is 2.}
+
+\item{ar}{logical. If TRUE, an autoregressive component is included in the
+model. Default is FALSE.}
+
+\item{stde}{logical. If TRUE, compute standard deviations of the components.
+Default is FALSE.}
+
+\item{nbcasts}{number of backcasts. Default is 0.}
+
+\item{nfcasts}{number of forecasts. Default is 0.}
+
+\item{precision}{numeric. Precision of the likelihood optimization.
+Default is \code{1e-12}.}
+
+\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine. Default:1e-4}
+}
+\value{
+A Java object of class
+\code{jdplus.highfreq.base.core.extendedairline.decomposition.LightExtendedAirlineDecomposition}
+containing the raw results of the AMB decomposition.
 }
 \description{
-Title
+This function performs an Arima Model Based (AMB) decomposition with one or
+more seasonal periodicities, and returns the raw Java decomposition object
+without any post-processing or conversion to R structures.
+}
+\details{
+It is mainly intended for internal use or for advanced users who need direct
+access to the underlying Java object
+(\code{LightExtendedAirlineDecomposition}).
+}
+\examples{
+\dontrun{
+# Raw decomposition with weekly and annual periodicities
+jdec <- multiAirlineDecomposition_raw(
+  y = linearized_data$y,
+  periods = c(7, 365.2425)
+)
+
+# The returned object is a Java object
+jdec
+}
 }

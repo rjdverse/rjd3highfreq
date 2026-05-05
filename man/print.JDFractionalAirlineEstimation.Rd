@@ -2,18 +2,32 @@
 % Please edit documentation in R/print.R
 \name{print.JDFractionalAirlineEstimation}
 \alias{print.JDFractionalAirlineEstimation}
-\title{Print method for 'JDFractionalAirlineEstimation' objects}
+\title{Print method for JDFractionalAirlineEstimation objects}
 \usage{
 \method{print}{JDFractionalAirlineEstimation}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
-\item{x}{An object of class 'JDFractionalAirlineEstimation'.}
+\item{x}{An object of class \code{JDFractionalAirlineEstimation}, as
+returned by the fractional airline estimation functions.}
 
-\item{digits}{Number of digits to round numerical values (default is 3 or digits - 3 from options).}
+\item{digits}{Integer. Number of significant digits used to format all
+numeric values in the printed output.}
+
+\item{...}{Additional arguments.}
 }
 \value{
-The original object 'x'.
+The function returns the input object \code{x}.
 }
 \description{
-This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineEstimation).
+This function implements the \code{\link[base]{print}} S3 method for objects
+of class \code{JDFractionalAirlineEstimation}.
+}
+\examples{
+\dontrun{
+# Assuming 'estimation' is a JDFractionalAirlineEstimation object
+
+# --- Basic print (dispatched automatically) ------------------------------
+print(estimation)
+}
+
 }

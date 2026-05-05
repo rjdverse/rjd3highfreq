@@ -2,13 +2,37 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{.ucm_extract}
 \alias{.ucm_extract}
-\title{Title}
+\title{Extract a specific UCM component from a Java UcarimaModel object}
 \usage{
 .ucm_extract(jrslt, cmp)
 }
 \arguments{
-\item{cmp}{}
+\item{jrslt}{Java UcarimaModel object.}
+
+\item{cmp}{Character string or integer specifying the component to extract.
+Valid components are:
+\itemize{
+  \item "Series" or 1 : Complete series (Trend + Seasonal + Irregular + CalendarEffect)
+  \item "Trend" or 2 : Trend / level component
+  \item "Seasonal" or 3 : Seasonal component
+  \item "SeasonallyAdjusted" or 4 : Trend + Seasonal + CalendarEffect
+  \item "Irregular" or 5 : Irregular / residual component
+  \item "CalendarEffect" or 6 : Calendar effects (e.g., holidays)
+}}
+}
+\value{
+The requested component extracted from the UCM result.
 }
 \description{
-Title
+This internal function retrieves a single component from a UCM
+(Unobserved Components Model) result object returned by the Java backend.
+The component can be specified either by name or by its integer code.
+}
+\examples{
+\dontrun{
+# Assume `jucm` is a UcarimaModel Java object
+
+# Extract the trend component
+trend <- .ucm_extract(jucm, "Trend")
+}
 }

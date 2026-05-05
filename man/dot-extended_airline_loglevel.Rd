@@ -2,13 +2,30 @@
 % Please edit documentation in R/jd3_extendedairline.R
 \name{.extended_airline_loglevel}
 \alias{.extended_airline_loglevel}
-\title{Title}
+\title{Log-Level Test for Extended Airline Models}
 \usage{
 .extended_airline_loglevel(jregarima, jspec, precision = 1e-05, deps = 1e-04)
 }
 \arguments{
-\item{deps}{}
+\item{jregarima}{Java object containing the already estimated RegARIMA model.}
+
+\item{jspec}{Java object containing the Extended Airline model specifications.}
+
+\item{precision}{Numeric value specifying the tolerance for convergence
+of optimization algorithms. Default: 1e-5.}
+
+\item{deps}{Numeric scalar. Step in the computation of the numerical derivatives,
+used in the optimisation routine. Default:1e-4.}
+}
+\value{
+An object containing the log-level test results.
 }
 \description{
-Title
+This internal function performs a statistical test to determine whether data
+should be transformed to logarithmic scale or kept in level (original scale)
+}
+\examples{
+\dontrun{
+log_level_test_results <- .extended_airline_loglevel(jregarima, jspec, precision=1e-5)
+}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{jd2r_fractionalAirlineDecomposition}
 \alias{jd2r_fractionalAirlineDecomposition}
-\title{Title}
+\title{Convert a raw fractional airline decomposition to an R-friendly object}
 \usage{
 jd2r_fractionalAirlineDecomposition(
   jrslt,
@@ -14,8 +14,61 @@ jd2r_fractionalAirlineDecomposition(
 )
 }
 \arguments{
-\item{y_time}{vector of times at which the time series is indexed}
+\item{jrslt}{Java object returned by \code{fractionalAirlineDecomposition_raw()}.}
+
+\item{sn}{logical. If TRUE, perform a signal–noise decomposition (2 components
+only: seasonally adjusted series and seasonal component). Default is FALSE.}
+
+\item{stde}{logical. If TRUE, include standard deviations of the components
+in the returned decomposition. Default is FALSE.}
+
+\item{period}{numeric. Seasonal period corresponding to the decomposition.}
+
+\item{log}{logical. If TRUE, indicates that the decomposition was performed
+on a log-transformed series. Default is FALSE.}
+
+\item{y_time}{optional vector of time indices associated with the series
+\code{y}. Default is NULL.}
+}
+\value{
+An object of class \code{JDFractionalAirlineDecomposition} containing:
+\itemize{
+  \item \code{ucarima}: the Ucarima model with its components,
+  \item \code{decomposition}: list of original series, seasonally adjusted
+    series, and components (trend, irregular, seasonal), with optional
+    standard deviations,
+  \item \code{estimation}: estimated parameters, covariance matrix, and score,
+  \item \code{likelihood}: likelihood diagnostics.
+}
 }
 \description{
-Title
+This function takes a Java object returned by
+\code{fractionalAirlineDecomposition_raw()} and converts it into a structured
+R object of class \code{JDFractionalAirlineDecomposition}. The result includes
+the estimated Ucarima model, the decomposition components, standard errors
+(optional), parameter estimates, and likelihood diagnostics.
+}
+\examples{
+\dontrun{
+# Assume `linearized_data` contains the linearized series
+
+# Raw fractional airline decomposition
+jdec <- fractionalAirlineDecomposition_raw(
+  y = linearized_data$y,
+  period = 7
+)
+
+# Convert to R object with decomposition
+amb_r <- jd2r_fractionalAirlineDecomposition(
+  jdec,
+  sn = FALSE,
+  stde = TRUE,
+  period = 7,
+  log = FALSE,
+  y_time = linearized_data$date
+)
+
+# Access the seasonally adjusted series
+sa <- amb_r$decomposition$sa
+}
 }

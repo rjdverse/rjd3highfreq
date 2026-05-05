@@ -2,7 +2,7 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{fractionalAirlineEstimation}
 \alias{fractionalAirlineEstimation}
-\title{Linearize the series with a fractional airline model}
+\title{Linearize a time series using a fractional airline model}
 \usage{
 fractionalAirlineEstimation(
   y,
@@ -23,24 +23,81 @@ fractionalAirlineEstimation(
 \arguments{
 \item{y}{input time series.}
 
-\item{periods}{vector of periods values of the seasonal component, any positive real numbers.}
+\item{periods}{numeric vector of seasonal periods. Each value must be a
+positive real number (e.g. 7 for weekly, 365.2425 for annual seasonality).}
 
-\item{x}{matrix of user-defined regression variables (see rjd3toolkit for building calendar regressors).}
+\item{x}{optional matrix of user-defined regression variables (e.g. calendar
+regressors built using \code{rjd3toolkit}).}
 
-\item{outliers}{type of outliers sub vector of c("AO","LS","WO")}
+\item{ndiff}{integer specifying the number of regular differences.
+Default is 2.}
 
-\item{criticalValue}{Critical value for automatic outlier detection}
+\item{ar}{logical. If TRUE, an autoregressive component is included in the
+model. Default is FALSE.}
 
-\item{precision}{Precision of the likelihood}
+\item{outliers}{character vector specifying the types of outliers to detect.
+Possible values include \code{"AO"}, \code{"LS"} and \code{"WO"}.
+Default is \code{NULL} (no automatic outlier detection).}
 
-\item{approximateHessian}{Compute approximate hessian (based on the optimizing procedure)}
+\item{criticalValue}{numeric. Critical value for automatic outlier detection.
+Larger values imply more conservative detection. Default is 6.}
 
-\item{nfcasts}{Number of forecasts}
+\item{precision}{numeric. Precision of the likelihood optimization.
+Default is \code{1e-12}.}
 
-\item{log}{a logical}
+\item{deps}{step in the computation of the numerical derivatives, used in the optimisation routine. Default:1e-4}
 
-\item{y_time}{vector of times at which `y` is indexed}
+\item{approximateHessian}{logical. If TRUE, compute an approximate Hessian
+matrix based on the optimization procedure. Default is FALSE.}
+
+\item{nfcasts}{number of forecasts. Default is 0.}
+
+\item{log}{logical. If TRUE, the model is estimated on the log-scale.
+Default is FALSE.}
+
+\item{y_time}{optional vector of time indices associated with \code{y}.}
+}
+\value{
+An object of class \code{"JDFractionalAirlineEstimation"} containing:
+\itemize{
+  \item the original and linearized series,
+  \item estimated regression effects and outlier components,
+  \item model parameters and covariance matrices,
+  \item likelihood and diagnostic information.
+}
 }
 \description{
-Linearize the series with a fractional airline model
+This function estimates a (fractional) airline RegARIMA model and returns
+the linearized series together with regression effects, outlier components,
+estimation results and likelihood diagnostics. It is typically used as a
+preprocessing step prior to AMB or UCM-based decompositions.
+}
+\details{
+Automatic outlier detection can be enabled by specifying the outlier types
+and a critical value for the detection threshold.
+}
+\examples{
+\dontrun{
+# input data
+data <- list(
+  y = rnorm(1000),
+  date = seq.Date(from = as.Date("2020-01-01"),
+                  by = "day",
+                  length.out = 1000)
+)
+
+# Linearize the series using weekly and annual periodicities
+est <- fractionalAirlineEstimation(
+  y = data$y,
+  periods = c(7, 365.2425),
+  log = FALSE,
+  y_time = data$date
+)
+
+# Extract linearized series for subsequent decompositions
+linearized_data <- list(
+  y = est$model$linearized,
+  date = est$model$y_time
+)
+}
 }
