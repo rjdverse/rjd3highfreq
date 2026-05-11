@@ -23,11 +23,13 @@ This function implements the \code{\link[base]{print}} S3 method for objects
 of class \code{JDFractionalAirlineDecomposition}.
 }
 \examples{
-\dontrun{
-# Assuming 'decomp' is a JDFractionalAirlineDecomposition object
+
+amb.dow <- fractionalAirlineDecomposition(
+  y = Births$births,
+  period = 7,
+  log = FALSE, y_time = Births$date)
 
 # --- Basic print (dispatched automatically) ------------------------------
-print(decomp)
-}
+print(amb.dow)
 
 }

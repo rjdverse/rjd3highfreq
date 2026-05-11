@@ -26,22 +26,22 @@ This function implements the \code{\link[graphics]{plot}} S3 method for objects
 of class \code{JDFractionalAirlineEstimation}.
 }
 \examples{
-\dontrun{
-# Assuming 'estimation' is a JDFractionalAirlineEstimation object
+# 'pre_proc_births' is a JDFractionalAirlineEstimation object obtained from
+# the 'fractionalAirlineEstimation' function
+
 # Basic plot: raw data vs. linearised series
-plot(estimation)
+plot(pre_proc_births)
 
 # Plot restricted to a specific time window
-plot(estimation,
+plot(pre_proc_births,
      from = as.Date("2015-01-01"),
      to   = as.Date("2020-12-31"))
 
 # Combining time window, custom title and line width
-plot(estimation,
+plot(pre_proc_births,
      from = as.Date("2018-06-01"),
      to   = as.Date("2023-01-01"),
      main = "Filtered window",
      lwd  = 2)
-}
 
 }

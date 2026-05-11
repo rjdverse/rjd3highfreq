@@ -1,13 +1,13 @@
 #' @include utils.R
 NULL
 
-#' Extract a specific UCM component from a Java UcarimaModel object
+#' Extract a specific component from a Java Decomposition object
 #'
-#' This internal function retrieves a single component from a UCM
-#' (Unobserved Components Model) result object returned by the Java backend.
+#' This internal function retrieves a single component from a decomposition
+#' result object returned by the Java backend.
 #' The component can be specified either by name or by its integer code.
 #'
-#' @param jrslt Java UcarimaModel object.
+#' @param jrslt Java Decomposition object.
 #' @param cmp Character string or integer specifying the component to extract.
 #'   Valid components are:
 #'   \itemize{
@@ -23,10 +23,8 @@ NULL
 #'
 #' @examples
 #' \dontrun{
-#' # Assume `jucm` is a UcarimaModel Java object
-#'
 #' # Extract the trend component
-#' trend <- .ucm_extract(jucm, "Trend")
+#' trend <- .ucm_extract(jrslt, "Trend")
 #' }
 #' @export
 .ucm_extract<-function(jrslt, cmp) {
@@ -57,8 +55,6 @@ NULL
     return(rjd3toolkit::arima_model(str, ar,delta,ma,var))
 }
 
-
-
 #' Perform an Arima Model Based (AMB) decomposition
 #'
 #' Performs an Arima Model Based (AMB) decomposition using a (fractional)
@@ -68,8 +64,6 @@ NULL
 #'
 #' @param y input time series.
 #' @param period period of the seasonal component, any positive real number.
-#' @param adjust Boolean: TRUE: actual fractional airline model is to be used,
-#'   FALSE: the period is rounded to the nearest integer.
 #' @param sn decomposition into signal and noise (2 components only). The signal
 #'   is the seasonally adjusted series and the noise the seasonal component.
 #'   Default: FALSE.
@@ -92,20 +86,17 @@ NULL
 #' (signal and noise). When `stde = TRUE`, the computation of standard deviations
 #' may fail for long series or high-frequency data due to memory constraints.
 #'
-#' @export
-#'
 #' @examples
-#' \dontrun{
-#' amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-#'   y = linearized_data$y, # linearized series from preprocessing
+#' amb.dow <- fractionalAirlineDecomposition(
+#'   y = Births$births,
 #'   period = 7,
-#'   log = TRUE, y_time = linearized_data$date)
-#' 
-#' amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-#'   y = linearized_data$y, # linearized series from preprocessing
+#'   log = FALSE, y_time = Births$date)
+#'
+#' amb.doy <- fractionalAirlineDecomposition(
+#'   y = Births$births,
 #'   period = 365.2425,
-#'   log = log, y_time = linearized_data$date)
-#' }
+#'   log = FALSE, y_time = Births$date)
+#' @export
 fractionalAirlineDecomposition <- function(y,
                                            period,
                                            sn = FALSE,
@@ -160,20 +151,20 @@ fractionalAirlineDecomposition <- function(y,
 #' periodicity. If multiple periods are provided, a multi-period decomposition
 #' is returned.
 #'
-#' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assume `linearized_data` contains the linearized series
+#'  # Using the linearized series; decomposition fails on raw (non-linearized)
+#'  # birth data.
 #'
 #' # Weekly and annual periodicities
 #' amb.multi <- multiAirlineDecomposition(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   periods = c(7, 365.2425),
-#'   log = log,
-#'   y_time = linearized_data$date
+#'   log = FALSE,
+#'   y_time = pre_proc_births$model$date
 #' )
-#' }
+#'
+#' @export
 multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = FALSE,
                                       nbcasts = 0, nfcasts = 0, eps = 1e-9, deps=1e-4,
                                       log = FALSE, y_time = NULL) {
@@ -239,33 +230,17 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = 
 #'   \item model parameters and covariance matrices,
 #'   \item likelihood and diagnostic information.
 #' }
-#'
-#' @export
-#'
+#'#'
 #' @examples
-#' \dontrun{
 #' # input data
-#' data <- list(
-#'   y = rnorm(1000),
-#'   date = seq.Date(from = as.Date("2020-01-01"),
-#'                   by = "day",
-#'                   length.out = 1000)
-#' )
-#'
 #' # Linearize the series using weekly and annual periodicities
-#' est <- fractionalAirlineEstimation(
-#'   y = data$y,
+#' pre_proc_births <- fractionalAirlineEstimation(
+#'   y = Births$births,
 #'   periods = c(7, 365.2425),
 #'   log = FALSE,
-#'   y_time = data$date
+#'   y_time = Births$date
 #' )
-#'
-#' # Extract linearized series for subsequent decompositions
-#' linearized_data <- list(
-#'   y = est$model$linearized,
-#'   date = est$model$y_time
-#' )
-#' }
+#' @export
 fractionalAirlineEstimation <- function(y,
                                         periods,
                                         x = NULL,
@@ -425,19 +400,17 @@ fractionalAirlineEstimation <- function(y,
 #' \code{jdplus.highfreq.base.core.extendedairline.decomposition.LightExtendedAirlineDecomposition}
 #' containing the raw results of the AMB decomposition.
 #'
-#' @export
 #'
 #' @examples
-#' \dontrun{
+#' # pre_proc_births$linearized is a linearized series. On Births data
+#' # without linearization the decomposition fails.
+#'
 #' # Raw decomposition with weekly and annual periodicities
 #' jdec <- multiAirlineDecomposition_raw(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   periods = c(7, 365.2425)
 #' )
-#'
-#' # The returned object is a Java object
-#' jdec
-#' }
+#' @export
 multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALSE, nbcasts=0, nfcasts=0, precision=1e-12, deps=1e-4) {
     checkmate::assertNumeric(y, null.ok = FALSE)
 
@@ -471,18 +444,17 @@ multiAirlineDecomposition_raw<-function(y, periods, ndiff=2, ar=FALSE, stde=FALS
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' # Using the linearized series; decomposition fails on raw (non-linearized)
+#' # birth data.
+#'
 #' # Raw multi-period decomposition
 #' jdec <- multiAirlineDecomposition_raw(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   periods = c(7, 365.2425)
 #' )
 #'
 #' # Extract the state space form
 #' ssf <- multiAirlineDecomposition_ssf(jdec)
-#'
-#' ssf
-#' }
 multiAirlineDecomposition_ssf<-function(jdecomp) {
     jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor",
                  "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
@@ -511,7 +483,7 @@ multiAirlineDecomposition_ssf<-function(jdecomp) {
 #' @param nfcasts number of forecasts. Default is 0.
 #' @param deps step in the computation of the numerical derivatives, used in the optimisation routine. Default:1e-4
 #' @param precision numeric. Precision of the likelihood optimization.
-#' 
+#'
 #' @return
 #' A Java object of class
 #' \code{jdplus.highfreq.base.core.extendedairline.decomposition.LightExtendedAirlineDecomposition}
@@ -520,15 +492,15 @@ multiAirlineDecomposition_ssf<-function(jdecomp) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#'
+#' # Using the linearized series; decomposition fails on raw (non-linearized)
+#' # birth data.
+#'
 #' # Raw decomposition with weekly periodicity
 #' jdec <- fractionalAirlineDecomposition_raw(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   period = 7
 #' )
-#'
-#' jdec
-#' }
 fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nbcasts=0, nfcasts=0, precision=1e-12, deps=1e-4) {
     checkmate::assertNumeric(y, null.ok = FALSE)
     checkmate::assertNumeric(period, len = 1, null.ok = FALSE)
@@ -562,18 +534,14 @@ fractionalAirlineDecomposition_raw<-function(y, period, sn=FALSE, stde=FALSE, nb
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' # Raw fractional airline decomposition
 #' jdec <- fractionalAirlineDecomposition_raw(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   period = 7
 #' )
 #'
 #' # Extract the state space form
 #' ssf <- fractionalAirlineDecomposition_ssf(jdec)
-#'
-#' ssf
-#' }
 fractionalAirlineDecomposition_ssf<-function(jdecomp) {
     jssf<-.jcall("jdplus/highfreq/base/r/FractionalAirlineProcessor", "Ljdplus/highfreq/base/core/ssf/extractors/SsfUcarimaEstimation;", "ssfDetails", jdecomp)
     return(rjd3toolkit::.jd3_object(jssf, result=TRUE))
@@ -609,15 +577,15 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp) {
 #'   \item \code{likelihood}: likelihood diagnostics.
 #' }
 #'
-#' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assume `linearized_data` contains a (linearized) time series
+#'
+#' # Using the linearized series; decomposition fails on raw (non-linearized)
+#' # birth data.
 #'
 #' # Raw multi-period decomposition
 #' jdec <- multiAirlineDecomposition_raw(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   periods = c(7, 365.2425)
 #' )
 #'
@@ -626,11 +594,12 @@ fractionalAirlineDecomposition_ssf<-function(jdecomp) {
 #'                                        stde = TRUE,
 #'                                        periods = c(7, 365.2425),
 #'                                        log = FALSE,
-#'                                        y_time = linearized_data$date)
+#'                                        y_time = pre_proc_births$model$y_time)
 #'
 #' # Access the seasonally adjusted series
 #' sa <- amb_r$decomposition$sa
-#' }
+#'
+#' @export
 jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
                                            log = FALSE, y_time = NULL) {
     ncmps <- rjd3toolkit::.proc_int(jrslt, "ucarima.size")
@@ -713,12 +682,13 @@ jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assume `linearized_data` contains the linearized series
+#'
+#' # Using the linearized series; decomposition fails on raw (non-linearized)
+#' # birth data.
 #'
 #' # Raw fractional airline decomposition
 #' jdec <- fractionalAirlineDecomposition_raw(
-#'   y = linearized_data$y,
+#'   y = pre_proc_births$model$linearized,
 #'   period = 7
 #' )
 #'
@@ -729,12 +699,11 @@ jd2r_multiAirlineDecomposition <- function(jrslt, stde = FALSE, periods,
 #'   stde = TRUE,
 #'   period = 7,
 #'   log = FALSE,
-#'   y_time = linearized_data$date
+#'   y_time = pre_proc_births$model$y_time
 #' )
 #'
 #' # Access the seasonally adjusted series
 #' sa <- amb_r$decomposition$sa
-#' }
 jd2r_fractionalAirlineDecomposition <- function(jrslt,
                                                 sn = FALSE,
                                                 stde = FALSE,
@@ -788,40 +757,38 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
                      class = "JDFractionalAirlineDecomposition"))
 }
 
-
-
-
 #' Full Example 1: Linearization, Multi-Period Decomposition, and Plot
 #'
-#' This example demonstrates a complete workflow using R wrappers of JD+ Java 
+#' This example demonstrates a complete workflow using R wrappers of JD+ Java
 #' - Fractional Airline Estimation
 #' - Linearization of the series
 #' - Multi-period decomposition
 #' - Plotting with JD+ style
 #'
 #' @examples
-#' \dontrun{
-#' 
+#'
+#' options(java.parameters = "-Xmx8g") # High RAM usage expected
+#'
 #' library("rjd3toolkit")
 #' library("rjd3highfreq")
-#' 
-#' # Hypothetical input data
-#' data <- list(
-#'   y = rnorm(730, mean = 100, sd = 5),  # 2 years of daily data
-#'   date = seq.Date(from = as.Date("2022-01-01"), by = "day", length.out = 730)
-#' )
+#'
 #'
 #' # 1. Fractional Airline Estimation (linearization)
-#' est <- fractionalAirlineEstimation(
-#'   y = data$y,
-#'   periods = c(7, 365.2425),
-#'   log = FALSE,
-#'   y_time = data$date
-#' )
+#'
+#' # We use pre-computed data
+#' # pre_proc_births <- fractionalAirlineEstimation(
+#' #  y             = Births$births,
+#' #  periods       = c(7, 365.2425),
+#' #  log           = FALSE,
+#' #  outliers      = c("ao", "wo", "ls"),
+#' #  criticalValue = 6,
+#' #  y_time        = Births$date
+#' # )
+#'
 #'
 #' linearized_data <- list(
-#'   y = est$model$linearized,
-#'   date = data$date
+#'   y = pre_proc_births$model$linearized,
+#'   date = pre_proc_births$model$y_time
 #' )
 #'
 #' # 2. Multi-period decomposition (raw Java object)
@@ -840,64 +807,53 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
 #' )
 #'
 #' # 4. Plot raw and linearized series
-#' plot(est)
+#' plot(pre_proc_births)
 #'
 #' # 5. Plot decomposition (y, seasonally adjusted, trend)
 #' plot(amb_r, type_chart = "y-sa-trend")
 #'
-#' # 6. Plot seasonal & irregular components
-#' plot(amb_r, type_chart = "cal-seas-irr")
-#' }
-
-
-
-#' Example: Fractional Airline Estimation with Calendar Regressors and 
-#' Multi-Period Decomposition
+#' # Example: Fractional Airline Estimation with Calendar Regressors and
+#' # Multi-Period Decomposition
+#' #
+#' # NOTE: Sequential decomposition is used (day of the week -> day of the year)
+#' # that could be more stable than the multiAirlineDecomposition
 #'
-#' This example demonstrates a complete workflow using the JD+ R functions:
-#' 1. Load daily data.
-#' 2. Define a French calendar with holidays.
-#' 3. Create calendar regressors.
-#' 4. Estimate a fractional airline model including outliers and log transformation.
-#' 5. Plot raw and linearized series.
-#' 6. Perform single-period decomposition (weekly and yearly patterns).
-#' 7. Perform multi-period decomposition (weekly + yearly).
-#' 8. Plot decompositions over the full series or selected intervals.
+#' # This example demonstrates a complete workflow using the JD+ R functions:
+#' # 1. Load daily data.
+#' # 2. Define a French calendar with holidays.
+#' # 3. Create calendar regressors.
+#' # 4. Estimate a fractional airline model including outliers and log transformation.
+#' # 5. Plot raw and linearized series.
+#' # 6. Perform single-period decomposition (weekly and yearly patterns).
+#' # 7. Perform multi-period decomposition (weekly + yearly).
+#' # 8. Plot decompositions over the full series or selected intervals.
 #'
 #' @examples
-#' \dontrun{
+#' options(java.parameters = "-Xmx8g") # some computations may require many RAM
 #' library("rjd3toolkit")
 #' library("rjd3highfreq")
 #'
-#' # 1. Import daily births in France
-#' df_daily <- read.csv2(
-#'   "https://raw.githubusercontent.com/TanguyBarthelemy/
-#'     Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/
-#'     Data/TS_daily_births_franceM_1968_2020.csv"
-#' )
-#' df_daily$log_births <- log(df_daily$births)
-#' df_daily$date <- as.Date(df_daily$date)
 #'
-#' # 2. Define French calendar
+#' # Define French calendar
 #' frenchCalendar <- rjd3toolkit::national_calendar(days = list(
-#'   rjd3toolkit::fixed_day(7, 14),
-#'   rjd3toolkit::fixed_day(5, 8, validity = list(start = "1982-05-08")),
-#'   rjd3toolkit::special_day('NEWYEAR'),
-#'   rjd3toolkit::special_day('MAYDAY'),
-#'   rjd3toolkit::special_day('EASTERMONDAY'),
-#'   rjd3toolkit::special_day('ASCENSION'),
-#'   rjd3toolkit::special_day('WHITMONDAY'),
-#'   rjd3toolkit::special_day('ASSUMPTION'),
-#'   rjd3toolkit::special_day('ALLSAINTSDAY'),
-#'   rjd3toolkit::special_day('ARMISTICE'),
-#'   rjd3toolkit::special_day('CHRISTMAS'))
+#'   fixed_day(7, 14),
+#'   fixed_day(5, 8, validity = list(start = "1982-05-08")),
+#'   special_day('NEWYEAR'),
+#'   special_day('MAYDAY'),
+#'   special_day('EASTERMONDAY'),
+#'   special_day('ASCENSION'),
+#'   special_day('WHITMONDAY'),
+#'   special_day('ASSUMPTION'),
+#'   special_day('ALLSAINTSDAY'),
+#'   special_day('ARMISTICE'),
+#'   special_day('CHRISTMAS'))
 #' )
 #'
-#' # 3. Calendar regressors matrix
-#' cal_reg <- rjd3toolkit::holidays(
+#' # Calendar regressors matrix
+#' cal_reg <- holidays(
 #'   calendar = frenchCalendar,
 #'   start = "1968-01-01",
-#'   length = nrow(df_daily),
+#'   length = nrow(Births),
 #'   type = "All", nonworking = 7L
 #' )
 #' colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
@@ -905,63 +861,49 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
 #'                        "15th_aug", "1st_nov", "11th_nov", "Xmas")
 #'
 #' # 4. Estimate fractional airline model with weekly frequency
-#' pre_pro <- fractionalAirlineEstimation(
-#'   y = df_daily$births,
-#'   x = cal_reg,
-#'   periods = 7,               # weekly frequency
-#'   outliers = c("ao", "wo"),
-#'   log = TRUE,
-#'   y_time = df_daily$date
-#' )
+#' # We use pre-computed data
+#' # pre_proc_births <- fractionalAirlineEstimation(
+#' #  y             = Births$births,
+#' #  periods       = c(7, 365.2425),
+#' #  log           = FALSE,
+#' #  outliers      = c("ao", "wo", "ls"),
+#' #  criticalValue = 6,
+#' #  x             = cal_reg,
+#' #  y_time        = Births$date
+#' # )
 #'
 #' # 5. Plot raw and linearized series
-#' plot(pre_pro, main = "French births")
-#' plot(pre_pro,
-#'      from = as.Date("2000-01-01"),
-#'      to = as.Date("2000-12-31"),
-#'      main = "French births in 2000")
+#' plot(pre_proc_births, main = "French births")
+#' plot(pre_proc_births,
+#'      from = as.Date("2019-01-01"),
+#'      to = as.Date("2019-12-31"),
+#'      main = "French births in 2019")
 #'
 #' # 6. Decomposition with weekly pattern
 #' amb.dow <- fractionalAirlineDecomposition(
-#'   y = pre_pro$model$linearized,
+#'   y = pre_proc_births$model$linearized,
 #'   period = 7,
-#'   log = TRUE,
-#'   y_time = df_daily$date
+#'   log = FALSE,
+#'   y_time = pre_proc_births$model$y_time
 #' )
 #'
 #' # Extract yearly pattern from DOW-adjusted linearised data
 #' amb.doy <- fractionalAirlineDecomposition(
 #'   y = amb.dow$decomposition$sa,
 #'   period = 365.2425,
-#'   log = TRUE,
-#'   y_time = df_daily$date
+#'   log = FALSE,
+#'   y_time = pre_proc_births$model$y_time
 #' )
 #'
 #' # 7. Plot decompositions
 #' plot(amb.dow, main = "Weekly pattern")
 #' plot(amb.dow,
-#'      main = "Weekly pattern - January 2018",
-#'      from = as.Date("2018-01-01"),
-#'      to = as.Date("2018-01-31"))
+#'      main = "Weekly pattern - January 2019",
+#'      from = as.Date("2019-01-01"),
+#'      to = as.Date("2019-01-31"))
 #'
 #' plot(amb.doy, main = "Yearly pattern")
 #' plot(amb.doy,
-#'      main = "Weekly pattern - 2000-2002",
-#'      from = as.Date("2000-01-01"),
-#'      to = as.Date("2002-12-31"))
-#'
-#' # 8. Multi-period decomposition: weekly + yearly
-#' amb.multi <- multiAirlineDecomposition(
-#'   y = pre_pro$model$linearized,
-#'   periods = c(7, 365.2425),
-#'   log = TRUE,
-#'   y_time = df_daily$date
-#' )
-#'
-#' plot(amb.multi)
-#' plot(amb.multi,
-#'      main = "2012",
-#'      from = as.Date("2012-01-01"),
-#'      to = as.Date("2012-12-31"))
-#' }
-
+#'      main = "Weekly pattern - 2019-2021",
+#'      from = as.Date("2019-01-01"),
+#'      to = as.Date("2021-12-31"))

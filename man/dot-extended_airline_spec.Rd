@@ -17,12 +17,12 @@ For example, \code{c(7, 365.25)} indicates weekly and annual seasonality.}
 
 \item{differencing}{Differencing order to apply. The default value
 \code{-1} activates automatic computation based on the number of
-periodicities: if \code{ar=FALSE}, the order will be 
-\code{length(periodicities) + 1}, otherwise it will equal 
+periodicities: if \code{ar=FALSE}, the order will be
+\code{length(periodicities) + 1}, otherwise it will equal
 \code{length(periodicities)}.
 Positive values manually specify the differencing order.}
 
-\item{ar}{Logical. If \code{TRUE}, uses a regular stationary autoregressive 
+\item{ar}{Logical. If \code{TRUE}, uses a regular stationary autoregressive
 (AR) polynomial instead of a moving average (MA) polynomial.
 Default: \code{FALSE}. This choice affects the automatic differencing order.}
 
@@ -33,7 +33,7 @@ to integers before processing. Default: \code{FALSE}.}
 A Java object of class \code{ExtendedAirlineSpec}.
 }
 \description{
-This internal function constructs a Java ExtendedAirlineSpec object. 
+This internal function constructs a Java ExtendedAirlineSpec object.
 The Extended Airline model is an extension of the classic seasonal ARIMA
 model that can handle multiple simultaneous periodicities.
 }

@@ -25,7 +25,12 @@ This internal function performs a statistical test to determine whether data
 should be transformed to logarithmic scale or kept in level (original scale)
 }
 \examples{
-\dontrun{
-log_level_test_results <- .extended_airline_loglevel(jregarima, jspec, precision=1e-5)
+jspec     <- .extended_airline_spec(c(7))
+jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
+aiccs     <-  rjd3highfreq::.extended_airline_loglevel(jregarima = jregarima,   jspec = jspec) # {ll.getAICcLevel(), ll.getAICcLog()}, in Java code
+if(aiccs[1] <= aiccs[2]) {
+    print("AICC is higher in the model without log transformation")
+}  else {
+    print("AICC is higher in the model with log transformation")
 }
 }

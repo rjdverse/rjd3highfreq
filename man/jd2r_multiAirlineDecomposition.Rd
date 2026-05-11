@@ -46,12 +46,13 @@ the estimated Ucarima model, the decomposition components, standard errors
 (optional), parameter estimates, and likelihood diagnostics.
 }
 \examples{
-\dontrun{
-# Assume `linearized_data` contains a (linearized) time series
+
+# Using the linearized series; decomposition fails on raw (non-linearized)
+# birth data.
 
 # Raw multi-period decomposition
 jdec <- multiAirlineDecomposition_raw(
-  y = linearized_data$y,
+  y = pre_proc_births$model$linearized,
   periods = c(7, 365.2425)
 )
 
@@ -60,9 +61,9 @@ amb_r <- jd2r_multiAirlineDecomposition(jdec,
                                        stde = TRUE,
                                        periods = c(7, 365.2425),
                                        log = FALSE,
-                                       y_time = linearized_data$date)
+                                       y_time = pre_proc_births$model$y_time)
 
 # Access the seasonally adjusted series
 sa <- amb_r$decomposition$sa
-}
+
 }

@@ -1,6 +1,6 @@
 ---
 title: "High-frequency seasonal adjustment with rjd3highfreq"
-author: "ISTAT"
+author: "Giancarlo Lutero (ISTAT)"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
@@ -27,14 +27,14 @@ knitr::opts_chunk$set(
 ```
 
 ```{r libraries}
-options(java.parameters = "-Xmx8g")
+options(java.parameters = "-Xmx8g") # High RAM usage expected
 library(rjd3toolkit)
 library(rjd3highfreq)
 ```
 
 ## Introduction
 
-The `rjd3highfreq` package provides R wrappers to the JD+ Java
+The `rjd3highfreq` package provides R wrappers to the JD+ Java 
 implementation for seasonal adjustment and decomposition of
 high-frequency time series such as daily data.
 
@@ -92,20 +92,12 @@ plot(amb_r, type_chart = "y-sa-trend")
 ```
 
 ```{r plots-larger,fig.width=7.5,fig.height=4}
-plot(amb_r, type_chart = "cal-seas-irr")
-#legend("top",inset=c(-0.15,0),legend = c("s_day","s_year","sd_day","sd_year","Irregular"),col=c("red","blue","green","orange","magenta"),pch=19)
+# plot(amb_r, type_chart = "cal-seas-irr")
 ```
 
 ## Daily births in France
-
 ```{r births-data}
-url <- paste0(
-  "https://raw.githubusercontent.com/TanguyBarthelemy/",
-  "Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/",
-  "Data/TS_daily_births_franceM_1968_2020.csv"
-)
-
-df_daily <- read.csv2(url)
+df_daily <- rjd3highfreq::Births
 df_daily$date <- as.Date(df_daily$date)
 ```
 
@@ -170,7 +162,7 @@ amb.multi <- multiAirlineDecomposition(
   y_time = df_daily$date
 )
 
-plot(amb.multi)
+# plot(amb.multi)
 ```
 
 ## Conclusions

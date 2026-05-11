@@ -28,16 +28,15 @@ access to the underlying state space model corresponding to the estimated
 Ucarima representation.
 }
 \examples{
-\dontrun{
+# Using the linearized series; decomposition fails on raw (non-linearized)
+# birth data.
+
 # Raw multi-period decomposition
 jdec <- multiAirlineDecomposition_raw(
-  y = linearized_data$y,
+  y = pre_proc_births$model$linearized,
   periods = c(7, 365.2425)
 )
 
 # Extract the state space form
 ssf <- multiAirlineDecomposition_ssf(jdec)
-
-ssf
-}
 }

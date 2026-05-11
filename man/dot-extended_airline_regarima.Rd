@@ -9,7 +9,7 @@
 \arguments{
 \item{y}{Numeric vector containing the time series to be modeled.}
 
-\item{jspec}{A Java ExtendedAirlineSpec object, for instance created using 
+\item{jspec}{A Java ExtendedAirlineSpec object, for instance created using
 \code{\link{.extended_airline_spec}}.}
 
 \item{mean}{Logical. If \code{TRUE}, includes a mean correction term in the model.
@@ -26,6 +26,6 @@ This internal function constructs a Java RegArimaModel object by fitting an
 Extended Airline model.
 }
 \examples{
-jspec<-.extended_airline_spec(c(12))
-.extended_airline_regarima(rjd3toolkit::ABS$X0.2.09.10.M, jspec)
+jspec<-.extended_airline_spec(c(7))
+.extended_airline_regarima(Births$births, jspec)
 }

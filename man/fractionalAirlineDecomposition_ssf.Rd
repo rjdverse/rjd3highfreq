@@ -27,16 +27,12 @@ access to the underlying state space model corresponding to the estimated
 Ucarima representation.
 }
 \examples{
-\dontrun{
 # Raw fractional airline decomposition
 jdec <- fractionalAirlineDecomposition_raw(
-  y = linearized_data$y,
+  y = pre_proc_births$model$linearized,
   period = 7
 )
 
 # Extract the state space form
 ssf <- fractionalAirlineDecomposition_ssf(jdec)
-
-ssf
-}
 }

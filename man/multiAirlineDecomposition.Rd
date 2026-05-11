@@ -63,15 +63,15 @@ If a single period is supplied, the function falls back to
 \code{fractionalAirlineDecomposition()}.
 }
 \examples{
-\dontrun{
-# Assume `linearized_data` contains the linearized series
+ # Using the linearized series; decomposition fails on raw (non-linearized)
+ # birth data.
 
 # Weekly and annual periodicities
 amb.multi <- multiAirlineDecomposition(
-  y = linearized_data$y,
+  y = pre_proc_births$model$linearized,
   periods = c(7, 365.2425),
-  log = log,
-  y_time = linearized_data$date
+  log = FALSE,
+  y_time = pre_proc_births$model$date
 )
-}
+
 }

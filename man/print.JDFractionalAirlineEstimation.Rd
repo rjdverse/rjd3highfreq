@@ -23,11 +23,9 @@ This function implements the \code{\link[base]{print}} S3 method for objects
 of class \code{JDFractionalAirlineEstimation}.
 }
 \examples{
-\dontrun{
-# Assuming 'estimation' is a JDFractionalAirlineEstimation object
+# 'pre_proc_births' is a JDFractionalAirlineEstimation object obtained from
+# the 'fractionalAirlineEstimation' function
 
-# --- Basic print (dispatched automatically) ------------------------------
-print(estimation)
-}
+print(pre_proc_births)
 
 }

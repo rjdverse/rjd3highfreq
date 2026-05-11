@@ -42,9 +42,6 @@ them. Default: FALSE.}
 Default: FALSE.}
 
 \item{y_time}{vector of times at which `y` is indexed. Optional.}
-
-\item{adjust}{Boolean: TRUE: actual fractional airline model is to be used,
-FALSE: the period is rounded to the nearest integer.}
 }
 \value{
 An object containing the AMB decomposition results, including the
@@ -62,15 +59,13 @@ If `sn = TRUE`, the decomposition is restricted to two components only
 may fail for long series or high-frequency data due to memory constraints.
 }
 \examples{
-\dontrun{
-amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = linearized_data$y, # linearized series from preprocessing
+amb.dow <- fractionalAirlineDecomposition(
+  y = Births$births,
   period = 7,
-  log = TRUE, y_time = linearized_data$date)
+  log = FALSE, y_time = Births$date)
 
-amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-  y = linearized_data$y, # linearized series from preprocessing
+amb.doy <- fractionalAirlineDecomposition(
+  y = Births$births,
   period = 365.2425,
-  log = log, y_time = linearized_data$date)
-}
+  log = FALSE, y_time = Births$date)
 }
