@@ -61,6 +61,7 @@ NULL
 #' @export
 #'
 #' @examples
+#' data("Births", package = "rjd3toolkit")
 #' jspec<-.extended_airline_spec(c(7))
 #' .extended_airline_regarima(Births$births, jspec)
 .extended_airline_regarima<-function(y, jspec, mean=FALSE, X=NULL){
@@ -89,6 +90,7 @@ NULL
 #' @return A list object containing detailed estimation results.
 #'
 #' @examples
+#' data("Births", package = "rjd3toolkit")
 #' jspec     <- .extended_airline_spec(c(7))
 #' jregarima <- .extended_airline_regarima(Births$births, jspec)
 #' .extended_airline_estimation(jregarima, jspec, eps=1e-9, exactHessian=FALSE)
@@ -109,14 +111,16 @@ NULL
 #' @param jspec Java object containing the Extended Airline model specifications.
 #' @param precision Numeric value specifying the tolerance for convergence
 #'   of optimization algorithms. Default: 1e-5.
-#' @param deps Numeric scalar. Step in the computation of the numerical derivatives,
-#'   used in the optimisation routine. Default:1e-4.
+#' @param deps Numeric scalar. Step in the computation of the numerical
+#'   derivatives, used in the optimisation routine. Default:1e-4.
 #' @return An object containing the log-level test results.
 #'
 #' @examples
+#' data("Births", package = "rjd3toolkit")
 #' jspec     <- .extended_airline_spec(c(7))
-#' jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
-#' aiccs     <-  rjd3highfreq::.extended_airline_loglevel(jregarima = jregarima,   jspec = jspec) # {ll.getAICcLevel(), ll.getAICcLog()}, in Java code
+#' jregarima <- .extended_airline_regarima(y = Births$births, jspec=jspec)
+#' aiccs     <- .extended_airline_loglevel(jregarima = jregarima,
+#'                                         jspec     = jspec)
 #' if(aiccs[1] <= aiccs[2]) {
 #'     print("AICC is higher in the model without log transformation")
 #' }  else {
@@ -164,6 +168,7 @@ NULL
 #'
 #' @examples
 #' \dontrun{
+#'    data("Births", package = "rjd3toolkit")
 #'    jspec     <- .extended_airline_spec(c(7))
 #'    jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
 #'    outliers_window <- .extended_airline_outliers(

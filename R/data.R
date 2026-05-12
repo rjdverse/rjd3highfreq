@@ -1,16 +1,3 @@
-#' Births dataset
-#'
-#' Dataset containing births data from 01-01-1968 to 2024-12-31.
-#'
-#' @format A data frame with N rows and K variables:
-#' \describe{
-#'   \item{date}{Date}
-#'   \item{births}{Observed value}
-#' }
-#'
-#'
-"Births"
-
 #' Pre-processed births model
 #'
 #' Object obtained from a pre-processing step applied to the daily
@@ -39,6 +26,9 @@
 #' The object was generated with code equivalent to:
 #'
 #' \preformatted{
+#'
+#' data("Births", package = "rjd3toolkit")
+#'
 #' date_start <- as.Date("2019-01-01")
 #' date_end <- as.Date("2024-12-31")
 #'

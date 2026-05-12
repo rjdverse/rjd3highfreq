@@ -14,8 +14,8 @@
 \item{precision}{Numeric value specifying the tolerance for convergence
 of optimization algorithms. Default: 1e-5.}
 
-\item{deps}{Numeric scalar. Step in the computation of the numerical derivatives,
-used in the optimisation routine. Default:1e-4.}
+\item{deps}{Numeric scalar. Step in the computation of the numerical
+derivatives, used in the optimisation routine. Default:1e-4.}
 }
 \value{
 An object containing the log-level test results.
@@ -25,9 +25,11 @@ This internal function performs a statistical test to determine whether data
 should be transformed to logarithmic scale or kept in level (original scale)
 }
 \examples{
+data("Births", package = "rjd3toolkit")
 jspec     <- .extended_airline_spec(c(7))
-jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
-aiccs     <-  rjd3highfreq::.extended_airline_loglevel(jregarima = jregarima,   jspec = jspec) # {ll.getAICcLevel(), ll.getAICcLog()}, in Java code
+jregarima <- .extended_airline_regarima(y = Births$births, jspec=jspec)
+aiccs     <- .extended_airline_loglevel(jregarima = jregarima,
+                                        jspec     = jspec)
 if(aiccs[1] <= aiccs[2]) {
     print("AICC is higher in the model without log transformation")
 }  else {

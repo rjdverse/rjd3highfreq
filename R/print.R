@@ -13,6 +13,7 @@
 #' @return The function returns the input object \code{x}.
 #'
 #' @examples
+#' data("Births", package = "rjd3toolkit")
 #'
 #' amb.dow <- fractionalAirlineDecomposition(
 #'   y = Births$births,

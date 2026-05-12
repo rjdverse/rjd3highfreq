@@ -79,6 +79,8 @@ and a critical value for the detection threshold.
 }
 \examples{
 # input data
+data("Births", package = "rjd3toolkit")
+
 # Linearize the series using weekly and annual periodicities
 pre_proc_births <- fractionalAirlineEstimation(
   y = Births$births,

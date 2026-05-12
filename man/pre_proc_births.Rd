@@ -42,6 +42,9 @@ The estimation includes:
 The object was generated with code equivalent to:
 
 \preformatted{
+
+data("Births", package = "rjd3toolkit")
+
 date_start <- as.Date("2019-01-01")
 date_end <- as.Date("2024-12-31")
 

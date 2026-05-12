@@ -87,6 +87,7 @@ NULL
 #' may fail for long series or high-frequency data due to memory constraints.
 #'
 #' @examples
+#' data("Births", package = "rjd3toolkit")
 #' amb.dow <- fractionalAirlineDecomposition(
 #'   y = Births$births,
 #'   period = 7,
@@ -233,6 +234,8 @@ multiAirlineDecomposition <- function(y, periods, ndiff = 2, ar = FALSE, stde = 
 #'#'
 #' @examples
 #' # input data
+#' data("Births", package = "rjd3toolkit")
+#'
 #' # Linearize the series using weekly and annual periodicities
 #' pre_proc_births <- fractionalAirlineEstimation(
 #'   y = Births$births,
@@ -772,6 +775,7 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
 #' library("rjd3toolkit")
 #' library("rjd3highfreq")
 #'
+#' data("Births", package = "rjd3toolkit")
 #'
 #' # 1. Fractional Airline Estimation (linearization)
 #'
@@ -833,6 +837,7 @@ jd2r_fractionalAirlineDecomposition <- function(jrslt,
 #' library("rjd3toolkit")
 #' library("rjd3highfreq")
 #'
+#' data("Births", package = "rjd3toolkit")
 #'
 #' # Define French calendar
 #' frenchCalendar <- rjd3toolkit::national_calendar(days = list(

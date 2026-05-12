@@ -62,6 +62,7 @@ time series using Extended Airline models.
 }
 \examples{
 \dontrun{
+   data("Births", package = "rjd3toolkit")
    jspec     <- .extended_airline_spec(c(7))
    jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
    outliers_window <- .extended_airline_outliers(

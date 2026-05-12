@@ -26,6 +26,7 @@ This internal function constructs a Java RegArimaModel object by fitting an
 Extended Airline model.
 }
 \examples{
+data("Births", package = "rjd3toolkit")
 jspec<-.extended_airline_spec(c(7))
 .extended_airline_regarima(Births$births, jspec)
 }

@@ -59,6 +59,7 @@ If `sn = TRUE`, the decomposition is restricted to two components only
 may fail for long series or high-frequency data due to memory constraints.
 }
 \examples{
+data("Births", package = "rjd3toolkit")
 amb.dow <- fractionalAirlineDecomposition(
   y = Births$births,
   period = 7,

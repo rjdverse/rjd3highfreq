@@ -97,7 +97,7 @@ plot(amb_r, type_chart = "y-sa-trend")
 
 ## Daily births in France
 ```{r births-data}
-df_daily <- rjd3highfreq::Births
+df_daily <- rjd3toolkit::Births
 df_daily$date <- as.Date(df_daily$date)
 ```
 

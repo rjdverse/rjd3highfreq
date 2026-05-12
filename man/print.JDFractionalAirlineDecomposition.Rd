@@ -23,6 +23,7 @@ This function implements the \code{\link[base]{print}} S3 method for objects
 of class \code{JDFractionalAirlineDecomposition}.
 }
 \examples{
+data("Births", package = "rjd3toolkit")
 
 amb.dow <- fractionalAirlineDecomposition(
   y = Births$births,
