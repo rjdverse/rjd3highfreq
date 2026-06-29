@@ -56,14 +56,12 @@ access to the underlying Java object
 (\code{LightExtendedAirlineDecomposition}).
 }
 \examples{
-\dontrun{
+# pre_proc_births$linearized is a linearized series. On Births data
+# without linearization the decomposition fails.
+
 # Raw decomposition with weekly and annual periodicities
 jdec <- multiAirlineDecomposition_raw(
-  y = linearized_data$y,
+  y = pre_proc_births$model$linearized,
   periods = c(7, 365.2425)
 )
-
-# The returned object is a Java object
-jdec
-}
 }

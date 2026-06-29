@@ -30,6 +30,7 @@ RoxygenNote: 7.3.3
 BugReports: https://github.com/rjdverse/rjd3highfreq/issues
 Encoding: UTF-8
 Collate: 
+    'data.R'
     'utils.R'
     'jd3_extendedairline.R'
     'jd3_fractionalairline.R'

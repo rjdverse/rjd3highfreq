@@ -30,14 +30,14 @@ Default: c("ao") (additive outliers only). Common options include:
   \item "wo" - Switch Outlier
 }}
 
-\item{start}{Integer specifying the starting position (1-based R indexing) for 
+\item{start}{Integer specifying the starting position (1-based R indexing) for
 outlier detection. Default: 0 (detection from the beginning of the series).}
 
-\item{end}{Integer specifying the ending position (1-based R indexing) for 
+\item{end}{Integer specifying the ending position (1-based R indexing) for
 outlier detection. Default: 0 (detection until the end of the series).}
 
 \item{critical_value}{Numeric value for the critical value threshold.
-Uses the maximum value among the specified value and a global max-t 
+Uses the maximum value among the specified value and a global max-t
 threshold based on extreme-value theory, roughly of order sqrt(2 * log(n))).
 Default: 0 (global max-t threshold is used).}
 
@@ -57,17 +57,20 @@ used in the optimisation routine. Default:1e-4.}
 A numeric matrix with dimensions [number of outliers detected × 2]:
 }
 \description{
-This internal function performs automatic outlier detection in high-frequency 
+This internal function performs automatic outlier detection in high-frequency
 time series using Extended Airline models.
 }
 \examples{
 \dontrun{
-outliers_window <- .extended_airline_outliers(
-  jreg, jspec,
-  types = c("ao", "ls"),
-  start = 100,
-  end = 500,
-  critical_value = 6.0
-)
+   data("Births", package = "rjd3toolkit")
+   jspec     <- .extended_airline_spec(c(7))
+   jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
+   outliers_window <- .extended_airline_outliers(
+   jregarima, jspec,
+   types = c("ao", "ls"),
+   start = 100,
+   end = 500,
+   critical_value = 6.0
+   )
 }
 }

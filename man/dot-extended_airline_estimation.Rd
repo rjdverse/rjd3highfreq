@@ -33,11 +33,12 @@ uses a numerical approximation.}
 A list object containing detailed estimation results.
 }
 \description{
-This internal function performs maximum likelihood estimation of an Extended 
+This internal function performs maximum likelihood estimation of an Extended
 Airline model that has been previously specified and initialized.
 }
 \examples{
-\dontrun{
+data("Births", package = "rjd3toolkit")
+jspec     <- .extended_airline_spec(c(7))
+jregarima <- .extended_airline_regarima(Births$births, jspec)
 .extended_airline_estimation(jregarima, jspec, eps=1e-9, exactHessian=FALSE)
-}
 }

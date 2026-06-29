@@ -2,10 +2,10 @@
 #' Create a custom plot replicating the JD+ GUI visual style
 #'
 #' This internal function generates a time series plot that replicates the visual
-#' template of the JD+ graphical user interface. The function 
+#' template of the JD+ graphical user interface. The function
 #' supports plotting one or more time series simultaneously.
-#' 
-#' @param x Numeric vector representing the x-axis values, typically a R time 
+#'
+#' @param x Numeric vector representing the x-axis values, typically a R time
 #'   series object.
 #' @param y A list of numeric vectors, where each element represents a
 #'   different time series to be plotted on the y-axis.
@@ -17,7 +17,7 @@
 #'   that apply uniformly to all series.
 #'
 #' @return `NULL` (invisible).
-#' 
+#'
 #' @export
 .plot_jd <- function(x, y, col, legend_txt = NULL, ...) {
 
@@ -63,7 +63,7 @@
 #'
 #' This function implements the \code{\link[graphics]{plot}} S3 method for objects
 #' of class \code{JDFractionalAirlineEstimation}.
-#' 
+#'
 #' @param x An object of class \code{JDFractionalAirlineEstimation}, as
 #'   returned by the fractional airline estimation functions.
 #' @param from An optional \code{Date} or \code{POSIXt} object specifying
@@ -75,23 +75,23 @@
 #' @return `NULL` (invisible).
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming 'estimation' is a JDFractionalAirlineEstimation object
+#' # 'pre_proc_births' is a JDFractionalAirlineEstimation object obtained from
+#' # the 'fractionalAirlineEstimation' function
+#'
 #' # Basic plot: raw data vs. linearised series
-#' plot(estimation)
+#' plot(pre_proc_births)
 #'
 #' # Plot restricted to a specific time window
-#' plot(estimation,
+#' plot(pre_proc_births,
 #'      from = as.Date("2015-01-01"),
 #'      to   = as.Date("2020-12-31"))
 #'
 #' # Combining time window, custom title and line width
-#' plot(estimation,
+#' plot(pre_proc_births,
 #'      from = as.Date("2018-06-01"),
 #'      to   = as.Date("2023-01-01"),
 #'      main = "Filtered window",
 #'      lwd  = 2)
-#' }
 #'
 #' @export
 plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
@@ -161,35 +161,39 @@ plot.JDFractionalAirlineEstimation <- function(x, from, to, ...) {
 #'     \item \code{"cal-seas-irr"} — plots all seasonal components and the
 #'         irregular component
 #'   }
-#' @param ... Additional graphical parameters passed through to 
+#' @param ... Additional graphical parameters passed through to
 #' \code{\link{.plot_jd}}.
-#'    
+#'
 #' @return `NULL` (invisible).
 #' @examples
-#' \dontrun{
-#' # Assuming 'decomp' is a JDFractionalAirlineDecomposition object
+#'
+#' amb.dow <- fractionalAirlineDecomposition(
+#'   y = pre_proc_births$model$linearized,
+#'   period = 7,
+#'   log = FALSE,
+#'   y_time = pre_proc_births$model$y_time
+#' )
 #'
 #' # --- Default: render both charts sequentially ---------------------------
-#' plot(decomp)
+#' plot(amb.dow)
 #'
 #' # --- Render only the raw / SA / trend chart -----------------------------
-#' plot(decomp, type_chart = "y-sa-trend")
+#' plot(amb.dow, type_chart = "y-sa-trend")
 #'
 #' # --- Restrict both charts to a specific time window ----------------------
-#' plot(decomp,
-#'      from = as.Date("2016-01-01"),
-#'      to   = as.Date("2022-12-31"))
+#' plot(amb.dow,
+#'      from = as.Date("2019-01-01"),
+#'      to   = as.Date("2020-12-31"))
 #'
 #' # --- Both charts stacked vertically with a custom line width --------------
 #' par(mfrow = c(2, 1))
-#' plot(decomp,
-#'      from = as.Date("2018-01-01"),
+#' plot(amb.dow,
+#'      from = as.Date("2019-01-01"),
 #'      to   = as.Date("2023-06-30"),
 #'      main = "Stacked view",
 #'      lwd  = 2)
 #' par(mfrow = c(1, 1))   # reset layout
-#' }
-#' 
+#'
 #' @export
 plot.JDFractionalAirlineDecomposition <- function(
         x, from, to, type_chart = c("y-sa-trend", "cal-seas-irr"), ...) {
@@ -236,7 +240,7 @@ plot.JDFractionalAirlineDecomposition <- function(
         do.call(.plot_jd,
                 c(list(
                     x = vect_x, y = list(y, sa, tc),
-                    legend_txt = c("Raw data", "Seasonnal adjusted", "Trend")),
+                    legend_txt = c("Raw data", "Seasonal adjusted", "Trend")),
                   list_args)
         )
     }

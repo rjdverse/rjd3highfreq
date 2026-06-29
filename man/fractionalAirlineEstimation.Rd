@@ -65,6 +65,7 @@ An object of class \code{"JDFractionalAirlineEstimation"} containing:
   \item model parameters and covariance matrices,
   \item likelihood and diagnostic information.
 }
+#'
 }
 \description{
 This function estimates a (fractional) airline RegARIMA model and returns
@@ -77,27 +78,14 @@ Automatic outlier detection can be enabled by specifying the outlier types
 and a critical value for the detection threshold.
 }
 \examples{
-\dontrun{
 # input data
-data <- list(
-  y = rnorm(1000),
-  date = seq.Date(from = as.Date("2020-01-01"),
-                  by = "day",
-                  length.out = 1000)
-)
+data("Births", package = "rjd3toolkit")
 
 # Linearize the series using weekly and annual periodicities
-est <- fractionalAirlineEstimation(
-  y = data$y,
+pre_proc_births <- fractionalAirlineEstimation(
+  y = Births$births,
   periods = c(7, 365.2425),
   log = FALSE,
-  y_time = data$date
+  y_time = Births$date
 )
-
-# Extract linearized series for subsequent decompositions
-linearized_data <- list(
-  y = est$model$linearized,
-  date = est$model$y_time
-)
-}
 }

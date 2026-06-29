@@ -25,7 +25,7 @@ Accepts one or both of the following values:
       irregular component
 }}
 
-\item{...}{Additional graphical parameters passed through to 
+\item{...}{Additional graphical parameters passed through to
 \code{\link{.plot_jd}}.}
 }
 \value{
@@ -37,28 +37,32 @@ of class \code{JDFractionalAirlineDecomposition}. It produces one or two
 JD+-styled plots (via \code{\link{.plot_jd}}).
 }
 \examples{
-\dontrun{
-# Assuming 'decomp' is a JDFractionalAirlineDecomposition object
+
+amb.dow <- fractionalAirlineDecomposition(
+  y = pre_proc_births$model$linearized,
+  period = 7,
+  log = FALSE,
+  y_time = pre_proc_births$model$y_time
+)
 
 # --- Default: render both charts sequentially ---------------------------
-plot(decomp)
+plot(amb.dow)
 
 # --- Render only the raw / SA / trend chart -----------------------------
-plot(decomp, type_chart = "y-sa-trend")
+plot(amb.dow, type_chart = "y-sa-trend")
 
 # --- Restrict both charts to a specific time window ----------------------
-plot(decomp,
-     from = as.Date("2016-01-01"),
-     to   = as.Date("2022-12-31"))
+plot(amb.dow,
+     from = as.Date("2019-01-01"),
+     to   = as.Date("2020-12-31"))
 
 # --- Both charts stacked vertically with a custom line width --------------
 par(mfrow = c(2, 1))
-plot(decomp,
-     from = as.Date("2018-01-01"),
+plot(amb.dow,
+     from = as.Date("2019-01-01"),
      to   = as.Date("2023-06-30"),
      main = "Stacked view",
      lwd  = 2)
 par(mfrow = c(1, 1))   # reset layout
-}
 
 }

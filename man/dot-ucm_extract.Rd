@@ -2,12 +2,12 @@
 % Please edit documentation in R/jd3_fractionalairline.R
 \name{.ucm_extract}
 \alias{.ucm_extract}
-\title{Extract a specific UCM component from a Java UcarimaModel object}
+\title{Extract a specific component from a Java Decomposition object}
 \usage{
 .ucm_extract(jrslt, cmp)
 }
 \arguments{
-\item{jrslt}{Java UcarimaModel object.}
+\item{jrslt}{Java Decomposition object.}
 
 \item{cmp}{Character string or integer specifying the component to extract.
 Valid components are:
@@ -24,15 +24,13 @@ Valid components are:
 The requested component extracted from the UCM result.
 }
 \description{
-This internal function retrieves a single component from a UCM
-(Unobserved Components Model) result object returned by the Java backend.
+This internal function retrieves a single component from a decomposition
+result object returned by the Java backend.
 The component can be specified either by name or by its integer code.
 }
 \examples{
 \dontrun{
-# Assume `jucm` is a UcarimaModel Java object
-
 # Extract the trend component
-trend <- .ucm_extract(jucm, "Trend")
+trend <- .ucm_extract(jrslt, "Trend")
 }
 }

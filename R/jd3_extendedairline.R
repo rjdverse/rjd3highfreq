@@ -3,7 +3,7 @@ NULL
 
 #' Create a specification for the Extended Airline model
 #'
-#' This internal function constructs a Java ExtendedAirlineSpec object. 
+#' This internal function constructs a Java ExtendedAirlineSpec object.
 #' The Extended Airline model is an extension of the classic seasonal ARIMA
 #' model that can handle multiple simultaneous periodicities.
 #'
@@ -11,11 +11,11 @@ NULL
 #'   For example, \code{c(7, 365.25)} indicates weekly and annual seasonality.
 #' @param differencing Differencing order to apply. The default value
 #'   \code{-1} activates automatic computation based on the number of
-#'   periodicities: if \code{ar=FALSE}, the order will be 
-#'   \code{length(periodicities) + 1}, otherwise it will equal 
+#'   periodicities: if \code{ar=FALSE}, the order will be
+#'   \code{length(periodicities) + 1}, otherwise it will equal
 #'   \code{length(periodicities)}.
 #'   Positive values manually specify the differencing order.
-#' @param ar Logical. If \code{TRUE}, uses a regular stationary autoregressive 
+#' @param ar Logical. If \code{TRUE}, uses a regular stationary autoregressive
 #'   (AR) polynomial instead of a moving average (MA) polynomial.
 #'   Default: \code{FALSE}. This choice affects the automatic differencing order.
 #' @param toint Logical. If \code{TRUE}, rounds periodicity values
@@ -51,8 +51,8 @@ NULL
 #' This internal function constructs a Java RegArimaModel object by fitting an
 #' Extended Airline model.
 #' @param y Numeric vector containing the time series to be modeled.
-#' @param jspec A Java ExtendedAirlineSpec object, for instance created using 
-#'   \code{\link{.extended_airline_spec}}. 
+#' @param jspec A Java ExtendedAirlineSpec object, for instance created using
+#'   \code{\link{.extended_airline_spec}}.
 #' @param mean Logical. If \code{TRUE}, includes a mean correction term in the model.
 #'   Default: \code{FALSE}.
 #' @param X Optional matrix of regression variables.
@@ -61,8 +61,9 @@ NULL
 #' @export
 #'
 #' @examples
-#' jspec<-.extended_airline_spec(c(12))
-#' .extended_airline_regarima(rjd3toolkit::ABS$X0.2.09.10.M, jspec)
+#' data("Births", package = "rjd3toolkit")
+#' jspec<-.extended_airline_spec(c(7))
+#' .extended_airline_regarima(Births$births, jspec)
 .extended_airline_regarima<-function(y, jspec, mean=FALSE, X=NULL){
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/toolkit/base/core/regarima/RegArimaModel;", "regarima",
@@ -72,9 +73,9 @@ NULL
 
 #' Estimate parameters of an Extended Airline RegARIMA model
 #'
-#' This internal function performs maximum likelihood estimation of an Extended 
+#' This internal function performs maximum likelihood estimation of an Extended
 #' Airline model that has been previously specified and initialized.
-#' 
+#'
 #' @param jregarima A Java RegArimaModel object, for instance created using
 #'  \code{\link{.extended_airline_regarima}}.
 #' @param jspec A Java ExtendedAirlineSpec object, for instance created using
@@ -87,12 +88,13 @@ NULL
 #'   at the optimum for calculating standard errors. If \code{FALSE} (default),
 #'   uses a numerical approximation.
 #' @return A list object containing detailed estimation results.
-#' @export
-#' 
+#'
 #' @examples
-#' \dontrun{
+#' data("Births", package = "rjd3toolkit")
+#' jspec     <- .extended_airline_spec(c(7))
+#' jregarima <- .extended_airline_regarima(Births$births, jspec)
 #' .extended_airline_estimation(jregarima, jspec, eps=1e-9, exactHessian=FALSE)
-#' }
+#' @export
 .extended_airline_estimation<-function(jregarima, jspec, eps=1e-9, deps=1e-9, exactHessian=FALSE){
 
     jrslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/core/extendedairline/LightExtendedAirlineEstimation;", "estimate",
@@ -105,19 +107,26 @@ NULL
 #' This internal function performs a statistical test to determine whether data
 #' should be transformed to logarithmic scale or kept in level (original scale)
 #'
-#' @param jregarima Java object containing the already estimated RegARIMA model. 
+#' @param jregarima Java object containing the already estimated RegARIMA model.
 #' @param jspec Java object containing the Extended Airline model specifications.
 #' @param precision Numeric value specifying the tolerance for convergence
 #'   of optimization algorithms. Default: 1e-5.
-#' @param deps Numeric scalar. Step in the computation of the numerical derivatives,
-#'   used in the optimisation routine. Default:1e-4.
-#' @return An object containing the log-level test results. 
-#' @export
-#' 
+#' @param deps Numeric scalar. Step in the computation of the numerical
+#'   derivatives, used in the optimisation routine. Default:1e-4.
+#' @return An object containing the log-level test results.
+#'
 #' @examples
-#' \dontrun{
-#' log_level_test_results <- .extended_airline_loglevel(jregarima, jspec, precision=1e-5)
+#' data("Births", package = "rjd3toolkit")
+#' jspec     <- .extended_airline_spec(c(7))
+#' jregarima <- .extended_airline_regarima(y = Births$births, jspec=jspec)
+#' aiccs     <- .extended_airline_loglevel(jregarima = jregarima,
+#'                                         jspec     = jspec)
+#' if(aiccs[1] <= aiccs[2]) {
+#'     print("AICC is higher in the model without log transformation")
+#' }  else {
+#'     print("AICC is higher in the model with log transformation")
 #' }
+#' @export
 .extended_airline_loglevel<-function(jregarima, jspec, precision=1e-5, deps = 1e-4){
     rslt <- .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "[D", "logLevelTest",
                     jregarima, jspec, as.numeric(precision), as.numeric(deps))
@@ -126,7 +135,7 @@ NULL
 
 #' Outlier Detection for Extended Airline Models
 #'
-#' This internal function performs automatic outlier detection in high-frequency 
+#' This internal function performs automatic outlier detection in high-frequency
 #' time series using Extended Airline models.
 #'
 #' @param jregarima Java object containing the estimated RegARIMA model.
@@ -138,14 +147,14 @@ NULL
 #'     \item "ls" - Level Shift
 #'     \item "wo" - Switch Outlier
 #'   }
-#' @param start Integer specifying the starting position (1-based R indexing) for 
+#' @param start Integer specifying the starting position (1-based R indexing) for
 #'   outlier detection. Default: 0 (detection from the beginning of the series).
-#' @param end Integer specifying the ending position (1-based R indexing) for 
+#' @param end Integer specifying the ending position (1-based R indexing) for
 #'   outlier detection. Default: 0 (detection until the end of the series).
 #' @param critical_value Numeric value for the critical value threshold.
-#'   Uses the maximum value among the specified value and a global max-t 
+#'   Uses the maximum value among the specified value and a global max-t
 #'   threshold based on extreme-value theory, roughly of order sqrt(2 * log(n))).
-#'   Default: 0 (global max-t threshold is used).   
+#'   Default: 0 (global max-t threshold is used).
 #' @param max_outliers Integer specifying the maximum number of outliers to detect.
 #'   Default: 30.
 #' @param max_round Integer specifying the maximum number of detection iterations.
@@ -156,18 +165,21 @@ NULL
 #' @param deps Numeric scalar. Step in the computation of the numerical derivatives,
 #'   used in the optimisation routine. Default:1e-4.
 #' @return A numeric matrix with dimensions [number of outliers detected × 2]:
-#' @export
-#' 
+#'
 #' @examples
 #' \dontrun{
-#' outliers_window <- .extended_airline_outliers(
-#'   jreg, jspec,
-#'   types = c("ao", "ls"),
-#'   start = 100,
-#'   end = 500,
-#'   critical_value = 6.0
-#' )
+#'    data("Births", package = "rjd3toolkit")
+#'    jspec     <- .extended_airline_spec(c(7))
+#'    jregarima <-  rjd3highfreq::.extended_airline_regarima(y = Births$births, jspec=jspec)
+#'    outliers_window <- .extended_airline_outliers(
+#'    jregarima, jspec,
+#'    types = c("ao", "ls"),
+#'    start = 100,
+#'    end = 500,
+#'    critical_value = 6.0
+#'    )
 #' }
+#' @export
 .extended_airline_outliers<-function(jregarima, jspec, types=c("ao"), start=0, end=0, critical_value=0, max_outliers=30, max_round=30, precision=1e-5, deps=1e-4){
     if (start != 0) start<-start-1
     if (end != 0) end<-end-1

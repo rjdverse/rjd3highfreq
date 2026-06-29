@@ -3,22 +3,25 @@
 #'
 #' This function implements the \code{\link[base]{print}} S3 method for objects
 #' of class \code{JDFractionalAirlineDecomposition}.
-#' 
+#'
 #' @param x An object of class \code{JDFractionalAirlineDecomposition}, as
 #'   returned by the fractional airline decomposition functions
 #' @param digits Integer. Number of significant digits used to format all
 #'   numeric values in the output.
 #' @param ... Additional arguments.
-#' 
+#'
 #' @return The function returns the input object \code{x}.
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming 'decomp' is a JDFractionalAirlineDecomposition object
+#' data("Births", package = "rjd3toolkit")
+#'
+#' amb.dow <- fractionalAirlineDecomposition(
+#'   y = Births$births,
+#'   period = 7,
+#'   log = FALSE, y_time = Births$date)
 #'
 #' # --- Basic print (dispatched automatically) ------------------------------
-#' print(decomp)
-#' }
+#' print(amb.dow)
 #'
 #' @export
 print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
@@ -74,7 +77,7 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
         formatC(x$likelihood$bicc, digits = digits), sep = "")
     cat("\n")
 
-    cat("Hannan–Quinn information criterion = ",
+    cat("Hannan-Quinn information criterion = ",
         formatC(x$likelihood$hannanquinn, digits = digits), sep = "")
 
     cat("\n\n")
@@ -96,12 +99,10 @@ print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption
 #' @return The function returns the input object \code{x}.
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming 'estimation' is a JDFractionalAirlineEstimation object
+#' # 'pre_proc_births' is a JDFractionalAirlineEstimation object obtained from
+#' # the 'fractionalAirlineEstimation' function
 #'
-#' # --- Basic print (dispatched automatically) ------------------------------
-#' print(estimation)
-#' }
+#' print(pre_proc_births)
 #'
 #' @export
 print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
@@ -184,7 +185,7 @@ print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("d
         formatC(x$likelihood$bicc, digits = digits), sep = "")
     cat("\n")
 
-    cat("Hannan–Quinn information criterion = ",
+    cat("Hannan-Quinn information criterion = ",
         formatC(x$likelihood$hannanquinn, digits = digits), sep = "")
 
     cat("\n\n")

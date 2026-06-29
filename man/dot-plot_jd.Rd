@@ -7,7 +7,7 @@
 .plot_jd(x, y, col, legend_txt = NULL, ...)
 }
 \arguments{
-\item{x}{Numeric vector representing the x-axis values, typically a R time 
+\item{x}{Numeric vector representing the x-axis values, typically a R time
 series object.}
 
 \item{y}{A list of numeric vectors, where each element represents a
@@ -27,6 +27,6 @@ that apply uniformly to all series.}
 }
 \description{
 This internal function generates a time series plot that replicates the visual
-template of the JD+ graphical user interface. The function 
+template of the JD+ graphical user interface. The function
 supports plotting one or more time series simultaneously.
 }

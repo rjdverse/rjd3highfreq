@@ -52,13 +52,13 @@ access to the underlying Java
 \code{LightExtendedAirlineDecomposition} object.
 }
 \examples{
-\dontrun{
+
+# Using the linearized series; decomposition fails on raw (non-linearized)
+# birth data.
+
 # Raw decomposition with weekly periodicity
 jdec <- fractionalAirlineDecomposition_raw(
-  y = linearized_data$y,
+  y = pre_proc_births$model$linearized,
   period = 7
 )
-
-jdec
-}
 }
