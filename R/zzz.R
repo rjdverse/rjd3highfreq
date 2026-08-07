@@ -6,7 +6,7 @@
 
     result <-  rJava::.jpackage(pkgname, lib.loc = libname)
     if (!result)
-        stop("Loading java packages failed")
+        stop("Loading Java packages failed")
 
     #proto.dir <- system.file("proto", package = pkgname)
     #RProtoBuf::readProtoFiles2(protoPath = proto.dir)

@@ -1,21 +1,23 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `rjd3highfreq` <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
+# {rjd3highfreq} <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rjd3highfreq)](https://CRAN.R-project.org/package=rjd3highfreq)
+[![Mentioned in Awesome Official
+Statistics](https://awesome.re/mentioned-badge.svg)](https://github.com/SNStatComp/awesome-official-statistics-software)
 
-[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml)
-[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml)
+[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yml)
+[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yml)
 
 [![GH Pages
-built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml)
+built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yml)
 <!-- badges: end -->
 
-rjd3highfreq provides functions for seasonal adjustment of
+{rjd3highfreq} provides functions for seasonal adjustment of
 high-frequency data displaying multiple, non integer periodicities.
 Pre-adjustment with extended airline model and Arima Model Based
 decomposition.
@@ -45,7 +47,7 @@ install.packages("rjd3highfreq", repos = c("https://rjdverse.r-universe.dev", "h
 
 ### Development version
 
-You can install the development version of **rjd3highfreq** from
+You can install the development version of **{rjd3highfreq}** from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -70,7 +72,7 @@ df_daily$date <- as.Date(df_daily$date)
 
 Plot of the raw series:
 
-<img src="man/figures/README-raw data plot-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-raw data plot-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 Preparation of the calendar with the package **rjd3toolkit**:
 
@@ -163,7 +165,7 @@ print(pre_pro)
 plot(pre_pro, main = "French births")
 ```
 
-<img src="man/figures/README-preprocessing plots-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-preprocessing plots-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
 plot(x = pre_pro,
@@ -171,7 +173,7 @@ plot(x = pre_pro,
      main = "French births in 2000")
 ```
 
-<img src="man/figures/README-preprocessing plots-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-preprocessing plots-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 Decomposition with the AMB (Arima Model Based) algorithm:
 
@@ -195,7 +197,7 @@ Plot:
 plot(amb.dow, main = "Weekly pattern")
 ```
 
-<img src="man/figures/README-amb plot 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 1-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot 1-1.png" alt="" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 1-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
 plot(amb.dow, main = "Weekly pattern - January 2018",
@@ -203,13 +205,13 @@ plot(amb.dow, main = "Weekly pattern - January 2018",
      to = as.Date("2018-01-31"))
 ```
 
-<img src="man/figures/README-amb plot 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 2-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot 2-1.png" alt="" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 2-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
 plot(amb.doy, main = "Yearly pattern")
 ```
 
-<img src="man/figures/README-amb plot 3-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 3-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot 3-1.png" alt="" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 3-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
 plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
@@ -217,7 +219,7 @@ plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
      to = as.Date("2002-12-31"))
 ```
 
-<img src="man/figures/README-amb plot 4-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 4-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot 4-1.png" alt="" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 4-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 Perform an Arima Model Based (AMB) decomposition on several periodcities
 at once:
@@ -236,7 +238,7 @@ periodicity:
 plot(amb.multi)
 ```
 
-<img src="man/figures/README-plot amb.multi 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 1-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot amb.multi 1-1.png" alt="" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 1-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
 plot(amb.multi, main = "2012",
@@ -244,7 +246,7 @@ plot(amb.multi, main = "2012",
      to = as.Date("2012-12-31"))
 ```
 
-<img src="man/figures/README-plot amb.multi 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 2-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot amb.multi 2-1.png" alt="" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 2-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 With the package
 [**rjd3x11plus**](https://github.com/rjdverse/rjd3x11plus), you can
@@ -261,4 +263,4 @@ should be added or updated.
 
 The code of this project is licensed under the [European Union Public
 Licence
-(EUPL)](https://interoperable-europe.ec.europa.eu:443/collection/eupl/eupl-text-eupl-12).
+(EUPL)](https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12).

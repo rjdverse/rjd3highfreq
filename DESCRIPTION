@@ -18,7 +18,7 @@ Imports:
   checkmate,
   forecast,
   methods
-SystemRequirements: Java (>= 17)
+SystemRequirements: Java (>= 21)
 License: file LICENSE
 URL: https://github.com/rjdverse/rjd3highfreq, https://rjdverse.github.io/rjd3highfreq/
 LazyData: TRUE
