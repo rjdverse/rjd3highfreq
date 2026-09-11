@@ -19,20 +19,36 @@
 			<groupId>eu.europa.ec.joinup.sat</groupId>
 			<artifactId>jdplus-highfreq-base-r</artifactId>
 			<version>${jdplus-incubator.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>jdplus-highfreq-base-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>jdplus-highfreq-base-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>jdplus-toolkit-base-r</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sat</groupId>
+			<artifactId>jdplus-x12plus-base-r</artifactId>
+			<version>${jdplus-incubator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sat</groupId>
+			<artifactId>jdplus-x12plus-base-api</artifactId>
+			<version>${jdplus-incubator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sat</groupId>
+			<artifactId>jdplus-x12plus-base-core</artifactId>
+			<version>${jdplus-incubator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sat</groupId>
+			<artifactId>jdplus-stl-base-r</artifactId>
+			<version>${jdplus-incubator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sat</groupId>
+			<artifactId>jdplus-stl-base-api</artifactId>
+			<version>${jdplus-incubator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sat</groupId>
+			<artifactId>jdplus-stl-base-core</artifactId>
+			<version>${jdplus-incubator.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -48,7 +64,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.6.1</version>
+					<version>3.11.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -70,6 +86,7 @@
 									<goal>check</goal>
 								</goals>
 								<configuration>
+								     <skip>true</skip><!--für GitHub umstellen -->
 									<verifySnapshots>true</verifySnapshots>
 									<failWeakSignature>true</failWeakSignature>
 								</configuration>
@@ -88,6 +105,7 @@
 								<phase>package</phase>
 								<configuration>
 									<outputDirectory>${project.build.directory}</outputDirectory>
+									<excludeTransitive>true</excludeTransitive>
 								</configuration>
 							</execution>
 						</executions>

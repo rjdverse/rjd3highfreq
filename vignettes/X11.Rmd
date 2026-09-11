@@ -1,0 +1,16 @@
+---
+title: "Decomposition of X-11 algorithm"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Decomposition of X-11 algorithm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+

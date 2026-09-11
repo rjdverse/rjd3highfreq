@@ -4,46 +4,32 @@
 \alias{.extended_airline_spec}
 \title{Create a specification for the Extended Airline model}
 \usage{
-.extended_airline_spec(
-  periodicities,
-  differencing = -1,
-  ar = FALSE,
-  toint = FALSE
-)
+.extended_airline_spec(period, differencing = -1, ar = FALSE, to_int = FALSE)
 }
 \arguments{
-\item{periodicities}{Numeric vector of periodicities present in the data.
+\item{period}{Numeric vector of periods present in the data.
 For example, \code{c(7, 365.25)} indicates weekly and annual seasonality.}
 
 \item{differencing}{Differencing order to apply. The default value
 \code{-1} activates automatic computation based on the number of
-periodicities: if \code{ar=FALSE}, the order will be 
-\code{length(periodicities) + 1}, otherwise it will equal 
-\code{length(periodicities)}.
+periods: if \code{ar=FALSE}, the order will be
+\code{length(period) + 1}, otherwise it will equal
+\code{length(period)}.
 Positive values manually specify the differencing order.}
 
-\item{ar}{Logical. If \code{TRUE}, uses a regular stationary autoregressive 
+\item{ar}{Logical. If \code{TRUE}, uses a regular stationary autoregressive
 (AR) polynomial instead of a moving average (MA) polynomial.
 Default: \code{FALSE}. This choice affects the automatic differencing order.}
 
-\item{toint}{Logical. If \code{TRUE}, rounds periodicity values
+\item{to_int}{Logical. If \code{TRUE}, rounds periodicity values
 to integers before processing. Default: \code{FALSE}.}
 }
 \value{
 A Java object of class \code{ExtendedAirlineSpec}.
 }
 \description{
-This internal function constructs a Java ExtendedAirlineSpec object. 
+This internal function constructs a Java ExtendedAirlineSpec object.
 The Extended Airline model is an extension of the classic seasonal ARIMA
-model that can handle multiple simultaneous periodicities.
+model that can handle multiple simultaneous periods.
 }
-\examples{
-# Specification for daily data with weekly and annual seasonality
-spec1 <- .extended_airline_spec(c(7, 365.25))
-
-# Specification with manual differencing order
-spec2 <- .extended_airline_spec(c(7, 365.25), differencing = 2)
-
-# Using AR instead of MA, with rounding of periodicities
-spec3 <- .extended_airline_spec(c(7, 365.25), ar = TRUE, toint = TRUE)
-}
+\keyword{internal}

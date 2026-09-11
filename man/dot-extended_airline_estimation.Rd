@@ -9,7 +9,7 @@
   jspec,
   eps = 1e-09,
   deps = 1e-09,
-  exactHessian = FALSE
+  exact_hessian = FALSE
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ optimization algorithm.}
 \item{deps}{Numeric scalar. Step in the computation of the numerical derivatives,
 used in the optimisation routine. Default:1e-4.}
 
-\item{exactHessian}{Logical. If \code{TRUE}, computes the exact Hessian matrix
+\item{exact_hessian}{Logical. If \code{TRUE}, computes the exact Hessian matrix
 at the optimum for calculating standard errors. If \code{FALSE} (default),
 uses a numerical approximation.}
 }
@@ -33,11 +33,7 @@ uses a numerical approximation.}
 A list object containing detailed estimation results.
 }
 \description{
-This internal function performs maximum likelihood estimation of an Extended 
+This internal function performs maximum likelihood estimation of an Extended
 Airline model that has been previously specified and initialized.
 }
-\examples{
-\dontrun{
-.extended_airline_estimation(jregarima, jspec, eps=1e-9, exactHessian=FALSE)
-}
-}
+\keyword{internal}
