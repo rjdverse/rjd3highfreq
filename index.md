@@ -13,9 +13,9 @@ decomposition.
 
 ## Installation
 
-Running rjd3 packages requires **Java 17 or higher**. How to set up such
+Running rjd3 packages requires **Java 21 or higher**. How to set up such
 a configuration in R is explained
-[here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
+[here](https://doc.jdemetra.org/#Rconfig)
 
 ### Latest release
 
@@ -24,6 +24,7 @@ To get the current stable version (from the latest release):
 - From GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("rjdverse/rjd3highfreq@*release")
 ```
@@ -31,6 +32,7 @@ remotes::install_github("rjdverse/rjd3highfreq@*release")
 - From [r-universe](https://rjdverse.r-universe.dev/rjd3highfreq):
 
 ``` r
+
 install.packages("rjd3highfreq", repos = c("https://rjdverse.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
@@ -40,6 +42,7 @@ You can install the development version of **rjd3highfreq** from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("rjdverse/rjd3highfreq")
 ```
@@ -47,10 +50,12 @@ remotes::install_github("rjdverse/rjd3highfreq")
 ## Demonstration with the daily french births
 
 ``` r
+
 library("rjd3highfreq")
 ```
 
 ``` r
+
 ## Import of data
 df_daily <- read.csv2("https://raw.githubusercontent.com/TanguyBarthelemy/Tsace_RJD_Webinar_Dec22/b5fcf6b14ae47393554950547ef4788a0068a0f6/Data/TS_daily_births_franceM_1968_2020.csv")
 
@@ -66,6 +71,7 @@ Plot of the raw series:
 Preparation of the calendar with the package **rjd3toolkit**:
 
 ``` r
+
 # French calendar
 frenchCalendar <- rjd3toolkit::national_calendar(days = list(
   rjd3toolkit::fixed_day(7, 14), # Bastille Day
@@ -86,6 +92,7 @@ Creation of the calendar regressor in a matrix with the package
 **rjd3toolkit**:
 
 ``` r
+
 # Calendar regressor matrix
 cal_reg <- rjd3toolkit::holidays(
     calendar = frenchCalendar,
@@ -100,6 +107,7 @@ colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
 Preprocessing with the function `fractionalAirlineEstimation`:
 
 ``` r
+
 pre_pro <- fractionalAirlineEstimation(
     y = df_daily$births,
     x = cal_reg,
@@ -151,12 +159,14 @@ print(pre_pro)
 ```
 
 ``` r
+
 plot(pre_pro, main = "French births")
 ```
 
 ![](reference/figures/README-preprocessing%20plots-1.png)
 
 ``` r
+
 plot(x = pre_pro,
      from = as.Date("2000-01-01"), to = as.Date("2000-12-31"),
      main = "French births in 2000")
@@ -167,6 +177,7 @@ plot(x = pre_pro,
 Decomposition with the AMB (Arima Model Based) algorithm:
 
 ``` r
+
 # Decomposition with weekly pattern
 amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
     y = pre_pro$model$linearized, # linearized series from preprocessing
@@ -183,12 +194,14 @@ amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
 Plot:
 
 ``` r
+
 plot(amb.dow, main = "Weekly pattern")
 ```
 
 ![](reference/figures/README-amb%20plot%201-1.png)![](reference/figures/README-amb%20plot%201-2.png)
 
 ``` r
+
 plot(amb.dow, main = "Weekly pattern - January 2018",
      from = as.Date("2018-01-01"),
      to = as.Date("2018-01-31"))
@@ -197,12 +210,14 @@ plot(amb.dow, main = "Weekly pattern - January 2018",
 ![](reference/figures/README-amb%20plot%202-1.png)![](reference/figures/README-amb%20plot%202-2.png)
 
 ``` r
+
 plot(amb.doy, main = "Yearly pattern")
 ```
 
 ![](reference/figures/README-amb%20plot%203-1.png)![](reference/figures/README-amb%20plot%203-2.png)
 
 ``` r
+
 plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
      from = as.Date("2000-01-01"),
      to = as.Date("2002-12-31"))
@@ -214,6 +229,7 @@ Perform an Arima Model Based (AMB) decomposition on several periodcities
 at once:
 
 ``` r
+
 amb.multi <- rjd3highfreq::multiAirlineDecomposition(
   y = pre_pro$model$linearized, # input time series
   periods = c(7, 365.2425), # 2 frequency
@@ -224,12 +240,14 @@ Plot the comparison between the two AMB methods for the annual
 periodicity:
 
 ``` r
+
 plot(amb.multi)
 ```
 
 ![](reference/figures/README-plot%20amb.multi%201-1.png)![](reference/figures/README-plot%20amb.multi%201-2.png)
 
 ``` r
+
 plot(amb.multi, main = "2012",
      from = as.Date("2012-01-01"),
      to = as.Date("2012-12-31"))

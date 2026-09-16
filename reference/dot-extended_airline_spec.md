@@ -1,43 +1,41 @@
-# Internal routine to create an ExtendedAirlineSpec
+# Create a specification for the Extended Airline model
 
-Internal routine to create an ExtendedAirlineSpec
+This internal function constructs a Java ExtendedAirlineSpec object. The
+Extended Airline model is an extension of the classic seasonal ARIMA
+model that can handle multiple simultaneous periods.
 
 ## Usage
 
 ``` r
-.extended_airline_spec(
-  periodicities,
-  differencing = -1,
-  ar = FALSE,
-  toint = FALSE
-)
+.extended_airline_spec(period, differencing = -1, ar = FALSE, to_int = FALSE)
 ```
 
 ## Arguments
 
-- periodicities:
+- period:
 
-  Periodicities
+  Numeric vector of periods present in the data. For example,
+  `c(7, 365.25)` indicates weekly and annual seasonality.
 
 - differencing:
 
-  Differnecing order. -1 for automatic computation
+  Differencing order to apply. The default value `-1` activates
+  automatic computation based on the number of periods: if `ar=FALSE`,
+  the order will be `length(period) + 1`, otherwise it will equal
+  `length(period)`. Positive values manually specify the differencing
+  order.
 
 - ar:
 
-  Use of an AR regular stationary polynomial instead of a MA polynomial
+  Logical. If `TRUE`, uses a regular stationary autoregressive (AR)
+  polynomial instead of a moving average (MA) polynomial. Default:
+  `FALSE`. This choice affects the automatic differencing order.
 
-- toint:
+- to_int:
 
-  Round periodicties to integers
+  Logical. If `TRUE`, rounds periodicity values to integers before
+  processing. Default: `FALSE`.
 
 ## Value
 
-A Java ExtendedAirlineSpec object
-
-## Examples
-
-``` r
-.extended_airline_spec(c(7, 365.25))
-#> Error in .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/api/ExtendedAirlineSpec;",     "spec", .jarray(as.numeric(periodicities)), as.integer(differencing),     as.logical(ar), as.logical(toint)): RcallMethod: cannot determine object class
-```
+A Java object of class `ExtendedAirlineSpec`.

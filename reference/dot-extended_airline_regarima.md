@@ -1,45 +1,35 @@
-# Creates a java RegArima models based on an extended airline spec
+# Create a RegARIMA model based on an Extended Airline specification
 
-Creates a java RegArima models based on an extended airline spec
+This internal function constructs a Java RegArimaModel object by fitting
+an Extended Airline model.
 
 ## Usage
 
 ``` r
-.extended_airline_regarima(y, jspec, mean = FALSE, X = NULL)
+.extended_airline_regarima(series, jspec, mean = FALSE, xreg = NULL)
 ```
 
 ## Arguments
 
-- y:
+- series:
 
-  y
+  time series
 
 - jspec:
 
-  Java spec
+  A Java ExtendedAirlineSpec object, for instance created using
+  [`.extended_airline_spec`](https://rjdverse.github.io/rjd3highfreq/reference/dot-extended_airline_spec.md).
 
 - mean:
 
-  Mean correction (to be avoided)
+  Logical. If `TRUE`, includes a mean correction term in the model.
+  Default: `FALSE`.
 
-- X:
+- xreg:
 
-  Regression variables
-
-- deps:
-
-  step identifying small changes in the parameters (used in the
-  computation of numerical derivatives). Will be removed.
+  Optional matrix of regression variables. Default: `NULL` (no
+  regressors).
 
 ## Value
 
-A Java RegArima model
-
-## Examples
-
-``` r
-jspec<-.extended_airline_spec(c(12))
-#> Error in .jcall("jdplus/highfreq/base/r/ExtendedAirlineProcessor", "Ljdplus/highfreq/base/api/ExtendedAirlineSpec;",     "spec", .jarray(as.numeric(periodicities)), as.integer(differencing),     as.logical(ar), as.logical(toint)): java.lang.UnsupportedClassVersionError: jdplus/toolkit/base/api/information/InformationExtractors has been compiled by a more recent version of the Java Runtime (class file version 65.0), this version of the Java Runtime only recognizes class file versions up to 61.0
-.extended_airline_regarima(rjd3toolkit::ABS$X0.2.09.10.M, jspec)
-#> Error: object 'jspec' not found
-```
+A Java object of class `RegArimaModel` from the JDemetra+ toolkit.

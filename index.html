@@ -12,12 +12,12 @@
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Seasonal Adjustment of High Frequency Data with JDemetra+ 3.x">
-<meta name="description" content="R Interface to JDemetra+ 3.x (&lt;https://github.com/jdemetra&gt;) time series analysis software. It provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.">
-<meta property="og:description" content="R Interface to JDemetra+ 3.x (&lt;https://github.com/jdemetra&gt;) time series analysis software. It provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.">
+<meta name="description" content="R interface to JDemetra+ 3.x (&lt;https://github.com/jdemetra&gt;), the time series analysis software. It provides functions for seasonal adjustment of higher-frequency data, including those with multiple or non-integer periodicities. It includes pre-adjustment via the extended airline model and several seasonal decomposition methods: extended airline model based decomposition, extended X-11, and augmented STL.">
+<meta property="og:description" content="R interface to JDemetra+ 3.x (&lt;https://github.com/jdemetra&gt;), the time series analysis software. It provides functions for seasonal adjustment of higher-frequency data, including those with multiple or non-integer periodicities. It includes pre-adjustment via the extended airline model and several seasonal decomposition methods: extended airline model based decomposition, extended X-11, and augmented STL.">
 <meta property="og:image" content="https://rjdverse.github.io/rjd3highfreq/logo.svg">
 </head>
 <body>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">rjd3highfreq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,13 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/highfreq-workflow.html">High-frequency seasonal adjustment with rjd3highfreq</a></li>
+    <li><a class="dropdown-item" href="articles/X11.html">Decomposition of X-11 algorithm</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -67,7 +74,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Running rjd3 packages requires <strong>Java 17 or higher</strong>. How to set up such a configuration in R is explained <a href="https://jdemetra-new-documentation.netlify.app/#Rconfig" class="external-link">here</a></p>
+<p>Running rjd3 packages requires <strong>Java 21 or higher</strong>. How to set up such a configuration in R is explained <a href="https://doc.jdemetra.org/#Rconfig" class="external-link">here</a></p>
 <div class="section level3">
 <h3 id="latest-release">Latest release<a class="anchor" aria-label="anchor" href="#latest-release"></a>
 </h3>
@@ -136,7 +143,7 @@
 <span>                       <span class="st">"15th_aug"</span>, <span class="st">"1st_nov"</span>, <span class="st">"11th_nov"</span>, <span class="st">"Xmas"</span><span class="op">)</span></span></code></pre></div>
 <p>Preprocessing with the function <code>fractionalAirlineEstimation</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pre_pro</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fractionalAirlineEstimation.html">fractionalAirlineEstimation</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">pre_pro</span> <span class="op">&lt;-</span> <span class="fu">fractionalAirlineEstimation</span><span class="op">(</span></span>
 <span>    y <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">births</span>,</span>
 <span>    x <span class="op">=</span> <span class="va">cal_reg</span>,</span>
 <span>    periods <span class="op">=</span> <span class="fl">7</span>, <span class="co"># weekly frequency</span></span>
@@ -195,13 +202,13 @@
 <p>Decomposition with the AMB (Arima Model Based) algorithm:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Decomposition with weekly pattern</span></span>
-<span><span class="va">amb.dow</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu"><a href="reference/fractionalAirlineDecomposition.html">fractionalAirlineDecomposition</a></span><span class="op">(</span></span>
+<span><span class="va">amb.dow</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu">fractionalAirlineDecomposition</span><span class="op">(</span></span>
 <span>    y <span class="op">=</span> <span class="va">pre_pro</span><span class="op">$</span><span class="va">model</span><span class="op">$</span><span class="va">linearized</span>, <span class="co"># linearized series from preprocessing</span></span>
 <span>    period <span class="op">=</span> <span class="fl">7</span>,</span>
 <span>    log <span class="op">=</span> <span class="cn">TRUE</span>, y_time <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Extract day-of-year pattern from day-of-week-adjusted linearised data</span></span>
-<span><span class="va">amb.doy</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu"><a href="reference/fractionalAirlineDecomposition.html">fractionalAirlineDecomposition</a></span><span class="op">(</span></span>
+<span><span class="va">amb.doy</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu">fractionalAirlineDecomposition</span><span class="op">(</span></span>
 <span>    y <span class="op">=</span> <span class="va">amb.dow</span><span class="op">$</span><span class="va">decomposition</span><span class="op">$</span><span class="va">sa</span>, <span class="co"># DOW-adjusted linearised data</span></span>
 <span>    period <span class="op">=</span> <span class="fl">365.2425</span>, <span class="co"># day of year pattern</span></span>
 <span>    log <span class="op">=</span> <span class="cn">TRUE</span>, y_time <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span></code></pre></div>
@@ -224,7 +231,7 @@
 <p><img src="reference/figures/README-amb%20plot%204-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-amb%20plot%204-2.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Perform an Arima Model Based (AMB) decomposition on several periodcities at once:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">amb.multi</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu"><a href="reference/multiAirlineDecomposition.html">multiAirlineDecomposition</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">amb.multi</span> <span class="op">&lt;-</span> <span class="fu">rjd3highfreq</span><span class="fu">::</span><span class="fu">multiAirlineDecomposition</span><span class="op">(</span></span>
 <span>  y <span class="op">=</span> <span class="va">pre_pro</span><span class="op">$</span><span class="va">model</span><span class="op">$</span><span class="va">linearized</span>, <span class="co"># input time series</span></span>
 <span>  periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">365.2425</span><span class="op">)</span>, <span class="co"># 2 frequency</span></span>
 <span>  log <span class="op">=</span> <span class="cn">TRUE</span>, y_time <span class="op">=</span> <span class="va">df_daily</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span></code></pre></div>
@@ -277,7 +284,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Jean Palate <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Jean Palate <br><small class="roles"> Author </small>   </li>
+<li>Daniel Ollech <br><small class="roles"> Maintainer, contributor </small>   </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -294,11 +302,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jean Palate.</p>
+  <p>Developed by Jean Palate, Daniel Ollech.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
