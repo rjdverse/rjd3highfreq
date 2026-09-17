@@ -1,0 +1,44 @@
+---
+title: "High-frequency seasonal adjustment with rjd3highfreq"
+author: "ISTAT"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{High-frequency seasonal adjustment with rjd3highfreq}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 7,
+  fig.height = 4
+)
+```
+
+```{r libraries}
+# If needed, set before loading rJava/rjd3highfreq:
+# options(java.parameters = "-Xmx8g")
+library(rjd3toolkit)
+library(rjd3highfreq)
+```
+
+## Introduction
+
+
+## Conclusions
+
+The `rjd3highfreq` package enables a coherent treatment of
+high-frequency time series within the JD+ ecosystem, combining calendar
+effects, fractional airline models, and flexible multi-period seasonal
+decompositions.

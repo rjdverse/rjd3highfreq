@@ -2,30 +2,34 @@
 % Please edit documentation in R/jd3_extendedairline.R
 \name{.extended_airline_spec}
 \alias{.extended_airline_spec}
-\title{Internal routine to create an ExtendedAirlineSpec}
+\title{Create a specification for the Extended Airline model}
 \usage{
-.extended_airline_spec(
-  periodicities,
-  differencing = -1,
-  ar = FALSE,
-  toint = FALSE
-)
+.extended_airline_spec(period, differencing = -1, ar = FALSE, to_int = FALSE)
 }
 \arguments{
-\item{periodicities}{Periodicities}
+\item{period}{Numeric vector of periods present in the data.
+For example, \code{c(7, 365.25)} indicates weekly and annual seasonality.}
 
-\item{differencing}{Differnecing order. -1 for automatic computation}
+\item{differencing}{Differencing order to apply. The default value
+\code{-1} activates automatic computation based on the number of
+periods: if \code{ar=FALSE}, the order will be
+\code{length(period) + 1}, otherwise it will equal
+\code{length(period)}.
+Positive values manually specify the differencing order.}
 
-\item{ar}{Use of an AR regular stationary polynomial instead of a MA polynomial}
+\item{ar}{Logical. If \code{TRUE}, uses a regular stationary autoregressive
+(AR) polynomial instead of a moving average (MA) polynomial.
+Default: \code{FALSE}. This choice affects the automatic differencing order.}
 
-\item{toint}{Round periodicties to integers}
+\item{to_int}{Logical. If \code{TRUE}, rounds periodicity values
+to integers before processing. Default: \code{FALSE}.}
 }
 \value{
-A Java ExtendedAirlineSpec object
+A Java object of class \code{ExtendedAirlineSpec}.
 }
 \description{
-Internal routine to create an ExtendedAirlineSpec
+This internal function constructs a Java ExtendedAirlineSpec object.
+The Extended Airline model is an extension of the classic seasonal ARIMA
+model that can handle multiple simultaneous periods.
 }
-\examples{
-.extended_airline_spec(c(7, 365.25))
-}
+\keyword{internal}

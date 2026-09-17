@@ -1,38 +1,55 @@
 Package: rjd3highfreq
 Type: Package
 Title: Seasonal Adjustment of High Frequency Data with 'JDemetra+ 3.x'
-Version: 2.4.1
+Version: 3.0.0
 Authors@R: c(
-  person("Jean", "Palate", role = c("aut", "cre"),
+  person("Jean", "Palate", role = c("aut"),
                 email = "palatejean@gmail.com"),
+  person("Daniel", "Ollech", role = c("cre", "ctb"),
+                 email ="daniel.ollech@bundesbank.de"),
+  person("Christiane", "Hofer", role = c("ctb"),
+                 email ="christiane.hofer@bundesbank.de"),
+  person("Witthohn", "Thomas", role = c("ctb"),
+                 email ="thomas.witthohn@bundesbank.de"),
+  person("Lea", "Hengen", role = c("ctb"),
+                 email ="lea.hengen@bundesbank.de"),
+  person("Martin", "Stefan", role = c("ctb"),
+                 email ="martin.stefan@bundesbank.de"),
+  person("Alessandro", "Piovani", role = c("ctb"),
+                 email ="alessandro.piovani@istat.it"),               
   person("Tanguy", "Barthelemy", role = c("ctb", "art"),
-                 email ="tanguy.barthelemy@insee.fr"))
-Description: R Interface to 'JDemetra+ 3.x' (<https://github.com/jdemetra>) time series analysis software. It provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.
+                 email ="tanguy.barthelemy@insee.fr"),
+  person("Karsten", "Webel", role = c("ctb"),
+                 email ="karsten.webel@bundesbank.de",
+                 comment = c(ORCID = "0000-0001-5538-5428", "X-11 method")))
+Description: R interface to 'JDemetra+ 3.x' (<https://github.com/jdemetra>), the time series analysis software. It provides functions for seasonal adjustment of higher-frequency data, including those with multiple or non-integer periodicities. It includes pre-adjustment via the extended airline model and several seasonal decomposition methods: extended airline model based decomposition, extended X-11, and augmented STL.
 Depends:
   R (>= 4.1.0)
 Imports:
   rJava (>= 1.0-6),
-  RProtoBuf (>= 0.4.20),
   rjd3toolkit (>= 3.7.1),
-  rjd3xjars (>= 0.1.0),
-  checkmate,
-  forecast,
-  methods
-SystemRequirements: Java (>= 17)
+  rjd3xjars (>= 0.1.0)
+SystemRequirements: Java (>= 21)
 License: file LICENSE
-URL: https://github.com/rjdverse/rjd3highfreq, https://rjdverse.github.io/rjd3highfreq/
+URL: https://github.com/rjdverse/rjd3highfreq, https://rjdverse.github.io/rjd3highfreq/, https://rjdverse.github.io/rjd3x11plus
 LazyData: TRUE
 Suggests:
     knitr,
     rmarkdown,
     testthat
-RoxygenNote: 7.3.3
 BugReports: https://github.com/rjdverse/rjd3highfreq/issues
+VignetteBuilder: knitr
 Encoding: UTF-8
 Collate: 
-    'utils.R'
+    'auxiliaries.R'
+    'ic_r.R'
     'jd3_extendedairline.R'
     'jd3_fractionalairline.R'
+    'jd3_stl.R'
+    'jd3_x11.R'
     'plot.R'
     'print.R'
+    'summary.R'
+    'x11correction.R'
     'zzz.R'
+Config/roxygen2/version: 8.0.0

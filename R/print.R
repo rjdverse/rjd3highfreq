@@ -1,167 +1,170 @@
-#' Print method for 'JDFractionalAirlineDecomposition' objects
-#'
-#' This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineDecomposition).
-#'
-#' @param x An object of class 'JDFractionalAirlineDecomposition'.
-#' @param digits Number of digits to round numerical values (default is 3 or digits - 3 from options).
-#'
-#' @return The original object 'x'.
-#'
-#' @export
-print.JDFractionalAirlineDecomposition <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-    cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
-    cat("\n")
+# internal helper to neatly print decomposition dataframes
+.print_decomposition <- function(d, digits) {
+    headers <- colnames(d)
+    out <- rbind(utils::head(d), utils::tail(d))
+    txt <- as.data.frame(lapply(out, sprintf, fmt=paste0("%.", digits, "f")))
+    widths <- pmax(nchar(headers), sapply(txt, function(x) max(nchar(x))))
+    format_row <- function(x) cat("  ", paste(sprintf(paste0("%", widths, "s"), x), collapse = "  "), "\n")
+    format_row(headers)
+    for (i in 1:5) format_row(txt[i,])
+    format_row("...")
+    for (i in (nrow(txt)-5):nrow(txt)) {
+        format_row(txt[i,])
+    }
+}
 
-    if (!is.null(x$decomposition$y_time)) {
-        cat("Start:", format(x$decomposition$y_time[1]),"\n")
-        cat("End:", format(x$decomposition$y_time[length(x$decomposition$y_time)]), "\n")
+# internal helper to neatly print list outputs
+.print_list <- function(l, digits) {
+    if (!is.null(l$series_time)) {
+    l$series_time <- c(as.character(utils::head(l$series_time, 1)),
+                       " ...",
+                       as.character(utils::tail(l$series_time, 1))
+                       )
     }
 
-    # Estimated MA parameters (coefs, se, student)
-    nb_freq <- length(x$estimation$parameters) - 1L
-    est_ma_params <- data.frame(
-        MA_parameter = c("Theta(1)",
-                         paste0("Theta(", paste0("period = ",
-                                                 x$estimation$periods), ")")),
-        Coef = x$estimation$parameters,
-        Coef_SE = sqrt(diag(x$estimation$covariance)),
-        check.names = FALSE)
-    est_ma_params$Tstat <- est_ma_params$Coef / est_ma_params$Coef_SE
+    for (name in names(l)) {
+        value <- l[[name]]
+        if (is.matrix(value)) {
+            value_text <- paste(
+                apply(value, 1, function(row) {
+                    paste0(
+                        "[",
+                        paste(sprintf(paste0("%.", digits, "f"), row), collapse = ", "),
+                        "]"
+                    )
+                }),
+                collapse = ", "
+            )
+        } else if (is.numeric(value)) {
+            value_text <- paste(sprintf(value, fmt=paste0("%.", digits, "f")), collapse = ", ")
+        } else {
+            value_text <- paste(value, collapse = ", ")
+        }
+        if (nchar(value_text) > 0) {
+            cat(sprintf("  %-16s : %s\n", name, value_text))
+        }
+    }
+}
 
-    cat("\n")
-    cat("Estimate MA parameters:")
-    cat("\n")
-    print(est_ma_params, row.names = FALSE)
-    cat(ifelse(x$estimation$log, "Multiplicative", "Additive"), "model\n")
-
-    cat("\n")
-    cat("Decomposition:")
-    cat("\n")
-    decompo_table <- do.call(cbind, x$decomposition)
-    if (x$estimation$log) {
-        decompo_table <- exp(decompo_table)
+# internal helper to neatly print model outputs
+.print_model <- function(m, digits = 3L) {
+    # Nothing to print if coefficients are missing/empty
+    if (is.null(m) || is.null(m$b) || length(m$b) == 0) {
+        return(invisible(NULL))
     }
 
-    if (!is.null(x$decomposition$y_time)) {
-        decompo_table <- subset(decompo_table, select = -y_time)
-        rownames(decompo_table) <- format(x$decomposition$y_time)
+    b <- m$b
+
+    # Handle possible matrix/data.frame coefficient storage
+    if (is.matrix(b) || is.data.frame(b)) {
+        if (ncol(b) == 1L) {
+            b_names <- rownames(b)
+            b <- b[, 1L, drop = TRUE]
+        } else if (nrow(b) == 1L) {
+            b_names <- colnames(b)
+            b <- b[1L, , drop = TRUE]
+        } else {
+            stop("The matrix of coefficients has more than one row and one column; cannot determine coefficients.")
+        }
+    } else {
+        # b_names <- names(b)
+        b_names <- unlist(m$variables)
     }
-    print(tail(decompo_table, n = 10))
-    cat("\n")
 
-    cat("Sum of square residuals:", formatC(x$likelihood$ssq, digits = digits),
-        "on", x$likelihood$df, "degrees of freedom",
-        sep = " ")
-    cat("\n")
+    b <- as.numeric(b)
 
-    cat("Log likelihood = ", formatC(x$likelihood$ll, digits = digits),
-        ", \n\taic = ", formatC(x$likelihood$aic, digits = digits),
-        ", \n\taicc = ", formatC(x$likelihood$aicc, digits = digits),
-        ", \n\tbic(corrected for length) = ",
-        formatC(x$likelihood$bicc, digits = digits), sep = "")
-    cat("\n")
+    if (length(b) == 0) {
+        return(invisible(NULL))
+    }
 
-    cat("Hannan–Quinn information criterion = ",
-        formatC(x$likelihood$hannanquinn, digits = digits), sep = "")
+    if (is.null(b_names) || length(b_names) != length(b)) {
+        b_names <- paste0("b", seq_along(b))
+    }
 
+    # Calculate standard errors and t-statistics
+    se <- sqrt(diag(m$bcov))
+    t_stats <- b / se
+
+    out <- cbind(
+        coef = b,
+        t = t_stats
+    )
+
+    rownames(out) <- b_names
+
+    # Format values
+    coef_text <- sprintf(paste0("%.", digits, "f"), out[, "coef"])
+    t_text    <- sprintf(paste0("%.", digits, "f"), out[, "t"])
+
+    # Column widths
+    name_width <- max(nchar(b_names), 1L)
+    coef_width <- max(nchar("coef"), nchar(coef_text))
+    t_width <- max(nchar("t"), nchar(t_text))
+
+    # Header
+    cat(sprintf(
+        "  %-*s  %*s  %*s\n",
+        name_width, "",
+        coef_width, "coef",
+        t_width, "t"
+    ))
+
+    # Separator
+    cat(sprintf(
+        "  %-*s  %*s  %*s\n",
+        name_width, paste(rep("-", name_width), collapse = ""),
+        coef_width, paste(rep("-", coef_width), collapse = ""),
+        t_width, paste(rep("-", t_width), collapse = "")
+    ))
+
+    # Rows
+    for (i in seq_along(b)) {
+        cat(sprintf(
+            "  %-*s  %*s  %*s\n",
+            name_width, b_names[i],
+            coef_width, coef_text[i],
+            t_width, t_text[i]
+        ))
+    }
+
+    invisible(out)
+}
+
+#' Print method for hf_decomposition objects
+#'
+#' @param x An object of class \code{hf_decomposition}.
+#' @param digits Number of significant digits for numeric output.
+#' @param ...  Ignored.
+#' @return \code{x}, invisibly.
+#' @keywords internal
+#' @exportS3Method print hf_decomposition
+
+print.hf_decomposition <- function(x, digits = 3L, ...) {
+    cat("\nDecomposition:\n\n")
+    .print_decomposition(x$decomposition, digits)
+    cat("\n\nParameters:\n\n")
+    .print_list(x$parameters, digits)
     cat("\n\n")
-
     return(invisible(x))
 }
 
-#' Print method for 'JDFractionalAirlineEstimation' objects
+
+#' Print method for hf_estimation objects
 #'
-#' This function prints informations on the result of a Fractional Airline model (classe JDFractionalAirlineEstimation).
-#'
-#' @param x An object of class 'JDFractionalAirlineEstimation'.
-#' @param digits Number of digits to round numerical values (default is 3 or digits - 3 from options).
-#'
-#' @return The original object 'x'.
-#'
-#' @export
-print.JDFractionalAirlineEstimation <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+#' @param x   An object of class \code{hf_estimation}.
+#' @param digits  Number of significant digits for numeric output.
+#' @param ...  Ignored.
+#' @return \code{x}, invisibly.
+#' @keywords internal
+#' @exportS3Method print hf_estimation
 
-    cat("Number of observations:", formatC(x$likelihood$nobs, digits = digits))
-    cat("\n")
-
-    if (!is.null(x$model$y_time)) {
-        cat("Start:", format(x$model$y_time[1]),"\n")
-        cat("End:", format(x$model$y_time[length(x$model$y_time)]), "\n")
-    }
-
-    nb_outliers <- sum(toupper(substr(x$model$variables, 1L, 2L)) %in%
-                           c("AO", "WO", "LS"))
-    nb_reg_cjo <- length(x$model$variables) - nb_outliers
-
-    summary_coeff <-  data.frame(
-        "Variable" = x$model$variables,
-        "Coef" = x$model$b,
-        "Coef_SE" = sqrt(diag(x$model$bcov)))
-    summary_coeff$Tstat <- round(summary_coeff$Coef / summary_coeff$Coef_SE, digits)
-    summary_coeff$Coef <- round(summary_coeff$Coef, digits)
-    summary_coeff$Coef_SE <- round(summary_coeff$Coef_SE, digits)
-
-    if (nb_outliers > 0) {
-        outliers_coeff <- summary_coeff[(nb_reg_cjo + 1L):nrow(summary_coeff), ]
-    }
-
-    if (nb_reg_cjo > 0) {
-        reg_cjo_coeff <- summary_coeff[seq_len(nb_reg_cjo), ]
-    }
-
-    # Estimated MA parameters (coefs, se, student)
-    nb_freq <- length(x$estimation$parameters) - 1L
-    est_ma_params <- data.frame(
-        MA_parameter = c("Theta(1)",
-                         paste0("Theta(period = ", x$model$periods, ")")),
-        Coef = x$estimation$parameters,
-        Coef_SE = sqrt(diag(x$estimation$covariance)),
-        check.names = FALSE
-    )
-    est_ma_params$Tstat <- est_ma_params$Coef / est_ma_params$Coef_SE
-
-    cat("\n")
-    cat("Estimate MA parameters:")
-    cat("\n")
-    print(est_ma_params, row.names = FALSE)
-
-    cat("\n")
-    cat("Number of calendar regressors:", nb_reg_cjo, ", Number of outliers :", nb_outliers)
-    cat("\n\n")
-
-    if (nb_reg_cjo > 0) {
-        cat("TD regressors coefficients:")
-        cat("\n")
-        print(reg_cjo_coeff, row.names = FALSE)
-        # print(head(reg_cjo_coeff, 10), row.names = FALSE)
-        # if (nb_reg_cjo > 10) cat("...\n")
-        cat("\n")
-    }
-
-    if (nb_outliers > 0) {
-        cat("Outliers coefficients:")
-        cat("\n")
-        print(outliers_coeff, row.names = FALSE)
-        # print(head(outliers_coeff, 10), row.names = FALSE)
-        # if (nb_outliers > 10) cat("...\n")
-        cat("\n")
-    }
-
-    cat("Sum of square residuals:", formatC(x$likelihood$ssq, digits = digits),
-        "on", x$likelihood$df, "degrees of freedom",
-        sep = " ")
-    cat("\n")
-
-    cat("Log likelihood = ", formatC(x$likelihood$ll, digits = digits),
-        ", \n\taic = ", formatC(x$likelihood$aic, digits = digits),
-        ", \n\taicc = ", formatC(x$likelihood$aicc, digits = digits),
-        ", \n\tbic(corrected for length) = ",
-        formatC(x$likelihood$bicc, digits = digits), sep = "")
-    cat("\n")
-
-    cat("Hannan–Quinn information criterion = ",
-        formatC(x$likelihood$hannanquinn, digits = digits), sep = "")
-
+print.hf_estimation <- function(x, digits = 3L, ...) {
+    cat("\n\nFractional Airline estimation:\n\n")
+    .print_list(x$estimation, digits)
+    cat("\n\nRegression results:\n\n")
+    .print_model(x$model, digits)
+    cat("\n\nLikelihood:\n\n")
+    .print_list(x$likelihood, digits)
     cat("\n\n")
     return(invisible(x))
 }
