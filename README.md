@@ -17,8 +17,10 @@ built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/b
 
 rjd3highfreq provides functions for seasonal adjustment of
 high-frequency data displaying multiple, non integer periodicities.
-Pre-adjustment with extended airline model and Arima Model Based
-decomposition.
+Pre-adjustment with extended airline model and several decompostions
+- Arima Model Based
+- extended STL
+- extended X-11
 
 ## Installation
 
