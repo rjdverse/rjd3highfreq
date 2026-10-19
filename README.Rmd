@@ -15,25 +15,25 @@ knitr::opts_chunk$set(
 )
 ```
 
-# `rjd3highfreq` <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
+# {rjd3highfreq} <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/rjd3highfreq)](https://CRAN.R-project.org/package=rjd3highfreq)
 [![Mentioned in Awesome Official Statistics ](https://awesome.re/mentioned-badge.svg)](https://github.com/SNStatComp/awesome-official-statistics-software)
 
-[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml)
-[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml)
+[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yml)
+[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yml)
 
-[![GH Pages built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml)
+[![GH Pages built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yml)
 <!-- badges: end -->
 
 
-rjd3highfreq provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.
+{rjd3highfreq} provides functions for seasonal adjustment of high-frequency data displaying multiple, non integer periodicities. Pre-adjustment with extended airline model and Arima Model Based decomposition.
 
 
 ## Installation
 
-Running rjd3 packages requires **Java 17 or higher**. How to set up such a configuration in R is explained [here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
+Running rjd3 packages requires **Java 21 or higher**. How to set up such a configuration in R is explained [here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
 
 
 ### Latest release
@@ -56,7 +56,7 @@ install.packages("rjd3highfreq", repos = c("https://rjdverse.r-universe.dev", "h
 
 ### Development version
 
-You can install the development version of **rjd3highfreq** from [GitHub](https://github.com/) with:
+You can install the development version of **{rjd3highfreq}** from [GitHub](https://github.com/) with:
 
 ```{r, echo = TRUE, eval = FALSE}
 # install.packages("remotes")
@@ -85,9 +85,9 @@ Plot of the raw series:
 
 ```{r raw data plot, echo = FALSE, eval = TRUE}
 # Plot of the raw data ----------------------------------------------------
-rjd3highfreq::.plot_jd(x = df_daily$date, y = list(df_daily$births),
-                       col = "#f1ba1d", main = "French daily birth",
-                       ylab = "Nbr birth")
+# rjd3highfreq::.plot_jd(x = df_daily$date, y = list(df_daily$births),
+#                        col = "#f1ba1d", main = "French daily birth",
+#                        ylab = "Nbr birth")
 ```
 
 Preparation of the calendar with the package **rjd3toolkit**:
@@ -126,11 +126,11 @@ colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
 Preprocessing with the function `fractionalAirlineEstimation`:
 
 ```{r preprocessing, echo = TRUE, eval = TRUE}
-pre_pro <- fractionalAirlineEstimation(
-    y = df_daily$births,
-    x = cal_reg,
-    periods = 7, # weekly frequency
-    outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
+pre_pro <- fractional_airline_estimation(
+    series = df_daily$births,
+    xreg = cal_reg,
+    period = 7, # weekly frequency
+    outliers = c("ao", "wo"), log = TRUE, series_time = df_daily$date)
 
 print(pre_pro)
 ```
@@ -147,48 +147,33 @@ Decomposition with the AMB (Arima Model Based) algorithm:
 
 ```{r amb, echo = TRUE, eval = TRUE}
 # Decomposition with weekly pattern
-amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-    y = pre_pro$model$linearized, # linearized series from preprocessing
+amb.dow <- rjd3highfreq::fractional_airline_decomposition(
+    series = pre_pro$decomposition$linearized, # linearized series from preprocessing
     period = 7,
-    log = TRUE, y_time = df_daily$date)
+    log = TRUE, series_time = df_daily$date)
 
 # Extract day-of-year pattern from day-of-week-adjusted linearised data
-amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
-    y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
+amb.doy <- rjd3highfreq::fractional_airline_decomposition(
+    series = amb.dow$decomposition$sa, # DOW-adjusted linearised data
     period = 365.2425, # day of year pattern
-    log = TRUE, y_time = df_daily$date)
+    log = TRUE, series_time = df_daily$date)
 ```
 
 
 Plot:
 
-```{r amb plot 1, echo = TRUE, eval = TRUE}
-plot(amb.dow, main = "Weekly pattern")
-```
-
-```{r amb plot 2, echo = TRUE, eval = TRUE}
-plot(amb.dow, main = "Weekly pattern - January 2018",
-     from = as.Date("2018-01-01"),
-     to = as.Date("2018-01-31"))
-```
-
-```{r amb plot 3, echo = TRUE, eval = TRUE}
-plot(amb.doy, main = "Yearly pattern")
-```
-
-```{r amb plot 4, echo = TRUE, eval = TRUE}
-plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
-     from = as.Date("2000-01-01"),
-     to = as.Date("2002-12-31"))
+```{r amb plot, echo = TRUE, eval = TRUE}
+plot(amb.dow)
+plot(amb.doy)
 ```
 
 Perform an Arima Model Based (AMB) decomposition on several periodcities at once:
 
 ```{r amb.multi, echo = TRUE, eval = TRUE}
-amb.multi <- rjd3highfreq::multiAirlineDecomposition(
-  y = pre_pro$model$linearized, # input time series
-  periods = c(7, 365.2425), # 2 frequency
-  log = TRUE, y_time = df_daily$date)
+amb.multi <- rjd3highfreq::multi_airline_decomposition(
+  series = pre_pro$decomposition$linearized, # input time series
+  period = c(7, 365.2425), # 2 frequency
+  log = TRUE, series_time = df_daily$date)
 ```
 
 
@@ -196,12 +181,6 @@ Plot the comparison between the two AMB methods for the annual periodicity:
 
 ```{r plot amb.multi 1, echo = TRUE, eval = TRUE}
 plot(amb.multi)
-```
-
-```{r plot amb.multi 2, echo = TRUE, eval = TRUE}
-plot(amb.multi, main = "2012",
-     from = as.Date("2012-01-01"),
-     to = as.Date("2012-12-31"))
 ```
 
 
@@ -216,4 +195,4 @@ pull requests should include **updated tests** and **updated documentation**. If
 
 ## Licensing
 
-The code of this project is licensed under the [European Union Public Licence (EUPL)](https://interoperable-europe.ec.europa.eu:443/collection/eupl/eupl-text-eupl-12).
+The code of this project is licensed under the [European Union Public Licence (EUPL)](https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12).

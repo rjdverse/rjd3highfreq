@@ -190,7 +190,7 @@
     decomposition <- data.frame(
         series = yc,
         sa = sa,
-        tsi_component = tsi_component,
+        tsi_component,
         check.names = FALSE
     )
 

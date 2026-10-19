@@ -1,7 +1,6 @@
 #' @import rjd3xjars
 
 .onLoad <- function(libname, pkgname) {
-
     tryCatch({
 
         ## These checks are optional if the packages are in Imports.
@@ -20,39 +19,34 @@
             )
         }
 
+        # Loading Java class
+        inst_dir <- file.path(libname, pkgname, "inst", "java")
+        java_dir <- system.file("java", package = pkgname, lib.loc = libname)
+
+        jars_files <- list.files(
+            c(java_dir, inst_dir),
+            pattern = "\\.jar$",
+            full.names = TRUE,
+            all.files = TRUE
+        )
+
+        ## Add Java files from the installed package
+        if (length(jars_files) > 0L) {
+            rJava::.jaddClassPath(jars_files)
+        }
+
         ## Initialize the Java package
         result <- suppressMessages(
             suppressWarnings(
                 rJava::.jpackage(
                     pkgname,
-                    lib.loc = libname
+                    lib.loc = libname,
+                    morePaths = jars_files
                 )
             )
         )
-
         if (!isTRUE(result)) {
-            stop(
-                "Loading Java packages failed.",
-                call. = FALSE
-            )
-        }
-
-        ## Add Java files from the installed package
-        java_dir <- system.file(
-            "java",
-            package = pkgname,
-            lib.loc = libname
-        )
-
-        if (nzchar(java_dir) && dir.exists(java_dir)) {
-            java_files <- list.files(
-                java_dir,
-                full.names = TRUE
-            )
-
-            if (length(java_files) > 0L) {
-                rJava::.jaddClassPath(java_files)
-            }
+            stop("Loading Java packages failed", call. = FALSE)
         }
 
         ## Reload extractors

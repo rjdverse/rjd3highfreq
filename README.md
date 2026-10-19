@@ -1,21 +1,23 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `rjd3highfreq` <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
+# {rjd3highfreq} <a href="https://rjdverse.github.io/rjd3highfreq/"><img src="man/figures/logo.png" align="right" height="150" style="float:right; height:150px;"/></a>
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rjd3highfreq)](https://CRAN.R-project.org/package=rjd3highfreq)
+[![Mentioned in Awesome Official
+Statistics](https://awesome.re/mentioned-badge.svg)](https://github.com/SNStatComp/awesome-official-statistics-software)
 
-[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yaml)
-[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yaml)
+[![R-CMD-check](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/R-CMD-check.yml)
+[![lint](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/lint.yml)
 
 [![GH Pages
-built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yaml)
+built](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/rjdverse/rjd3highfreq/actions/workflows/pkgdown.yml)
 <!-- badges: end -->
 
-rjd3highfreq provides functions for seasonal adjustment of
+{rjd3highfreq} provides functions for seasonal adjustment of
 high-frequency data displaying multiple, non integer periodicities.
 Pre-adjustment with extended airline model and Arima Model Based
 decomposition.
@@ -24,7 +26,7 @@ decomposition.
 
 Running rjd3 packages requires **Java 21 or higher**. How to set up such
 a configuration in R is explained
-[here](https://doc.jdemetra.org/#Rconfig)
+[here](https://jdemetra-new-documentation.netlify.app/#Rconfig)
 
 ### Latest release
 
@@ -45,7 +47,7 @@ install.packages("rjd3highfreq", repos = c("https://rjdverse.r-universe.dev", "h
 
 ### Development version
 
-You can install the development version of **rjd3highfreq** from
+You can install the development version of **{rjd3highfreq}** from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -57,6 +59,11 @@ remotes::install_github("rjdverse/rjd3highfreq")
 
 ``` r
 library("rjd3highfreq")
+#> 
+#> Attaching package: 'rjd3highfreq'
+#> The following object is masked from 'package:stats':
+#> 
+#>     loess
 ```
 
 ``` r
@@ -69,8 +76,6 @@ df_daily$date <- as.Date(df_daily$date)
 ```
 
 Plot of the raw series:
-
-<img src="man/figures/README-raw data plot-1.png" width="100%" style="display: block; margin: auto;" />
 
 Preparation of the calendar with the package **rjd3toolkit**:
 
@@ -109,124 +114,122 @@ colnames(cal_reg) <- c("14th_july", "8th_may", "1st_jan", "1st_may",
 Preprocessing with the function `fractionalAirlineEstimation`:
 
 ``` r
-pre_pro <- fractionalAirlineEstimation(
-    y = df_daily$births,
-    x = cal_reg,
-    periods = 7, # weekly frequency
-    outliers = c("ao", "wo"), log = TRUE, y_time = df_daily$date)
+pre_pro <- fractional_airline_estimation(
+    series = df_daily$births,
+    xreg = cal_reg,
+    period = 7, # weekly frequency
+    outliers = c("ao", "wo"), log = TRUE, series_time = df_daily$date)
 
 print(pre_pro)
-#> Number of observations: 19359
-#> Start: 1968-01-01 
-#> End: 2020-12-31 
 #> 
-#> Estimate MA parameters:
-#>       MA_parameter      Coef     Coef_SE    Tstat
-#>           Theta(1) 0.7620698 0.005571472 136.7807
-#>  Theta(period = 7) 0.9731793 0.001413477 688.5002
 #> 
-#> Number of calendar regressors: 11 , Number of outliers : 7
+#> Fractional Airline estimation:
 #> 
-#> TD regressors coefficients:
-#>   Variable    Coef Coef_SE    Tstat
-#>  14th_july -0.1226  0.0047 -26.0615
-#>    8th_may -0.1419  0.0054 -26.3419
-#>    1st_jan -0.2223  0.0047 -47.3511
-#>    1st_may -0.1225  0.0047 -26.2643
-#>   east_mon -0.1891  0.0046 -40.7635
-#>        asc -0.1726  0.0046 -37.1949
-#>    pen_mon -0.1900  0.0046 -40.9429
-#>   15th_aug -0.1181  0.0047 -25.3461
-#>    1st_nov -0.1503  0.0046 -32.5662
-#>   11th_nov -0.1238  0.0046 -26.8142
-#>       Xmas -0.2310  0.0046 -49.7435
+#>   period           : 7.000
+#>   series_time      : 1968-01-01,  ..., 2020-12-31
+#>   parameters       : 0.762, 0.973
+#>   t                : 136.884, 774.367
+#>   score            : 2.088, 24.448
+#>   covariance       : [0.000, 0.000], [0.000, 0.000]
+#>   log              : TRUE
 #> 
-#> Outliers coefficients:
-#>       Variable    Coef Coef_SE   Tstat
-#>  WO.1999-12-31 -0.1762  0.0226 -7.7916
-#>  AO.1995-08-15 -0.2224  0.0340 -6.5503
-#>  WO.1999-12-24 -0.1447  0.0226 -6.3981
-#>  AO.2012-01-01  0.2098  0.0340  6.1786
-#>  AO.1998-07-14 -0.2101  0.0340 -6.1880
-#>  AO.1997-07-14 -0.2092  0.0340 -6.1602
-#>  AO.1995-05-01 -0.2042  0.0340 -6.0146
 #> 
-#> Sum of square residuals: 25.17 on 19330 degrees of freedom
-#> Log likelihood = 3.682e+04, 
-#>  aic = -7.361e+04, 
-#>  aicc = -7.361e+04, 
-#>  bic(corrected for length) = -6.635
-#> Hannan–Quinn information criterion = -7.355e+04
+#> Regression results:
+#> 
+#>                    coef        t
+#>   -------------  ------  -------
+#>   14th_july      -0.123  -26.062
+#>   8th_may        -0.142  -26.342
+#>   1st_jan        -0.222  -47.351
+#>   1st_may        -0.122  -26.264
+#>   east_mon       -0.189  -40.764
+#>   asc            -0.173  -37.195
+#>   pen_mon        -0.190  -40.943
+#>   15th_aug       -0.118  -25.346
+#>   1st_nov        -0.150  -32.566
+#>   11th_nov       -0.124  -26.814
+#>   Xmas           -0.231  -49.744
+#>   WO.1999-12-31  -0.176   -7.792
+#>   AO.1995-08-15  -0.222   -6.550
+#>   WO.1999-12-24  -0.145   -6.398
+#>   AO.2012-01-01   0.210    6.179
+#>   AO.1998-07-14  -0.210   -6.188
+#>   AO.1997-07-14  -0.209   -6.160
+#>   AO.1995-05-01  -0.204   -6.015
+#> 
+#> 
+#> Likelihood:
+#> 
+#>   ll               : 36823.915
+#>   ssq              : 25.169
+#>   nobs             : 19359.000
+#>   neffectiveobs    : 19351.000
+#>   nparams          : 21.000
+#>   df               : 19330.000
+#>   aic              : -73605.830
+#>   aicc             : -73605.782
+#>   bic              : -73440.549
+#>   bic2             : -3.795
+#>   bicc             : -6.635
+#>   hannanquinn      : -73551.669
 ```
 
 ``` r
 plot(pre_pro, main = "French births")
 ```
 
-<img src="man/figures/README-preprocessing plots-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-preprocessing plots-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
 plot(x = pre_pro,
      from = as.Date("2000-01-01"), to = as.Date("2000-12-31"),
      main = "French births in 2000")
+#> Warning in plot.xy(xy.coords(x, y), type = type, ...): "from" is not a
+#> graphical parameter
+#> Warning in plot.xy(xy.coords(x, y), type = type, ...): "to" is not a graphical
+#> parameter
 ```
 
-<img src="man/figures/README-preprocessing plots-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-preprocessing plots-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 Decomposition with the AMB (Arima Model Based) algorithm:
 
 ``` r
 # Decomposition with weekly pattern
-amb.dow <- rjd3highfreq::fractionalAirlineDecomposition(
-    y = pre_pro$model$linearized, # linearized series from preprocessing
+amb.dow <- rjd3highfreq::fractional_airline_decomposition(
+    series = pre_pro$decomposition$linearized, # linearized series from preprocessing
     period = 7,
-    log = TRUE, y_time = df_daily$date)
+    log = TRUE, series_time = df_daily$date)
 
 # Extract day-of-year pattern from day-of-week-adjusted linearised data
-amb.doy <- rjd3highfreq::fractionalAirlineDecomposition(
-    y = amb.dow$decomposition$sa, # DOW-adjusted linearised data
+amb.doy <- rjd3highfreq::fractional_airline_decomposition(
+    series = amb.dow$decomposition$sa, # DOW-adjusted linearised data
     period = 365.2425, # day of year pattern
-    log = TRUE, y_time = df_daily$date)
+    log = TRUE, series_time = df_daily$date)
 ```
 
 Plot:
 
 ``` r
-plot(amb.dow, main = "Weekly pattern")
+plot(amb.dow)
 ```
 
-<img src="man/figures/README-amb plot 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 1-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 ``` r
-plot(amb.dow, main = "Weekly pattern - January 2018",
-     from = as.Date("2018-01-01"),
-     to = as.Date("2018-01-31"))
+plot(amb.doy)
 ```
 
-<img src="man/figures/README-amb plot 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 2-2.png" width="100%" style="display: block; margin: auto;" />
-
-``` r
-plot(amb.doy, main = "Yearly pattern")
-```
-
-<img src="man/figures/README-amb plot 3-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 3-2.png" width="100%" style="display: block; margin: auto;" />
-
-``` r
-plot(amb.doy, main = "Weekly pattern - 2000 - 2002",
-     from = as.Date("2000-01-01"),
-     to = as.Date("2002-12-31"))
-```
-
-<img src="man/figures/README-amb plot 4-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-amb plot 4-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-amb plot-2.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 Perform an Arima Model Based (AMB) decomposition on several periodcities
 at once:
 
 ``` r
-amb.multi <- rjd3highfreq::multiAirlineDecomposition(
-  y = pre_pro$model$linearized, # input time series
-  periods = c(7, 365.2425), # 2 frequency
-  log = TRUE, y_time = df_daily$date)
+amb.multi <- rjd3highfreq::multi_airline_decomposition(
+  series = pre_pro$decomposition$linearized, # input time series
+  period = c(7, 365.2425), # 2 frequency
+  log = TRUE, series_time = df_daily$date)
 ```
 
 Plot the comparison between the two AMB methods for the annual
@@ -236,15 +239,7 @@ periodicity:
 plot(amb.multi)
 ```
 
-<img src="man/figures/README-plot amb.multi 1-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 1-2.png" width="100%" style="display: block; margin: auto;" />
-
-``` r
-plot(amb.multi, main = "2012",
-     from = as.Date("2012-01-01"),
-     to = as.Date("2012-12-31"))
-```
-
-<img src="man/figures/README-plot amb.multi 2-1.png" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-plot amb.multi 2-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-plot amb.multi 1-1.png" alt="" width="100%" style="display: block; margin: auto;" />
 
 With the package
 [**rjd3x11plus**](https://github.com/rjdverse/rjd3x11plus), you can
@@ -261,4 +256,4 @@ should be added or updated.
 
 The code of this project is licensed under the [European Union Public
 Licence
-(EUPL)](https://interoperable-europe.ec.europa.eu:443/collection/eupl/eupl-text-eupl-12).
+(EUPL)](https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12).

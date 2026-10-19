@@ -28,7 +28,10 @@ Depends:
 Imports:
   rJava (>= 1.0-6),
   rjd3toolkit (>= 3.7.1),
-  rjd3xjars (>= 0.1.0)
+  rjd3xjars (>= 0.1.0),
+  checkmate,
+  forecast,
+  methods
 SystemRequirements: Java (>= 21)
 License: file LICENSE
 URL: https://github.com/rjdverse/rjd3highfreq, https://rjdverse.github.io/rjd3highfreq/, https://rjdverse.github.io/rjd3x11plus
@@ -52,4 +55,4 @@ Collate:
     'summary.R'
     'x11correction.R'
     'zzz.R'
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1
